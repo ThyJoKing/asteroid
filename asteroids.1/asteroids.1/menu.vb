@@ -22,6 +22,11 @@ Public Class menu
         gameTimer.Enabled = True
         soundTimer.Enabled = sound
     End Sub
+    Private Sub menu_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
+        If gamestate = "play" Then
+            pauseLoad()
+        End If
+    End Sub
 
     Public Sub Timer2_Tick(sender As Object, e As EventArgs) Handles soundTimer.Tick
         soundCounter += 1
@@ -50,10 +55,10 @@ Public Class menu
         bulletCheck()
         If spriteArray(0).Count = 0 Then : levelLoad() : level += 1 : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then
-            gameTimer.Enabled = False
             pauseLoad()
         End If
-    End Sub   'The main game timer
+    End Sub
+    'The main game timer
     Public Sub painting(sender As Object, e As PaintEventArgs) Handles Me.Paint
         spriteDraw(e)
         If gamestate = "play" Then livesDraw(e)
@@ -118,6 +123,7 @@ Public Class menu
     End Sub    'Level
     Public Sub pauseLoad()
         Cursor.Show()
+        gameTimer.Enabled = False
         setCursor(My.Resources.enemyShip1)
         pauseExit.Visible = True : pauseResume.Visible = True
     End Sub    'Pause

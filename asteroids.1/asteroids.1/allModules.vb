@@ -18,6 +18,8 @@ Module debug
     Public Property gran As Integer = 15        'The amount of spiky bits
     Public Property minVary As Integer = 10     'How minimum amount of variation
     Public Property maxVary As Integer = 30     'The maximum amount
+
+    Public Property colour As Pen = Pens.White
 End Module
 
 Module initialise

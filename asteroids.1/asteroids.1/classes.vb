@@ -4,7 +4,6 @@ Imports System.Drawing.Drawing2D
 'NOTES:
 'Remove bounds after ranGen
 'Remove cirle completely
-
 Public Class ship
     Public Property Image As Image
     Public Property location As PointF
@@ -23,6 +22,8 @@ Public Class ship
     Public Property lives As Integer = 4
     Public Property score As Integer = 0
     Public Property extraLives As Integer = 10000
+    Public Property invincible As Boolean
+    Public Property invincibleTimer As Integer
 
     Public Sub New(cop As Boolean, playa As Integer)
         coop = cop
@@ -37,12 +38,15 @@ Public Class ship
                 locationx = menu.Width / 2
             End If
             locationy = menu.Height / 2
-            Location = New Point(locationx, locationy)
+            location = New Point(locationx, locationy)
             xVelocity = 0 : yVelocity = 0
-            Angle = 0
+            angle = 0
             Image = My.Resources.ship
+            invincible = True
+            invincibleTimer = 0
         Else
-            Location = New Point(-100, -100)
+            location = New Point(-100, -100)
+            shootEnable = False
         End If
     End Sub
     Public Sub move()
@@ -53,24 +57,35 @@ Public Class ship
             If locationx > menu.Width + Image.Width / 2 Then locationx = -Image.Width / 2
             If locationy < -Image.Width / 2 Then locationy = menu.Height + Image.Width / 2
             If locationy > menu.Height + Image.Width / 2 + 1 Then locationy = -Image.Width / 2
-            Location = New Point(locationx, locationy)
+            location = New Point(locationx, locationy)
         End If
         scoreCheck()
     End Sub
     Public Sub Draw(e As PaintEventArgs)
         If lives <> 0 Then
-            e.Graphics.TranslateTransform(Location.X, Location.Y)
-            e.Graphics.RotateTransform(Angle)
-            e.Graphics.DrawImage(Image, CInt(-Image.Width / 2), CInt(-Image.Height / 2), Image.Width, Image.Height)
-            e.Graphics.ResetTransform()
+            If invincible Then
+                invincibleTimer += 1
+            End If
+            If invincibleTimer = 400 Then
+                invincible = False
+            End If
+            If invincibleTimer Mod 80 < 60 Then
+                e.Graphics.TranslateTransform(location.X, location.Y)
+                e.Graphics.RotateTransform(angle)
+                e.Graphics.DrawImage(Image, CInt(-Image.Width / 2), CInt(-Image.Height / 2), Image.Width, Image.Height)
+                e.Graphics.ResetTransform()
+            End If
             points.Clear()
             points.Add(New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle - 70) / 360)) * 10 + location.X, -Cos(2 * Math.PI * ((angle - 70) / 360)) * 10 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle + 70) / 360)) * 10 + location.X, -Cos(2 * Math.PI * ((angle + 70) / 360)) * 10 + location.Y))
-
-            drawPoints = points.ToArray
+            If Not invincible Then
+                drawPoints = points.ToArray
+            Else
+                drawPoints = {New Point(-100, -100)}
+            End If
         Else
             drawPoints = {New Point(-100, -100)}
         End If
@@ -79,14 +94,14 @@ Public Class ship
         If hyperspaceEnable And lives <> 0 Then
             inHyperspace = True
             hyperspaceCounter = 0
-            Location = New Point(-200, -200)
+            location = New Point(-200, -200)
             xVelocity = 0 : yVelocity = 0
         End If
     End Sub
     Public Sub hyperspace()
         If hyperspaceEnable Then
             locationx = Rnd() * menu.Width : locationy = Rnd() * menu.Height
-            Location = New Point(locationx, locationy)
+            location = New Point(locationx, locationy)
             inHyperspace = False
             hyperspaceCounter = 0
         End If
@@ -99,9 +114,9 @@ Public Class ship
     End Sub
     Public ReadOnly Property Bounds As List(Of PointF)
         Get
-            Return New List(Of PointF) From {New PointF(Sin(2 * Math.PI * (Angle / 360)) * 30 + Location.X, -Cos(2 * Math.PI * (Angle / 360)) * 30 + Location.Y),
-                New PointF(Sin(2 * Math.PI * ((Angle - 140) / 360)) * 35 + Location.X, -Cos(2 * Math.PI * ((Angle - 140) / 360)) * 35 + Location.Y),
-                New PointF(Sin(2 * Math.PI * ((Angle + 140) / 360)) * 35 + Location.X, -Cos(2 * Math.PI * ((Angle + 140) / 360)) * 35 + Location.Y)}
+            Return New List(Of PointF) From {New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y),
+                New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y),
+                New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y)}
         End Get
     End Property
 End Class
@@ -177,7 +192,7 @@ Public Class asteroid
             points.Add(New Point(P.X + location.X, P.Y + location.Y))
         Next
         drawPoints = points.ToArray()
-        e.Graphics.DrawPolygon(Pens.White, drawPoints)
+        e.Graphics.DrawPolygon(colour, drawPoints)
     End Sub
     Public Sub randomGenerate(size)
         Dim ang As Double = 0
@@ -273,4 +288,22 @@ Public Class enemyShip
             e.Graphics.DrawPolygon(Pens.Red, drawPoints)
         End If
     End Sub
+End Class
+
+Public Class explosion
+    Public Property location As Point
+    Public Property points As List(Of PointF) = New List(Of PointF) From {}
+    Public Property drawPoints As PointF()
+    Public Property obj As Object
+    Public Property particles
+
+    Public Sub New(obje)
+        obj = obje
+        location = obj.location
+        If TypeOf obj Is ship Then
+            particles = New PointF() With {new
+        End If
+
+    End Sub
+
 End Class
