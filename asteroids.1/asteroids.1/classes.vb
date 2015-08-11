@@ -305,6 +305,12 @@ Public Class explosion
                 velocities.Add(Rnd() * exploMove - 2)
                 velocities.Add(Rnd() * exploMove - 2)
             Next
+        ElseIf TypeOf obj Is enemyShip Then
+            For Each poi As PointF In obj.points
+                particles.Add(New PointF(obj.locationx, obj.locationy))
+                velocities.Add(Rnd() * exploMove - 2)
+                velocities.Add(Rnd() * exploMove - 2)
+            Next
         Else
             Dim num = 0
             While num < obj.points.count()

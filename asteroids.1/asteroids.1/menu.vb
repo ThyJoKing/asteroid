@@ -12,6 +12,10 @@ Imports System.Drawing.Text
 
 Public Class menu
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Size = New Size(900, 900)
+        Me.Top = (My.Computer.Screen.WorkingArea.Height / 2) - (Me.Height / 2)
+        Me.Left = (My.Computer.Screen.WorkingArea.Width / 2) - (Me.Width / 2)
+
         DoubleBuffered = True
         hotKeysInit()
         fontInit()
@@ -126,7 +130,7 @@ Public Class menu
     Public Sub pauseLoad()
         Cursor.Show()
         gameTimer.Enabled = False
-        setCursor(My.Resources.enemyShip1)
+        setCursor(My.Resources.shipLife)
         pauseExit.Visible = True : pauseResume.Visible = True : pauseRestart.Visible = True
     End Sub    'Pause
 
