@@ -66,7 +66,7 @@ Public Class ship
             If invincible Then
                 invincibleTimer += 1
             End If
-            If invincibleTimer = 400 Then
+            If invincibleTimer = invincibleLength Then
                 invincible = False
             End If
             If invincibleTimer Mod 80 < 60 Then
@@ -125,8 +125,8 @@ Public Class asteroid
     Public Property level As Integer
     Public Property xVelocity As Double : Public Property yvelocity As Double
     Public Property radius As Integer
-    Public Property tempList As List(Of PointF) = New List(Of PointF) From {}
-    Public Property points As List(Of PointF) = New List(Of PointF) From {}
+    Public Property tempList As New List(Of PointF) From {}
+    Public Property points As New List(Of PointF) From {}
     Public Property drawPoints As PointF()
 
     Public Sub New(size As Integer, ast As asteroid)
@@ -254,7 +254,7 @@ Public Class enemyShip
     Public Property drawPoints As PointF()
     Public Property level As Integer
     Public Property player As Integer = 3
-    Public Property points As List(Of PointF) = New List(Of PointF) From {}
+    Public Property points As New List(Of PointF) From {}
 
     Public Sub New(size As Integer)
         level = size
@@ -293,20 +293,50 @@ Public Class explosion
     Public Property drawPoints As PointF()
     Public Property obj As Object
     Public Property particles As New List(Of PointF) From {}
+    Public Property velocities As New List(Of Double) From {}
+    Public Property timer As Integer = 0
 
     Public Sub New(obje)
         obj = obje
         location = New Point(obj.locationx, obj.locationy)
-        For Each poi As PointF In obj.points
-            particles.add(poi)
-        Next
-    End Sub
-
-    Public Sub draw(e As PaintEventArgs)
-        If TypeOf obj Is ship Then
-            e.Graphics.DrawLine(Pens.White, particles(0), particles(1))
-            e.Graphics.DrawLine(Pens.White, particles(1), particles(2))
-            e.Graphics.DrawLine(Pens.White, particles(2), particles(0))
+        If Not TypeOf obj Is ship Then
+            For Each poi As PointF In obj.points
+                particles.Add(poi)
+                velocities.Add(Rnd() * exploMove - 2)
+                velocities.Add(Rnd() * exploMove - 2)
+            Next
+        Else
+            Dim num = 0
+            While num < obj.points.count()
+                particles.Add(obj.points(num))
+                velocities.Add(Rnd() * exploMove - 2)
+                velocities.Add(Rnd() * exploMove - 2)
+                If num <> 2 Then
+                    particles.Add(obj.points(num + 1))
+                Else
+                    particles.Add(obj.points(0))
+                End If
+                velocities.Add(Rnd() * 4 - 2)
+                velocities.Add(Rnd() * 4 - 2)
+                num += 1
+            End While
         End If
+    End Sub
+    Public Sub draw(e As PaintEventArgs)
+        Dim temp As Integer = Ceiling(timer / exploTime * fadeArray.Count)
+        If temp > fadeArray.Count - 1 Then temp = fadeArray.Count - 1
+        If TypeOf obj Is ship Then
+            e.Graphics.DrawLine(fadeArray(temp), particles(0), particles(1))
+            e.Graphics.DrawLine(fadeArray(temp), particles(2), particles(3))
+            e.Graphics.DrawLine(fadeArray(temp), particles(4), particles(5))
+        End If
+        timer += 1
+    End Sub
+    Public Sub move()
+        Dim num = 0
+        While num < particles.Count
+            particles(num) = New PointF(particles(num).X + velocities(num * 2), particles(num).Y + velocities(num * 2 + 1))
+            num += 1
+        End While
     End Sub
 End Class

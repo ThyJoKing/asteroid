@@ -11,6 +11,7 @@ Module debug
     Public howMany As Integer = 100         'How many asteroids
     Public whatSize As Integer = 3          'What size
     Public velocityNo As Boolean = False    'Whether the asteroid is moving
+    Public invincibleLength As Integer = 250 'The length of the invincibility period
 
     'asteroid specifics
     Public Property minRadius As Integer = 20   'The minimum size of asteroid
@@ -19,7 +20,12 @@ Module debug
     Public Property minVary As Integer = 10     'How minimum amount of variation
     Public Property maxVary As Integer = 30     'The maximum amount
 
+    Public Property exploTime As Integer = 150
+    Public Property exploMove As Integer = 6
+
     Public Property colour As Pen = Pens.White
+
+    Public Property fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
 End Module
 
 Module initialise
@@ -44,8 +50,6 @@ Module initialise
     '3. bullets
     Public explosionArray As New List(Of explosion) From {}
 
-    Public asteroidImages As New List(Of Generic.List(Of Image)) From {
-        New List(Of Image) From {My.Resources.asteroid_1, My.Resources.asteroid_2, My.Resources.asteroid_3, My.Resources.asteroid_4}} 'The asteroid images : REPLACE WITH RANDOM GENERATION
     Public gameOver As Boolean = False 'Whether the game is over or not
     Public gamestate As String = "menu" 'The current Gamestate
 
@@ -58,7 +62,6 @@ Module initialise
         normalFont.AddMemoryFont(fontMemPointer, My.Resources.Hyperspace.Length)
         Marshal.FreeCoTaskMem(fontMemPointer)
     End Sub 'Declaring the hyperspace font
-
     Public Sub hotKeysInit()
         'Player 1
         hotKeys.Add("player1Left", Keys.A)
@@ -76,7 +79,6 @@ Module initialise
 
         hotKeys.Add("pause", Keys.Escape)
     End Sub 'Declaring the initial hotkeys
-
     Public Sub labelInit()
         'Title Screen
         menu.title.Font = New Font(normalFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, menu.Height / 5)
@@ -91,10 +93,11 @@ Module initialise
         menu.player2Score.Location = New System.Drawing.Point(menu.Width - 390, 70) : menu.player2Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
 
         'Pause Menu
-        menu.pauseResume.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 50)
-        menu.pauseExit.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 50)
-
-    End Sub 'Declaring the font of the labels and their positions
+        menu.pauseResume.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
+        menu.pauseRestart.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
+        menu.pauseExit.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
+        
+    End Sub 'Declaring the font of all labels and their positions
 End Module
 
 Module collisionTests
@@ -146,53 +149,55 @@ Module collisionTests
                             collide1 = True
                             spriteArray(secondObject).RemoveAt(secondCount)
                         End If
-                ElseIf TypeOf (current1) Is asteroid Then                                   'Asteroid with anything
-                    Dim score As Integer
-                    If current1.level = 1 Then score = 20 Else If current1.level = 2 Then score = 50 Else score = 100
-                    If TypeOf (current2) Is ship Then
-                            current2.spawn()
-                            explosionArray.Add(New explosion(current2))
-                        current2.score += score
-                        If current2.lives <> 0 Then
-                            current2.lives -= 1
-                        Else
-                            current2.shootenable = False
-                            gameOver = True
-                        End If
-                    ElseIf TypeOf (current2) Is enemyShip Then
-                        spriteArray(secondObject).RemoveAt(secondCount)
-                    End If
-                    Dim temp As asteroid = current1
-                    spriteArray(firstObject).RemoveAt(firstCount)
-                    collide1 = True
-                    If temp.level <> 3 Then
-                        spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
-                        spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
-                    End If
-                ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
-                    If TypeOf current2 Is asteroid Then
+                    ElseIf TypeOf (current1) Is asteroid Then                                   'Asteroid with anything
                         Dim score As Integer
-                        If current2.level = 1 Then score = 20 Else If current2.level = 2 Then score = 50 Else score = 100
-                        If current1.shooter < 3 Then
-                            spriteArray(1)(current1.shooter - 1).score += score
+                        If current1.level = 1 Then score = 20 Else If current1.level = 2 Then score = 50 Else score = 100
+                        If TypeOf (current2) Is ship Then
+                            If Not current2.invincible Then
+                                current2.score += score
+                                If current2.lives <> 0 Then
+                                    current2.lives -= 1
+                                Else
+                                    current2.shootenable = False
+                                    gameOver = True
+                                End If
+                                current2.spawn()
+                                explosionArray.Add(New explosion(current2))
+                            ElseIf TypeOf (current2) Is enemyShip Then
+                                spriteArray(secondObject).RemoveAt(secondCount)
+                            End If
+                            Dim temp As asteroid = current1
+                            spriteArray(firstObject).RemoveAt(firstCount)
+                            collide1 = True
+                            If temp.level <> 3 Then
+                                spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
+                                spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
+                            End If
                         End If
-                        spriteArray(secondObject).RemoveAt(secondCount)
-                        secondCount += 1
-                        spriteArray(firstObject).RemoveAt(firstCount)
-                        collide1 = True
-                        If current2.level <> 3 Then
-                            spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
-                            spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
-                        End If
-                    ElseIf TypeOf current2 Is enemyShip Then
-                        If current1.shooter <> 3 Then
-                            spriteArray(1)(current1.shooter - 1).score += current2.level * 500
+                    ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
+                        If TypeOf current2 Is asteroid Then
+                            Dim score As Integer
+                            If current2.level = 1 Then score = 20 Else If current2.level = 2 Then score = 50 Else score = 100
+                            If current1.shooter < 3 Then
+                                spriteArray(1)(current1.shooter - 1).score += score
+                            End If
                             spriteArray(secondObject).RemoveAt(secondCount)
+                            secondCount += 1
+                            spriteArray(firstObject).RemoveAt(firstCount)
+                            collide1 = True
+                            If current2.level <> 3 Then
+                                spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
+                                spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
+                            End If
+                        ElseIf TypeOf current2 Is enemyShip Then
+                            If current1.shooter <> 3 Then
+                                spriteArray(1)(current1.shooter - 1).score += current2.level * 500
+                                spriteArray(secondObject).RemoveAt(secondCount)
+                            End If
+                            spriteArray(firstObject).RemoveAt(firstCount)
+                            collide1 = True
                         End If
-                        spriteArray(firstObject).RemoveAt(firstCount)
-                        collide1 = True
-                    End If
-                End If
+                        End If
                 End If
                 secondCount += 1
             End While
@@ -324,12 +329,25 @@ Module other
             End If
         End While
     End Sub           'Check if bullets are expired
+    Public Sub explosionCheck()
+        Dim num = 0
+        While num < explosionArray.Count
+            If explosionArray(num).timer > exploTime Then
+                explosionArray.RemoveAt(num)
+            Else
+                num += 1
+            End If
+        End While
+    End Sub
 
     Public Sub moveEverything()
         For Each arr As Object In spriteArray
             For Each obj As Object In arr
                 obj.move()
             Next
+        Next
+        For Each obj As Object In explosionArray
+            obj.move()
         Next
     End Sub        'Move everything according to their velocity 
 
