@@ -1,0 +1,24 @@
+key
+    'sprites in order
+    '0. asteroids
+    '1. player ship
+    '2. enemy ship
+    '3. player bullets
+    '4. enemy bullets
+
+components:
+asteroids
+player
+enemy
+bullet
+
+threads:
+
+asteroids 	- player
+enemy 		- bullet
+
+asteroids 	- bullet
+player 		- enemy
+
+asteroids 	- enemy
+player 		- bullet
