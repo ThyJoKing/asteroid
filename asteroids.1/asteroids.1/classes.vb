@@ -28,6 +28,7 @@ Public Class ship
     Public Sub New(cop As Boolean, playa As Integer)
         coop = cop
         player = playa
+        invincibleTimer = 0
         spawn()
     End Sub
     Public Sub spawn()
@@ -43,7 +44,9 @@ Public Class ship
             angle = 0
             Image = My.Resources.ship
             invincible = True
-            invincibleTimer = 0
+            If invincibleTimer <> 0 Then
+                invincibleTimer = -200
+            End If
         Else
             location = New Point(-100, -100)
             shootEnable = False
@@ -69,7 +72,7 @@ Public Class ship
             If invincibleTimer = invincibleLength Then
                 invincible = False
             End If
-            If invincibleTimer Mod 80 < 60 Then
+            If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 Then
                 e.Graphics.TranslateTransform(location.X, location.Y)
                 e.Graphics.RotateTransform(angle)
                 e.Graphics.DrawImage(Image, CInt(-Image.Width / 2), CInt(-Image.Height / 2), Image.Width, Image.Height)
@@ -218,7 +221,6 @@ Public Class asteroid
 End Class
 
 Public Class bullet
-    Public Property image As Image
     Public Property location As PointF
     Public Property xVelocity As Integer
     Public Property yVelocity As Integer
@@ -226,6 +228,16 @@ Public Class bullet
     Public Property shooter As Integer
     Public Property drawPoints As PointF()
 
+    Public Sub New(ship)
+        If TypeOf ship Is enemyShip Then
+            shooter = 3
+            location = New Point(ship.location.x, ship.location.y)
+        Else
+            shooter = ship.player
+            location = New PointF(Sin(2 * Math.PI * (ship.Angle / 360)) * bulletSpeed + ship.Location.X, -Cos(2 * Math.PI * (ship.Angle / 360)) * bulletSpeed + ship.Location.Y)
+            xVelocity = Sin(2 * Math.PI * (ship.Angle / 360)) * bulletSpeed : yVelocity = -Cos(2 * Math.PI * (ship.Angle / 360)) * bulletSpeed
+        End If
+    End Sub
     Public Sub move()
         location = New Point(location.X + Xvelocity, location.Y + Yvelocity)
         If location.X < -20 Then location = New Point(menu.Width + 15, location.Y)
@@ -236,7 +248,7 @@ Public Class bullet
         drawPoints = {New Point(location.X, location.Y)}
     End Sub
     Public Sub Draw(e As PaintEventArgs)
-        e.Graphics.DrawImage(image, location)
+        e.Graphics.DrawRectangle(colour, location.X, location.Y, 2, 2)
     End Sub
     Public ReadOnly Property Bounds As List(Of PointF)
         Get

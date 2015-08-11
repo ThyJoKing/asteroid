@@ -24,6 +24,8 @@ Module debug
     Public Property exploMove As Integer = 6    'The speed the explosion can spread
     Public Property exploPercent As Integer = 2 'The velocity the explosion inherits from its object
 
+    Public Property bulletSpeed As Integer = 30
+
     Public Property colour As Pen = Pens.White
 
     Public Property fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
@@ -230,13 +232,8 @@ Module shipActions
             If bul.shooter = ship.player Then bulletNum += 1
         Next
         If bulletNum < bulLimit Then
-            If ship.player < 3 And ship.shootEnable And ship.lives <> 0 Then 'Player Bullet
-                spriteArray(3).Add(New bullet With {.shooter = ship.player, .image = My.Resources.bullet, .location = New PointF(Sin(2 * Math.PI * (ship.Angle / 360)) * 30 + ship.Location.X, -Cos(2 * Math.PI * (ship.Angle / 360)) * 30 + ship.Location.Y), .Xvelocity = Sin(2 * Math.PI * (ship.Angle / 360)) * 30, .Yvelocity = -Cos(2 * Math.PI * (ship.Angle / 360)) * 30})
-                If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
-            Else 'Enemy bullet
-                spriteArray(3).Add(New bullet With {.shooter = 3, .image = My.Resources.bullet, .location = New Point(ship.location.x, ship.location.y)})
-                If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
-            End If
+            spriteArray(3).Add(New bullet(ship))
+            'If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
         End If
     End Sub     'Every ship shooting
     Public Sub thrust(ship As ship)
@@ -275,11 +272,11 @@ End Module
 
 Module keyChecking
     Public Sub keyChecks(ship As ship)
-        If Not ship.inhyperspace Then
+        If Not ship.inHyperspace And ship.invincibleTimer > 0 Then
             If ship.player = 1 Then
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Left"))) Then ship.Angle -= sensitivity
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Right"))) Then ship.Angle += sensitivity
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Forward"))) Then thrust(ship) Else ship.image = My.Resources.ship
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Left"))) Then ship.angle -= sensitivity
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Right"))) Then ship.angle += sensitivity
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Forward"))) Then thrust(ship) Else ship.Image = My.Resources.ship
 
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Shoot"))) Then
                     If Not ship.bulletCool Then
@@ -291,9 +288,9 @@ Module keyChecking
                 End If
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Hyperspace"))) Then ship.hyperspaceStart()
             Else
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Left"))) Then ship.Angle -= sensitivity
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Right"))) Then ship.Angle += sensitivity
-                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Forward"))) Then thrust(ship) Else ship.image = My.Resources.ship
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Left"))) Then ship.angle -= sensitivity
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Right"))) Then ship.angle += sensitivity
+                If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Forward"))) Then thrust(ship) Else ship.Image = My.Resources.ship
 
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Shoot"))) Then
                     If Not ship.bulletCool Then
@@ -305,8 +302,7 @@ Module keyChecking
                 End If
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Hyperspace"))) Then ship.hyperspaceStart()
             End If
-
-        Else
+        ElseIf ship.inHyperspace Then
             ship.hyperspaceCounter += 1
             If ship.hyperspaceCounter = 20 Then ship.hyperspace()
         End If

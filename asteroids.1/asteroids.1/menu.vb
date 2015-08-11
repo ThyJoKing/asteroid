@@ -13,8 +13,6 @@ Imports System.Drawing.Text
 Public Class menu
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Size = New Size(900, 900)
-        Me.Top = (My.Computer.Screen.WorkingArea.Height / 2) - (Me.Height / 2)
-        Me.Left = (My.Computer.Screen.WorkingArea.Width / 2) - (Me.Width / 2)
 
         DoubleBuffered = True
         hotKeysInit()
@@ -36,9 +34,9 @@ Public Class menu
         If soundCounter > soundLimit Then
             If highSound Then
                 highSound = False
-                My.Computer.Audio.Play(My.Resources.thumphi, AudioPlayMode.Background)
+                'My.Computer.Audio.Play(My.Resources.thumphi, AudioPlayMode.Background)
             Else
-                My.Computer.Audio.Play(My.Resources.thumplo, AudioPlayMode.Background)
+                'My.Computer.Audio.Play(My.Resources.thumplo, AudioPlayMode.Background)
                 highSound = True
             End If
             soundCounter = 0

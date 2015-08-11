@@ -63,56 +63,10 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property bullet() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("bullet", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend ReadOnly Property enemyShip1() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("enemyShip1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property explode1() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("explode1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property explode2() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("explode2", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property explode3() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("explode3", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property fire() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("fire", resourceCulture)
             End Get
         End Property
         
@@ -123,33 +77,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("Hyperspace", resourceCulture)
                 Return CType(obj,Byte())
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property life() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("life", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property lsaucer() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("lsaucer", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property sfire() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("sfire", resourceCulture)
             End Get
         End Property
         
@@ -180,42 +107,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("shipThrust", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property ssaucer() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("ssaucer", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property thrust() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("thrust", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property thumphi() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("thumphi", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        '''</summary>
-        Friend ReadOnly Property thumplo() As System.IO.UnmanagedMemoryStream
-            Get
-                Return ResourceManager.GetStream("thumplo", resourceCulture)
             End Get
         End Property
     End Module

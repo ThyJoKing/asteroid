@@ -118,30 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="bullet" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bullet.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="explode1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explode1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="explode2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explode2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="explode3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\explode3.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="fire" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\fire.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="life" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\life.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="lsaucer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\lsaucer.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="sfire" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\sfire.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="ship" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ship.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,18 +126,6 @@
   </data>
   <data name="shipThrust" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\shipThrust.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ssaucer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ssaucer.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="thrust" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\thrust.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="thumphi" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\thumphi.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="thumplo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\thumplo.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Hyperspace" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hyperspace.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
