@@ -299,9 +299,9 @@ Public Class explosion
     Public Sub New(obje)
         obj = obje
         location = New Point(obj.locationx, obj.locationy)
-        If Not TypeOf obj Is ship Then
+        If TypeOf obj Is asteroid Then
             For Each poi As PointF In obj.points
-                particles.Add(poi)
+                particles.Add(New PointF(obj.locationx + Rnd() * obj.radius - obj.radius, obj.locationy + Rnd() * obj.radius - obj.radius))
                 velocities.Add(Rnd() * exploMove - 2)
                 velocities.Add(Rnd() * exploMove - 2)
             Next
@@ -309,15 +309,15 @@ Public Class explosion
             Dim num = 0
             While num < obj.points.count()
                 particles.Add(obj.points(num))
-                velocities.Add(Rnd() * exploMove - 2)
-                velocities.Add(Rnd() * exploMove - 2)
+                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
+                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
                 If num <> 2 Then
                     particles.Add(obj.points(num + 1))
                 Else
                     particles.Add(obj.points(0))
                 End If
-                velocities.Add(Rnd() * 4 - 2)
-                velocities.Add(Rnd() * 4 - 2)
+                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
+                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
                 num += 1
             End While
         End If
@@ -329,6 +329,10 @@ Public Class explosion
             e.Graphics.DrawLine(fadeArray(temp), particles(0), particles(1))
             e.Graphics.DrawLine(fadeArray(temp), particles(2), particles(3))
             e.Graphics.DrawLine(fadeArray(temp), particles(4), particles(5))
+        Else
+            For Each Point As PointF In particles
+                e.Graphics.DrawRectangle(fadeArray(temp), Point.X, Point.Y, 1, 1)
+            Next
         End If
         timer += 1
     End Sub

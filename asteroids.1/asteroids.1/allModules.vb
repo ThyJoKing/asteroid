@@ -20,12 +20,14 @@ Module debug
     Public Property minVary As Integer = 10     'How minimum amount of variation
     Public Property maxVary As Integer = 30     'The maximum amount
 
-    Public Property exploTime As Integer = 150
-    Public Property exploMove As Integer = 6
+    Public Property exploTime As Integer = 150  'The length of the explosion
+    Public Property exploMove As Integer = 6    'The speed the explosion can spread
+    Public Property exploPercent As Integer = 2 'The velocity the explosion inherits from its object
 
     Public Property colour As Pen = Pens.White
 
     Public Property fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
+    'Ordered from white to black (oddly enough, darkgray is lighter than gray)
 End Module
 
 Module initialise
@@ -133,8 +135,8 @@ Module collisionTests
                                 Else
                                     gameOver = True
                                 End If
-                                current1.spawn()
                                 explosionArray.Add(New explosion(current1))
+                                current1.spawn()
                                 collide1 = True
                             End If
                         ElseIf TypeOf (current2) Is enemyShip Then
@@ -144,8 +146,9 @@ Module collisionTests
                             Else
                                 gameOver = True
                             End If
-                            current1.spawn()
                             explosionArray.Add(New explosion(current1))
+                            explosionArray.Add(New explosion(current2))
+                            current1.spawn()
                             collide1 = True
                             spriteArray(secondObject).RemoveAt(secondCount)
                         End If
@@ -161,8 +164,9 @@ Module collisionTests
                                     current2.shootenable = False
                                     gameOver = True
                                 End If
-                                current2.spawn()
                                 explosionArray.Add(New explosion(current2))
+                                explosionArray.Add(New explosion(current1))
+                                current2.spawn()
                             ElseIf TypeOf (current2) Is enemyShip Then
                                 spriteArray(secondObject).RemoveAt(secondCount)
                             End If
@@ -177,6 +181,7 @@ Module collisionTests
                     ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
                         If TypeOf current2 Is asteroid Then
                             Dim score As Integer
+                            explosionArray.Add(New explosion(current2))
                             If current2.level = 1 Then score = 20 Else If current2.level = 2 Then score = 50 Else score = 100
                             If current1.shooter < 3 Then
                                 spriteArray(1)(current1.shooter - 1).score += score
@@ -190,6 +195,8 @@ Module collisionTests
                                 spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
                             End If
                         ElseIf TypeOf current2 Is enemyShip Then
+                            explosionArray.Add(New explosion(current2))
+                            explosionArray.Add(New explosion(current1))
                             If current1.shooter <> 3 Then
                                 spriteArray(1)(current1.shooter - 1).score += current2.level * 500
                                 spriteArray(secondObject).RemoveAt(secondCount)
