@@ -42,6 +42,7 @@ Module initialise
     '1. player ship
     '2. enemy ship
     '3. bullets
+    Public explosionArray As New List(Of explosion) From {}
 
     Public asteroidImages As New List(Of Generic.List(Of Image)) From {
         New List(Of Image) From {My.Resources.asteroid_1, My.Resources.asteroid_2, My.Resources.asteroid_3, My.Resources.asteroid_4}} 'The asteroid images : REPLACE WITH RANDOM GENERATION
@@ -130,6 +131,7 @@ Module collisionTests
                                     gameOver = True
                                 End If
                                 current1.spawn()
+                                explosionArray.Add(New explosion(current1))
                                 collide1 = True
                             End If
                         ElseIf TypeOf (current2) Is enemyShip Then
@@ -140,6 +142,7 @@ Module collisionTests
                                 gameOver = True
                             End If
                             current1.spawn()
+                            explosionArray.Add(New explosion(current1))
                             collide1 = True
                             spriteArray(secondObject).RemoveAt(secondCount)
                         End If
@@ -147,7 +150,8 @@ Module collisionTests
                     Dim score As Integer
                     If current1.level = 1 Then score = 20 Else If current1.level = 2 Then score = 50 Else score = 100
                     If TypeOf (current2) Is ship Then
-                        current2.spawn()
+                            current2.spawn()
+                            explosionArray.Add(New explosion(current2))
                         current2.score += score
                         If current2.lives <> 0 Then
                             current2.lives -= 1
@@ -250,6 +254,11 @@ Module drawing
             For Each obj As Object In arr : obj.draw(e) : Next
         Next
     End Sub 'Draw every sprite (player, asteroids, bullets, enemies)
+    Public Sub explosionsDraw(e As PaintEventArgs)
+        For Each obj As Object In explosionArray
+            obj.draw(e)
+        Next
+    End Sub
 End Module
 
 Module keyChecking

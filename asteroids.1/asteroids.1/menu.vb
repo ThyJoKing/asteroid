@@ -3,7 +3,6 @@ Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
 
 '   things to do:
-'       Generate asteroids
 '       do threads
 '       enemy ships - IN PROGRESS
 '       highscores
@@ -57,10 +56,10 @@ Public Class menu
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then
             pauseLoad()
         End If
-    End Sub
-    'The main game timer
+    End Sub   'The main game timer
     Public Sub painting(sender As Object, e As PaintEventArgs) Handles Me.Paint
         spriteDraw(e)
+        explosionsDraw(e)
         If gamestate = "play" Then livesDraw(e)
     End Sub              'The sprite draw
 

@@ -17,7 +17,7 @@ Public Class ship
     Public Property coop As Boolean
     Public Property player As Integer
     Public Property bulletCool As Boolean = False
-    Public Property points As List(Of PointF) = New List(Of PointF) From {}
+    Public Property points As New List(Of PointF) From {}
     Public Property drawPoints As PointF()
     Public Property lives As Integer = 4
     Public Property score As Integer = 0
@@ -77,10 +77,8 @@ Public Class ship
             End If
             points.Clear()
             points.Add(New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y))
-            points.Add(New PointF(Sin(2 * Math.PI * ((angle - 70) / 360)) * 10 + location.X, -Cos(2 * Math.PI * ((angle - 70) / 360)) * 10 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
-            points.Add(New PointF(Sin(2 * Math.PI * ((angle + 70) / 360)) * 10 + location.X, -Cos(2 * Math.PI * ((angle + 70) / 360)) * 10 + location.Y))
             If Not invincible Then
                 drawPoints = points.ToArray
             Else
@@ -256,6 +254,7 @@ Public Class enemyShip
     Public Property drawPoints As PointF()
     Public Property level As Integer
     Public Property player As Integer = 3
+    Public Property points As List(Of PointF) = New List(Of PointF) From {}
 
     Public Sub New(size As Integer)
         level = size
@@ -278,15 +277,13 @@ Public Class enemyShip
     End Sub
     Public Sub Draw(e As PaintEventArgs)
         e.Graphics.DrawImage(image, location)
-        If hitbox Then
-            drawPoints = {New Point(locationx + 60 * (1 / level), locationy + 20 * (1 / level)),
-                      New Point(locationx + 20 * (1 / level), locationy + 60 * (1 / level)),
-                      New Point(locationx + 50 * (1 / level), locationy + 80 * (1 / level)),
-                      New Point(locationx + 100 * (1 / level), locationy + 80 * (1 / level)),
-                      New Point(locationx + 130 * (1 / level), locationy + 60 * (1 / level)),
-                      New Point(locationx + 85 * (1 / level), locationy + 20 * (1 / level))}
-            e.Graphics.DrawPolygon(Pens.Red, drawPoints)
-        End If
+        points.Add(New Point(locationx + 60 * (1 / level), locationy + 20 * (1 / level)))
+        points.Add(New Point(locationx + 20 * (1 / level), locationy + 60 * (1 / level)))
+        points.Add(New Point(locationx + 50 * (1 / level), locationy + 80 * (1 / level)))
+        points.Add(New Point(locationx + 100 * (1 / level), locationy + 80 * (1 / level)))
+        points.Add(New Point(locationx + 130 * (1 / level), locationy + 60 * (1 / level)))
+        points.Add(New Point(locationx + 85 * (1 / level), locationy + 20 * (1 / level)))
+        drawPoints = points.ToArray
     End Sub
 End Class
 
@@ -295,15 +292,21 @@ Public Class explosion
     Public Property points As List(Of PointF) = New List(Of PointF) From {}
     Public Property drawPoints As PointF()
     Public Property obj As Object
-    Public Property particles
+    Public Property particles As New List(Of PointF) From {}
 
     Public Sub New(obje)
         obj = obje
-        location = obj.location
-        If TypeOf obj Is ship Then
-            particles = New PointF() With {new
-        End If
-
+        location = New Point(obj.locationx, obj.locationy)
+        For Each poi As PointF In obj.points
+            particles.add(poi)
+        Next
     End Sub
 
+    Public Sub draw(e As PaintEventArgs)
+        If TypeOf obj Is ship Then
+            e.Graphics.DrawLine(Pens.White, particles(0), particles(1))
+            e.Graphics.DrawLine(Pens.White, particles(1), particles(2))
+            e.Graphics.DrawLine(Pens.White, particles(2), particles(0))
+        End If
+    End Sub
 End Class
