@@ -2,6 +2,8 @@
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
 Imports System.Runtime.InteropServices
+Imports System.IO
+Imports System.Text
 
 Module debug
     Public debugging As Boolean = True
@@ -26,6 +28,8 @@ Module debug
     Public Property exploPercent As Integer = 2 'The velocity the explosion inherits from its object
 
     Public Property endTime As Integer = 50
+
+    Public Property highFirst As Boolean = True
 
     Public Property bulletSpeed As Integer = 30
 
@@ -64,13 +68,13 @@ Module initialise
 
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
-    Public normalFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
+    Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
     Public Sub fontInit()
         Dim fontMemPointer As IntPtr = Marshal.AllocCoTaskMem(My.Resources.Hyperspace.Length)
         Marshal.Copy(My.Resources.Hyperspace, 0, fontMemPointer, My.Resources.Hyperspace.Length)
-        normalFont.AddMemoryFont(fontMemPointer, My.Resources.Hyperspace.Length)
+        hyperspaceFont.AddMemoryFont(fontMemPointer, My.Resources.Hyperspace.Length)
         Marshal.FreeCoTaskMem(fontMemPointer)
-    End Sub 'Declaring the hyperspace font
+    End Sub     'Declaring the hyperspace font
     Public Sub hotKeysInit()
         'Player 1
         hotKeys.Add("player1Left", Keys.A)
@@ -87,26 +91,59 @@ Module initialise
         hotKeys.Add("player2Hyperspace", Keys.RShiftKey)
 
         hotKeys.Add("pause", Keys.Escape)
-    End Sub 'Declaring the initial hotkeys
+    End Sub  'Declaring the initial hotkeys
     Public Sub labelInit()
         'Title Screen
-        menu.title.Font = New Font(normalFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, menu.Height / 5)
-        menu.playButton.Font = New Font(normalFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, menu.Height / 2)
-        menu.optionsButton.Font = New Font(normalFont.Families(0), 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 2 * menu.Height / 3)
-        menu.Coins.Font = New Font(normalFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, menu.Height - 50)
+        menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, menu.Height / 5)
+        menu.playButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, menu.Height / 2)
+        menu.optionsButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 2 * menu.Height / 3)
+        menu.Coins.Font = New Font(hyperspaceFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, menu.Height - 50)
 
         'Player score and title
-        menu.player1Title.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
-        menu.player1Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
-        menu.player2Title.Location = New System.Drawing.Point(menu.Width - 200, 10) : menu.player2Title.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
-        menu.player2Score.Location = New System.Drawing.Point(menu.Width - 390, 70) : menu.player2Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
+        menu.player1Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
+        menu.player1Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
+        menu.player2Title.Location = New System.Drawing.Point(menu.Width - 200, 10) : menu.player2Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
+        menu.player2Score.Location = New System.Drawing.Point(menu.Width - 390, 70) : menu.player2Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
 
         'Pause Menu
-        menu.pauseResume.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
-        menu.pauseRestart.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
-        menu.pauseExit.Font = New Font(normalFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
-        
-    End Sub 'Declaring the font of all labels and their positions
+        menu.pauseResume.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
+        menu.pauseRestart.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
+        menu.pauseExit.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
+    End Sub    'Declaring the font of all labels and their positions
+    Public Sub screenInit()
+        menu.Size = New Size(900, 900)
+        menu.Top = My.Computer.Screen.Bounds.Height / 2 - menu.Height / 2
+        menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
+        setCursor(My.Resources.shipLife)
+    End Sub   'Declare the screen specifics
+    Public Sub highscoreInit()
+        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 75)
+        Dim highscores As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
+
+        Dim strPath As String = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
+        Dim fileName As String = "highscores.txt"
+        Dim fullPath = Path.Combine(strPath, fileName)
+
+        Try
+            Using sr As New StreamReader(fullPath)
+                Dim line As String
+                line = sr.ReadToEnd()
+                Console.WriteLine(line)
+            End Using
+        Catch ex As Exception
+            Dim fs As FileStream = File.Create(fullPath)
+            Dim info As Byte() = New UTF8Encoding(True).GetBytes("")
+            fs.Write(info, 0, info.Length)
+            fs.Close()
+        End Try
+
+        Dim num As Double = 300
+        For Each lab As Label In highscores
+            lab.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Regular)
+            lab.Location = New Point(menu.Width / 2 - lab.Width / 2, num)
+            num += 100
+        Next
+    End Sub
 End Module
 
 Module collisionTests
@@ -171,7 +208,7 @@ Module collisionTests
                                 spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
                                 spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
                             End If
-                    End If
+                        End If
                     ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
                         If TypeOf current2 Is asteroid Then
                             Dim score As Integer
@@ -229,8 +266,8 @@ Module shipActions
         End If
     End Sub     'Every ship shooting
     Public Sub thrust(ship As ship)
-        ship.xVelocity += Sin(2 * Math.PI * (ship.Angle / 360)) * 0.9
-        ship.yVelocity -= Cos(2 * Math.PI * (ship.Angle / 360)) * 0.9
+        ship.xVelocity += Sin(2 * Math.PI * (ship.angle / 360)) * 0.9
+        ship.yVelocity -= Cos(2 * Math.PI * (ship.angle / 360)) * 0.9
         ship.Image = My.Resources.shipThrust
     End Sub    'Ship thrusting
 End Module
@@ -345,6 +382,29 @@ Module checks
             GetAsyncKeyState(pair.Value)
         Next
     End Sub              'Reset each key check
+End Module
+
+Module labelVisible
+    Public Sub menuVisible(truFalse As Boolean)
+        menu.title.Visible = truFalse
+        menu.optionsButton.Visible = truFalse
+        menu.playButton.Visible = truFalse
+    End Sub
+    Public Sub pauseVisible(truFalse As Boolean)
+        menu.pauseExit.Visible = truFalse
+        menu.pauseResume.Visible = truFalse
+        menu.pauseRestart.Visible = truFalse
+    End Sub
+    Public Sub scoreVisible(player1 As Boolean, player2 As Boolean)
+        menu.player1Score.Visible = player1 : menu.player1Title.Visible = player1
+        menu.player2Score.Visible = player2 : menu.player2Title.Visible = player2
+    End Sub
+    Public Sub highscoreVisible(truFalse As Boolean)
+        menu.highScoreTitle.Visible = truFalse
+        menu.highscore1.Visible = truFalse : menu.highscore2.Visible = truFalse
+        menu.highscore3.Visible = truFalse : menu.highscore4.Visible = truFalse
+        menu.highscore5.Visible = truFalse
+    End Sub
 End Module
 
 Module other

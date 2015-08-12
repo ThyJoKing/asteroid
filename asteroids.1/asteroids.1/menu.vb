@@ -12,14 +12,12 @@ Imports System.Drawing.Text
 
 Public Class menu
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Size = New Size(900, 900)
-        Me.Top = My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2
-        Me.Left = My.Computer.Screen.Bounds.Width / 2 - Me.Width / 2
+        Randomize()
         DoubleBuffered = True
+        screenInit()
         hotKeysInit()
         fontInit()
         labelInit()
-        Randomize()
         menuLoad()
         gameTimer.Enabled = True
         soundTimer.Enabled = sound
@@ -74,13 +72,13 @@ Public Class menu
 
     Public Sub menuLoad()
         gamestate = "menu"
-        setCursor(My.Resources.shipLife)
 
-        player1Score.Visible = False : player1Title.Visible = False
-        player2Score.Visible = False : player2Title.Visible = False
-        pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
+        menuVisible(True)
+        pauseVisible(False)
+        scoreVisible(False, False)
+        highscoreVisible(False)
+        highscoreVisible(False)
 
-        title.Visible = True : optionsButton.Visible = True : playButton.Visible = True
         spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
         endTimer = 0
         For ast As Integer = 1 To 3
@@ -88,10 +86,7 @@ Public Class menu
         Next
     End Sub     'Menu 
     Public Sub optionsLoad()
-        title.Visible = False
-        playButton.Visible = False
-        optionsButton.Visible = False
-        gamestate = "options"
+        End 'Temp
     End Sub  'Options
     Public Sub gameLoad()
         Cursor.Hide()
@@ -100,20 +95,19 @@ Public Class menu
         explosionArray = New List(Of explosion)
         gamestate = "play"
 
-        title.Visible = False : playButton.Visible = False : optionsButton.Visible = False
-        pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
-        player1Score.Visible = True : player1Title.Visible = True
+        menuVisible(False)
+        pauseVisible(False)
+        highscoreVisible(False)
 
         spriteArray(1).Add(New ship(coop, 1))
+        scoreVisible(True, False)
         If coop Then
             spriteArray(1).Add(New ship(coop, 2))
-            player2Score.Visible = True : player2Title.Visible = True
+            scoreVisible(True, True)
         End If
-
-        'spriteArray(2).Add(New enemyShip(2))
-
         level = 1
         levelLoad()
+        If highFirst Then highLoad()
     End Sub     'Game
     Public Sub levelLoad()
         If Not start Then
@@ -129,12 +123,13 @@ Public Class menu
                 num += 1
             Loop
         End If
+        'spriteArray(2).Add(New enemyShip(2))
     End Sub    'Level
     Public Sub pauseLoad()
         Cursor.Show()
         gameTimer.Enabled = False
         setCursor(My.Resources.shipLife)
-        pauseExit.Visible = True : pauseResume.Visible = True : pauseRestart.Visible = True
+        pauseVisible(True)
     End Sub    'Pause
     Public Sub highLoad()
         gamestate = "highscore"
@@ -144,11 +139,11 @@ Public Class menu
         If coop Then endScore2 = spriteArray(1)(1).score
         endScore1 = spriteArray(1)(0).score
 
-        player1Score.Visible = False : player1Title.Visible = False
-        player2Score.Visible = False : player2Title.Visible = False
-        pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
-        title.Visible = False : optionsButton.Visible = False : playButton.Visible = False
-
+        menuVisible(False)
+        pauseVisible(False)
+        highscoreVisible(True)
+        scoreVisible(False, False)
+        highscoreInit()
     End Sub
 
     Public Sub playButton_Click(sender As Object, e As EventArgs) Handles playButton.Click
@@ -161,7 +156,7 @@ Public Class menu
     Private Sub pauseResume_Click(sender As Object, e As EventArgs) Handles pauseResume.Click
         Cursor.Hide()
         keyReset()
-        pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
+        pauseVisible(False)
         gameTimer.Enabled = True
     End Sub      'Pause Resume Button
     Private Sub pauseExit_Click(sender As Object, e As EventArgs) Handles pauseExit.Click
