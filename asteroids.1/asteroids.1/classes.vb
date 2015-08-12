@@ -8,20 +8,25 @@ Public Class ship
     Public Property Image As Image
     Public Property location As PointF
     Public Property locationx As Double : Public Property locationy As Double
-    Public Property angle As Integer
     Public Property xVelocity As Double : Public Property yVelocity As Double
+    Public Property angle As Integer
+
     Public Property inHyperspace As Boolean = False
     Public Property hyperspaceCounter As Integer
     Public Property hyperspaceEnable As Boolean = True
     Public Property shootEnable As Boolean = True
+    Public Property bulletCool As Boolean = False
+
     Public Property coop As Boolean
     Public Property player As Integer
-    Public Property bulletCool As Boolean = False
+
     Public Property points As New List(Of PointF) From {}
     Public Property drawPoints As PointF()
+
     Public Property lives As Integer = 4
     Public Property score As Integer = 0
     Public Property extraLives As Integer = 10000
+
     Public Property invincible As Boolean
     Public Property invincibleTimer As Integer
 
@@ -66,11 +71,11 @@ Public Class ship
     End Sub
     Public Sub Draw(e As PaintEventArgs)
         If lives <> 0 Then
-            If invincible Then
-                invincibleTimer += 1
-            End If
             If invincibleTimer = invincibleLength Then
                 invincible = False
+            End If
+            If invincibleTimer = 0 Then
+                keyReset()
             End If
             If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 Then
                 e.Graphics.TranslateTransform(location.X, location.Y)
@@ -82,13 +87,8 @@ Public Class ship
             points.Add(New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y))
             points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
-            If Not invincible Then
-                drawPoints = points.ToArray
-            Else
-                drawPoints = {New Point(-100, -100)}
-            End If
-        Else
-            drawPoints = {New Point(-100, -100)}
+            If invincible Then invincibleTimer += 1 : drawPoints = {New Point(-100, -100)} Else  : drawPoints = points.ToArray
+        Else : drawPoints = {New Point(-100, -100)}
         End If
     End Sub
     Public Sub hyperspaceStart()
