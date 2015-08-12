@@ -36,6 +36,7 @@ Partial Class menu
         Me.pauseExit = New System.Windows.Forms.Label()
         Me.Coins = New System.Windows.Forms.Label()
         Me.pauseRestart = New System.Windows.Forms.Label()
+        Me.state = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'gameTimer
@@ -51,7 +52,7 @@ Partial Class menu
         Me.playButton.AutoSize = True
         Me.playButton.BackColor = System.Drawing.Color.Transparent
         Me.playButton.ForeColor = System.Drawing.Color.White
-        Me.playButton.Location = New System.Drawing.Point(421, 281)
+        Me.playButton.Location = New System.Drawing.Point(420, 102)
         Me.playButton.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.playButton.Name = "playButton"
         Me.playButton.Size = New System.Drawing.Size(38, 24)
@@ -64,7 +65,7 @@ Partial Class menu
         Me.optionsButton.AutoSize = True
         Me.optionsButton.BackColor = System.Drawing.Color.Transparent
         Me.optionsButton.ForeColor = System.Drawing.Color.White
-        Me.optionsButton.Location = New System.Drawing.Point(410, 305)
+        Me.optionsButton.Location = New System.Drawing.Point(409, 126)
         Me.optionsButton.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.optionsButton.Name = "optionsButton"
         Me.optionsButton.Size = New System.Drawing.Size(63, 24)
@@ -77,7 +78,7 @@ Partial Class menu
         Me.title.AutoSize = True
         Me.title.BackColor = System.Drawing.Color.Transparent
         Me.title.ForeColor = System.Drawing.Color.White
-        Me.title.Location = New System.Drawing.Point(403, 239)
+        Me.title.Location = New System.Drawing.Point(402, 60)
         Me.title.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.title.Name = "title"
         Me.title.Size = New System.Drawing.Size(75, 24)
@@ -129,10 +130,10 @@ Partial Class menu
         '
         Me.player2Score.BackColor = System.Drawing.Color.Transparent
         Me.player2Score.ForeColor = System.Drawing.Color.White
-        Me.player2Score.Location = New System.Drawing.Point(392, 33)
+        Me.player2Score.Location = New System.Drawing.Point(480, 33)
         Me.player2Score.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.player2Score.Name = "player2Score"
-        Me.player2Score.Size = New System.Drawing.Size(495, 110)
+        Me.player2Score.Size = New System.Drawing.Size(407, 110)
         Me.player2Score.TabIndex = 21
         Me.player2Score.Text = "score"
         Me.player2Score.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -143,7 +144,7 @@ Partial Class menu
         Me.pauseResume.AutoSize = True
         Me.pauseResume.BackColor = System.Drawing.Color.Transparent
         Me.pauseResume.ForeColor = System.Drawing.Color.White
-        Me.pauseResume.Location = New System.Drawing.Point(410, 435)
+        Me.pauseResume.Location = New System.Drawing.Point(410, 600)
         Me.pauseResume.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.pauseResume.Name = "pauseResume"
         Me.pauseResume.Size = New System.Drawing.Size(67, 24)
@@ -156,7 +157,7 @@ Partial Class menu
         Me.pauseExit.AutoSize = True
         Me.pauseExit.BackColor = System.Drawing.Color.Transparent
         Me.pauseExit.ForeColor = System.Drawing.Color.White
-        Me.pauseExit.Location = New System.Drawing.Point(421, 476)
+        Me.pauseExit.Location = New System.Drawing.Point(421, 641)
         Me.pauseExit.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.pauseExit.Name = "pauseExit"
         Me.pauseExit.Size = New System.Drawing.Size(33, 24)
@@ -182,7 +183,7 @@ Partial Class menu
         Me.pauseRestart.AutoSize = True
         Me.pauseRestart.BackColor = System.Drawing.Color.Transparent
         Me.pauseRestart.ForeColor = System.Drawing.Color.White
-        Me.pauseRestart.Location = New System.Drawing.Point(410, 392)
+        Me.pauseRestart.Location = New System.Drawing.Point(410, 557)
         Me.pauseRestart.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.pauseRestart.Name = "pauseRestart"
         Me.pauseRestart.Size = New System.Drawing.Size(59, 24)
@@ -190,11 +191,25 @@ Partial Class menu
         Me.pauseRestart.Text = "Restart"
         Me.pauseRestart.UseCompatibleTextRendering = True
         '
+        'state
+        '
+        Me.state.AutoSize = True
+        Me.state.BackColor = System.Drawing.Color.Transparent
+        Me.state.ForeColor = System.Drawing.Color.White
+        Me.state.Location = New System.Drawing.Point(13, 385)
+        Me.state.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.state.Name = "state"
+        Me.state.Size = New System.Drawing.Size(83, 24)
+        Me.state.TabIndex = 26
+        Me.state.Text = "gamestate"
+        Me.state.UseCompatibleTextRendering = True
+        '
         'menu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(900, 900)
+        Me.Controls.Add(Me.state)
         Me.Controls.Add(Me.pauseRestart)
         Me.Controls.Add(Me.Coins)
         Me.Controls.Add(Me.pauseExit)
@@ -230,5 +245,6 @@ Partial Class menu
     Friend WithEvents pauseExit As System.Windows.Forms.Label
     Friend WithEvents Coins As System.Windows.Forms.Label
     Friend WithEvents pauseRestart As System.Windows.Forms.Label
+    Friend WithEvents state As System.Windows.Forms.Label
 
 End Class

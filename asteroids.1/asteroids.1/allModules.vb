@@ -4,6 +4,7 @@ Imports System.Drawing.Text
 Imports System.Runtime.InteropServices
 
 Module debug
+    Public debugging As Boolean = True
     Public hitbox As Boolean = True         'Hitbox show
     Public bulLimit As Integer = 4          'The number of bullets onscreen per player
     Public bulTime As Integer = 25          'The amount of time the bullet stays on screen
@@ -23,6 +24,8 @@ Module debug
     Public Property exploTime As Integer = 150  'The length of the explosion
     Public Property exploMove As Integer = 6    'The speed the explosion can spread
     Public Property exploPercent As Integer = 2 'The velocity the explosion inherits from its object
+
+    Public Property endTime As Integer = 50
 
     Public Property bulletSpeed As Integer = 30
 
@@ -56,6 +59,8 @@ Module initialise
 
     Public gamestate As String = "menu" 'The current Gamestate
     Public endTimer As Integer = 0
+    Public endScore1 As Integer
+    Public endScore2 As Integer
 
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
@@ -132,22 +137,14 @@ Module collisionTests
                     If TypeOf (current1) Is ship Then                                           'Player with Enemy ship or Bullets
                         If TypeOf current2 Is bullet Then
                             If current2.shooter = 3 Then
-                                If current1.lives <> 0 Then
-                                    current1.lives -= 1
-                                Else
-                                    gamestate = "gameOver"
-                                End If
+                                If current1.lives <> 0 Then current1.lives -= 1
                                 explosionArray.Add(New explosion(current1))
                                 current1.spawn()
                                 collide1 = True
                             End If
                         ElseIf TypeOf (current2) Is enemyShip Then
                             current1.score += current2.level * 500
-                            If current1.lives <> 0 Then
-                                current1.lives -= 1
-                            Else
-                                gamestate = "gameOver"
-                            End If
+                            If current1.lives <> 0 Then current1.lives -= 1
                             explosionArray.Add(New explosion(current1))
                             explosionArray.Add(New explosion(current2))
                             current1.spawn()
@@ -160,12 +157,7 @@ Module collisionTests
                         If TypeOf (current2) Is ship Then
                             If Not current2.invincible Then
                                 current2.score += score
-                                If current2.lives <> 0 Then
-                                    current2.lives -= 1
-                                Else
-                                    current2.shootenable = False
-                                    gamestate = "gameOver"
-                                End If
+                                If current2.lives <> 0 Then current2.lives -= 1
                                 explosionArray.Add(New explosion(current2))
                                 explosionArray.Add(New explosion(current1))
                                 current2.spawn()
@@ -179,7 +171,7 @@ Module collisionTests
                                 spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
                                 spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
                             End If
-                        End If
+                    End If
                     ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
                         If TypeOf current2 Is asteroid Then
                             Dim score As Integer
@@ -206,7 +198,7 @@ Module collisionTests
                             spriteArray(firstObject).RemoveAt(firstCount)
                             collide1 = True
                         End If
-                        End If
+                    End If
                 End If
                 secondCount += 1
             End While
@@ -347,6 +339,13 @@ Module other
                 num += 1
             End If
         End While
+    End Sub
+    Public Sub gameOverCheck()
+        If coop Then
+            If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then gamestate = "over"
+        Else
+            If spriteArray(1)(0).lives < 1 Then gamestate = "over"
+        End If
     End Sub
 
     Public Sub moveEverything()

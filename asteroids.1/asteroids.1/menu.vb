@@ -23,6 +23,9 @@ Public Class menu
         menuLoad()
         gameTimer.Enabled = True
         soundTimer.Enabled = sound
+        If Not debugging Then
+            state.Visible = False
+        End If
     End Sub
     Private Sub menu_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
         If gamestate = "play" Then
@@ -45,12 +48,13 @@ Public Class menu
     End Sub         'The sound timer
     Public Sub Timer1_Tick(sender As Object, e As System.EventArgs) Handles gameTimer.Tick
         Me.Invalidate()
-        If gamestate = "play" Or gamestate = "gameOver" Then
+        If gamestate = "play" Or gamestate = "over" Then
             collisionThreads()
             player1Score.Text = Str(spriteArray(1)(0).score)
             If coop Then player2Score.Text = Str(spriteArray(1)(1).score)
-            If gamestate = "gameOver" Then endTimer += 1
-            If endTimer > 100 Then highLoad()
+            If gamestate = "over" Then endTimer += 1
+            If endTimer > endTime Then highLoad()
+            gameOverCheck()
         End If
         If spriteArray(1).Count <> 0 Then
             For Each obj As Object In spriteArray(1) : keyChecks(obj) : Next
@@ -60,7 +64,7 @@ Public Class menu
         explosionCheck()
         If spriteArray(0).Count = 0 Then : levelLoad() : level += 1 : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
-        
+        state.Text = gamestate
     End Sub   'The main game timer
     Public Sub painting(sender As Object, e As PaintEventArgs) Handles Me.Paint
         spriteDraw(e)
@@ -136,12 +140,14 @@ Public Class menu
         gamestate = "highscore"
         Cursor.Show()
 
+        endScore1 = 0 : endScore2 = 0
+        If coop Then endScore2 = spriteArray(1)(1).score
+        endScore1 = spriteArray(1)(0).score
+
         player1Score.Visible = False : player1Title.Visible = False
         player2Score.Visible = False : player2Title.Visible = False
         pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
-
         title.Visible = False : optionsButton.Visible = False : playButton.Visible = False
-        spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
 
     End Sub
 

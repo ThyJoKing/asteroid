@@ -82,7 +82,7 @@ Public Class ship
             End If
         Else : drawPoints = {New Point(-200, -200)}
         End If
-        If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 And lives <> 0 Then drawRotateImage(Image, angle, locationx, locationy, e)
+        If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 And lives <> 0 And Not inHyperspace Then drawRotateImage(Image, angle, locationx, locationy, e)
     End Sub
     Public Sub hyperspaceStart()
         If hyperspaceEnable And lives <> 0 Then
