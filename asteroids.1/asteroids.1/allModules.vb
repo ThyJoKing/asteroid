@@ -54,8 +54,8 @@ Module initialise
     '3. bullets
     Public explosionArray As New List(Of explosion) From {}
 
-    Public gameOver As Boolean = False 'Whether the game is over or not
     Public gamestate As String = "menu" 'The current Gamestate
+    Public endTimer As Integer = 0
 
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
@@ -91,8 +91,8 @@ Module initialise
         menu.Coins.Font = New Font(normalFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, menu.Height - 50)
 
         'Player score and title
-        menu.player1Title.Location = New System.Drawing.Point(8, 10) : menu.player1Title.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
-        menu.player1Score.Location = New System.Drawing.Point(-20, 70) : menu.player1Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
+        menu.player1Title.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
+        menu.player1Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
         menu.player2Title.Location = New System.Drawing.Point(menu.Width - 200, 10) : menu.player2Title.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
         menu.player2Score.Location = New System.Drawing.Point(menu.Width - 390, 70) : menu.player2Score.Font = New Font(normalFont.Families(0), 30, FontStyle.Underline)
 
@@ -135,7 +135,7 @@ Module collisionTests
                                 If current1.lives <> 0 Then
                                     current1.lives -= 1
                                 Else
-                                    gameOver = True
+                                    gamestate = "gameOver"
                                 End If
                                 explosionArray.Add(New explosion(current1))
                                 current1.spawn()
@@ -146,7 +146,7 @@ Module collisionTests
                             If current1.lives <> 0 Then
                                 current1.lives -= 1
                             Else
-                                gameOver = True
+                                gamestate = "gameOver"
                             End If
                             explosionArray.Add(New explosion(current1))
                             explosionArray.Add(New explosion(current2))
@@ -164,7 +164,7 @@ Module collisionTests
                                     current2.lives -= 1
                                 Else
                                     current2.shootenable = False
-                                    gameOver = True
+                                    gamestate = "gameOver"
                                 End If
                                 explosionArray.Add(New explosion(current2))
                                 explosionArray.Add(New explosion(current1))

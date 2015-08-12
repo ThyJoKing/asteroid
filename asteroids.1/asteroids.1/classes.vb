@@ -118,8 +118,8 @@ End Class
 Public Class asteroid
     Public Property location As PointF
     Public Property locationx As Double : Public Property locationy As Double
-    Public Property level As Integer
     Public Property xVelocity As Double : Public Property yvelocity As Double
+    Public Property level As Integer
     Public Property radius As Integer
     Public Property tempList As New List(Of PointF) From {}
     Public Property points As New List(Of PointF) From {}

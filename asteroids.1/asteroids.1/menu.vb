@@ -45,10 +45,12 @@ Public Class menu
     End Sub         'The sound timer
     Public Sub Timer1_Tick(sender As Object, e As System.EventArgs) Handles gameTimer.Tick
         Me.Invalidate()
-        If gamestate = "play" Then
+        If gamestate = "play" Or gamestate = "gameOver" Then
             collisionThreads()
             player1Score.Text = Str(spriteArray(1)(0).score)
             If coop Then player2Score.Text = Str(spriteArray(1)(1).score)
+            If gamestate = "gameOver" Then endTimer += 1
+            If endTimer > 100 Then highLoad()
         End If
         If spriteArray(1).Count <> 0 Then
             For Each obj As Object In spriteArray(1) : keyChecks(obj) : Next
@@ -57,9 +59,8 @@ Public Class menu
         bulletCheck()
         explosionCheck()
         If spriteArray(0).Count = 0 Then : levelLoad() : level += 1 : End If
-        If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then
-            pauseLoad()
-        End If
+        If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
+        
     End Sub   'The main game timer
     Public Sub painting(sender As Object, e As PaintEventArgs) Handles Me.Paint
         spriteDraw(e)
@@ -77,7 +78,7 @@ Public Class menu
 
         title.Visible = True : optionsButton.Visible = True : playButton.Visible = True
         spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
-
+        endTimer = 0
         For ast As Integer = 1 To 3
             spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing))
         Next
@@ -109,7 +110,6 @@ Public Class menu
 
         level = 1
         levelLoad()
-        gameOver = False
     End Sub     'Game
     Public Sub levelLoad()
         If Not start Then
@@ -132,6 +132,18 @@ Public Class menu
         setCursor(My.Resources.shipLife)
         pauseExit.Visible = True : pauseResume.Visible = True : pauseRestart.Visible = True
     End Sub    'Pause
+    Public Sub highLoad()
+        gamestate = "highscore"
+        Cursor.Show()
+
+        player1Score.Visible = False : player1Title.Visible = False
+        player2Score.Visible = False : player2Title.Visible = False
+        pauseExit.Visible = False : pauseResume.Visible = False : pauseRestart.Visible = False
+
+        title.Visible = False : optionsButton.Visible = False : playButton.Visible = False
+        spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
+
+    End Sub
 
     Public Sub playButton_Click(sender As Object, e As EventArgs) Handles playButton.Click
         gameLoad()
