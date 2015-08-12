@@ -263,6 +263,14 @@ Module labelVisible
         menu.highscore1.Visible = truFalse : menu.highscore2.Visible = truFalse
         menu.highscore3.Visible = truFalse : menu.highscore4.Visible = truFalse
         menu.highscore5.Visible = truFalse
+
+        menu.round1.Visible = truFalse : menu.round2.Visible = truFalse
+        menu.round3.Visible = truFalse : menu.round4.Visible = truFalse
+        menu.round5.Visible = truFalse
+
+        menu.name1.Visible = truFalse : menu.name2.Visible = truFalse
+        menu.name3.Visible = truFalse : menu.name4.Visible = truFalse
+        menu.name5.Visible = truFalse
     End Sub
 End Module
 

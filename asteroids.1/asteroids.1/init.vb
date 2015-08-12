@@ -27,7 +27,7 @@ Module debug
 
     Public Property endTime As Integer = 50
 
-    Public Property highFirst As Boolean = True
+    Public Property highFirst As Boolean = False
 
     Public Property bulletSpeed As Integer = 30
 
@@ -115,20 +115,21 @@ Module initialise
         setCursor(My.Resources.shipLife)
     End Sub   'Declare the screen specifics
     Public Sub highscoreInit()
-        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 75)
         Dim highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
+        Dim roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
+        Dim nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
         Dim highscores As New List(Of String) From {}
+        Dim names As New List(Of String) From {}
         Dim strPath As String = Path.GetDirectoryName(Environment.GetCommandLineArgs()(0))
         Dim fileName As String = "highscores.txt"
         Dim fullPath = Path.Combine(strPath, fileName)
-
         Try
             Dim lines() As String = File.ReadAllLines(fullPath)
         Catch ex As Exception
             Dim fs As FileStream = File.Create(fullPath)
             Dim tamp As Integer = 0
             While tamp < 5
-                Dim info As Byte() = New UTF8Encoding(True).GetBytes("AAA   0   0" + vbNewLine)
+                Dim info As Byte() = New UTF8Encoding(True).GetBytes("AAA 000000" + vbNewLine)
                 fs.Write(info, 0, info.Length)
                 tamp += 1
             End While
@@ -137,18 +138,27 @@ Module initialise
         Dim text() As String = File.ReadAllLines(fullPath)
         Dim temp As Integer = 0
         While temp < 5
-            highscores.Add(text(temp))
-            highscoreLabels(temp).Text = text(temp)
+            names.Add(text(temp).Split(" ")(0))
+            highscores.Add(text(temp).Split(" ")(1))
+            highscoreLabels(temp).Text = highscores(temp)
+            nameLabels(temp).Text = names(temp)
             temp += 1
         End While
-
-
-        Dim num As Integer = 300
+        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
+        Dim num As Integer = 300 'Reminder : rework the highscore placing to accomadate different sizes
         Dim tem As Integer = 0
         While tem < 5
-            highscoreLabels(tem).Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Regular)
+            nameLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            nameLabels(tem).Text = names(tem)
+            nameLabels(tem).Location = New Point(menu.Width / 2 - nameLabels(tem).Width / 2 + 200, num)
+
+            roundLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            roundLabels(tem).Location = New Point(menu.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
+
+            highscoreLabels(tem).Size = New Size(250, 100)
+            highscoreLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
             highscoreLabels(tem).Text = highscores(tem)
-            highscoreLabels(tem).Location = New Point(menu.Width / 2 - highscoreLabels(tem).Width / 2, num)
+            highscoreLabels(tem).Location = New Point(menu.Width / 2 - highscoreLabels(tem).Width / 2 - 50, num)
             num += 100
             tem += 1
         End While
