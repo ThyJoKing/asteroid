@@ -13,7 +13,8 @@ Imports System.Drawing.Text
 Public Class menu
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Size = New Size(900, 900)
-
+        Me.Top = My.Computer.Screen.Bounds.Height / 2 - Me.Height / 2
+        Me.Left = My.Computer.Screen.Bounds.Width / 2 - Me.Width / 2
         DoubleBuffered = True
         hotKeysInit()
         fontInit()

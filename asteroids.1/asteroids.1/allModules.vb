@@ -268,6 +268,12 @@ Module drawing
             obj.draw(e)
         Next
     End Sub
+    Public Sub drawRotateImage(image As Image, angle As Double, locationx As Double, locationy As Double, e As PaintEventArgs)
+        e.Graphics.TranslateTransform(locationx, locationy)
+        E.Graphics.RotateTransform(angle)
+        E.Graphics.DrawImage(image, CInt(-image.Width / 2), CInt(-image.Height / 2), image.Width, image.Height)
+        E.Graphics.ResetTransform()
+    End Sub 'Draw rotated image
 End Module
 
 Module keyChecking

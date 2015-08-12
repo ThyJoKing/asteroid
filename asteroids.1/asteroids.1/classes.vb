@@ -40,8 +40,7 @@ Public Class ship
         If lives <> 0 Then
             If coop = True Then
                 If player = 1 Then locationx = menu.Width / 2 - 50 Else locationx = menu.Width / 2 + 50
-            Else
-                locationx = menu.Width / 2
+            Else : locationx = menu.Width / 2
             End If
             locationy = menu.Height / 2
             location = New Point(locationx, locationy)
@@ -49,9 +48,7 @@ Public Class ship
             angle = 0
             Image = My.Resources.ship
             invincible = True
-            If invincibleTimer <> 0 Then
-                invincibleTimer = -200
-            End If
+            If invincibleTimer <> 0 Then invincibleTimer = -200
         Else
             location = New Point(-100, -100)
             shootEnable = False
@@ -71,25 +68,21 @@ Public Class ship
     End Sub
     Public Sub Draw(e As PaintEventArgs)
         If lives <> 0 Then
-            If invincibleTimer = invincibleLength Then
-                invincible = False
+            If invincible Then
+                drawPoints = {New Point(-200, -200)}
+                If invincibleTimer = 0 Then keyReset()
+                If invincibleTimer = invincibleLength Then invincible = False
+                invincibleTimer += 1
+            Else
+                points.Clear()
+                points.Add(New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y))
+                points.Add(New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y))
+                points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
+                drawPoints = points.ToArray
             End If
-            If invincibleTimer = 0 Then
-                keyReset()
-            End If
-            If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 Then
-                e.Graphics.TranslateTransform(location.X, location.Y)
-                e.Graphics.RotateTransform(angle)
-                e.Graphics.DrawImage(Image, CInt(-Image.Width / 2), CInt(-Image.Height / 2), Image.Width, Image.Height)
-                e.Graphics.ResetTransform()
-            End If
-            points.Clear()
-            points.Add(New PointF(Sin(2 * Math.PI * (angle / 360)) * 30 + location.X, -Cos(2 * Math.PI * (angle / 360)) * 30 + location.Y))
-            points.Add(New PointF(Sin(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle - 140) / 360)) * 35 + location.Y))
-            points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
-            If invincible Then invincibleTimer += 1 : drawPoints = {New Point(-100, -100)} Else  : drawPoints = points.ToArray
-        Else : drawPoints = {New Point(-100, -100)}
+        Else : drawPoints = {New Point(-200, -200)}
         End If
+        If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 And lives <> 0 Then drawRotateImage(Image, angle, locationx, locationy, e)
     End Sub
     Public Sub hyperspaceStart()
         If hyperspaceEnable And lives <> 0 Then
