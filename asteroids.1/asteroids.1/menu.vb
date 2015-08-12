@@ -74,7 +74,7 @@ Public Class menu
 
     Public Sub menuLoad()
         gamestate = "menu"
-        setCursor(My.Resources.shipThrust)
+        setCursor(My.Resources.shipLife)
 
         player1Score.Visible = False : player1Title.Visible = False
         player2Score.Visible = False : player2Title.Visible = False

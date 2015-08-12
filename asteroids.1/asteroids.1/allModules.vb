@@ -262,13 +262,48 @@ Module drawing
     End Sub
     Public Sub drawRotateImage(image As Image, angle As Double, locationx As Double, locationy As Double, e As PaintEventArgs)
         e.Graphics.TranslateTransform(locationx, locationy)
-        E.Graphics.RotateTransform(angle)
-        E.Graphics.DrawImage(image, CInt(-image.Width / 2), CInt(-image.Height / 2), image.Width, image.Height)
-        E.Graphics.ResetTransform()
+        e.Graphics.RotateTransform(angle)
+        e.Graphics.DrawImage(image, CInt(-image.Width / 2), CInt(-image.Height / 2), image.Width, image.Height)
+        e.Graphics.ResetTransform()
     End Sub 'Draw rotated image
 End Module
 
-Module keyChecking
+Module checks
+    Public Sub bulletCheck()
+        Dim bulletNum As Integer = 0
+        While bulletNum < spriteArray(3).Count
+            If spriteArray(3)(bulletNum).bulletTime = bulTime Then
+                spriteArray(3).RemoveAt(bulletNum)
+            Else
+                bulletNum += 1
+            End If
+        End While
+        While bulletNum < spriteArray(4).Count
+            If spriteArray(4)(bulletNum).bulletTime = bulTime Then
+                spriteArray(4).RemoveAt(bulletNum)
+            Else
+                bulletNum += 1
+            End If
+        End While
+    End Sub           'Check if bullets are expired
+    Public Sub explosionCheck()
+        Dim num = 0
+        While num < explosionArray.Count
+            If explosionArray(num).timer > exploTime Then
+                explosionArray.RemoveAt(num)
+            Else
+                num += 1
+            End If
+        End While
+    End Sub
+    Public Sub gameOverCheck()
+        If coop Then
+            If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then gamestate = "over"
+        Else
+            If spriteArray(1)(0).lives < 1 Then gamestate = "over"
+        End If
+    End Sub
+
     Public Sub keyChecks(ship As ship)
         If Not ship.inHyperspace And ship.invincibleTimer > 0 Then
             If ship.player = 1 Then
@@ -313,41 +348,6 @@ Module keyChecking
 End Module
 
 Module other
-    Public Sub bulletCheck()
-        Dim bulletNum As Integer = 0
-        While bulletNum < spriteArray(3).Count
-            If spriteArray(3)(bulletNum).bulletTime = bulTime Then
-                spriteArray(3).RemoveAt(bulletNum)
-            Else
-                bulletNum += 1
-            End If
-        End While
-        While bulletNum < spriteArray(4).Count
-            If spriteArray(4)(bulletNum).bulletTime = bulTime Then
-                spriteArray(4).RemoveAt(bulletNum)
-            Else
-                bulletNum += 1
-            End If
-        End While
-    End Sub           'Check if bullets are expired
-    Public Sub explosionCheck()
-        Dim num = 0
-        While num < explosionArray.Count
-            If explosionArray(num).timer > exploTime Then
-                explosionArray.RemoveAt(num)
-            Else
-                num += 1
-            End If
-        End While
-    End Sub
-    Public Sub gameOverCheck()
-        If coop Then
-            If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then gamestate = "over"
-        Else
-            If spriteArray(1)(0).lives < 1 Then gamestate = "over"
-        End If
-    End Sub
-
     Public Sub moveEverything()
         For Each arr As Object In spriteArray
             For Each obj As Object In arr
@@ -359,8 +359,8 @@ Module other
         Next
     End Sub        'Move everything according to their velocity 
 
-    Public Sub setCursor(image)
-        Dim bm As New Bitmap(80, 80)
+    Public Sub setCursor(image As Image)
+        Dim bm As New Bitmap(image, New Size(image.Height * 1.5, image.Width * 1.5))
         Dim g As Graphics = Graphics.FromImage(bm)
         g.Clear(Color.Transparent)
         g.DrawImage(image, 0, 0)
