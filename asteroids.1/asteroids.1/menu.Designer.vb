@@ -53,6 +53,7 @@ Partial Class menu
         Me.highscore5 = New System.Windows.Forms.Label()
         Me.highscore3 = New System.Windows.Forms.Label()
         Me.highscore2 = New System.Windows.Forms.Label()
+        Me.highscoreBack = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'gameTimer
@@ -186,12 +187,12 @@ Partial Class menu
         Me.Coins.AutoSize = True
         Me.Coins.BackColor = System.Drawing.Color.Transparent
         Me.Coins.ForeColor = System.Drawing.Color.White
-        Me.Coins.Location = New System.Drawing.Point(629, 798)
+        Me.Coins.Location = New System.Drawing.Point(217, 354)
         Me.Coins.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Coins.Name = "Coins"
-        Me.Coins.Size = New System.Drawing.Size(85, 24)
+        Me.Coins.Size = New System.Drawing.Size(77, 24)
         Me.Coins.TabIndex = 24
-        Me.Coins.Text = "Coins(s): 0"
+        Me.Coins.Text = "Coin(s): 0"
         Me.Coins.UseCompatibleTextRendering = True
         '
         'pauseRestart
@@ -428,11 +429,25 @@ Partial Class menu
         Me.highscore2.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.highscore2.UseCompatibleTextRendering = True
         '
+        'highscoreBack
+        '
+        Me.highscoreBack.AutoSize = True
+        Me.highscoreBack.BackColor = System.Drawing.Color.Transparent
+        Me.highscoreBack.ForeColor = System.Drawing.Color.White
+        Me.highscoreBack.Location = New System.Drawing.Point(760, 377)
+        Me.highscoreBack.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.highscoreBack.Name = "highscoreBack"
+        Me.highscoreBack.Size = New System.Drawing.Size(42, 24)
+        Me.highscoreBack.TabIndex = 48
+        Me.highscoreBack.Text = "Back"
+        Me.highscoreBack.UseCompatibleTextRendering = True
+        '
         'menu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(900, 900)
+        Me.Controls.Add(Me.highscoreBack)
         Me.Controls.Add(Me.highscore2)
         Me.Controls.Add(Me.highscore3)
         Me.Controls.Add(Me.highscore5)
@@ -502,5 +517,6 @@ Partial Class menu
     Friend WithEvents highscore5 As System.Windows.Forms.Label
     Friend WithEvents highscore3 As System.Windows.Forms.Label
     Friend WithEvents highscore2 As System.Windows.Forms.Label
+    Friend WithEvents highscoreBack As System.Windows.Forms.Label
 
 End Class

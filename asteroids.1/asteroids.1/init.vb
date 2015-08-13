@@ -2,6 +2,7 @@
 Imports System.Runtime.InteropServices
 Imports System.IO
 Imports System.Text
+Imports Microsoft.VisualBasic.ApplicationServices
 
 Module debug
     Public debugging As Boolean = True
@@ -27,7 +28,7 @@ Module debug
 
     Public Property endTime As Integer = 50
 
-    Public Property highFirst As Boolean = False
+    Public Property highFirst As Boolean = False 'Skips straight to highscore
 
     Public Property bulletSpeed As Integer = 30
 
@@ -51,6 +52,11 @@ Module initialise
     Public shipBorders As Integer = 300     'The safezone spawn radius around the ship
     Public sound As Boolean = False         'Mute or not
 
+    'Label reference
+    Public highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
+    Public roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
+    Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
+
     Public spriteArray As New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
     'sprites in order
     '0. asteroids
@@ -61,8 +67,19 @@ Module initialise
 
     Public gamestate As String = "menu" 'The current Gamestate
     Public endTimer As Integer = 0
-    Public endScore1 As Integer
-    Public endScore2 As Integer
+    Public endScore1 As Integer = -1
+    Public endScore2 As Integer = -1
+    Public onboard As Boolean = False
+    Public endPlace1 As Integer
+    Public endPlace2 As Integer
+    Public letterPlace1 As Integer
+    Public letterPlace2 As Integer
+    Public letters1 As List(Of Integer)
+    Public letters2 As List(Of Integer)
+    Public letterCool1 As Boolean
+    Public letterCool2 As Boolean
+
+    Public allLetters = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
@@ -107,6 +124,26 @@ Module initialise
         menu.pauseResume.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
         menu.pauseRestart.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
         menu.pauseExit.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
+
+        'Highscore Menu
+        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
+        menu.highscoreBack.Font = New Font(hyperspaceFont.Families(0), 40) : menu.highscoreBack.Location = New Point(menu.Width / 2 - menu.highscoreBack.Width / 2, menu.Height - 150)
+        Dim num As Integer = 230
+        Dim tem As Integer = 0
+        While tem < 5
+            nameLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            nameLabels(tem).Location = New Point(menu.Width / 2 + 100, num)
+
+            roundLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            roundLabels(tem).Location = New Point(menu.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
+
+            highscoreLabels(tem).Size = New Size(250, 100)
+            highscoreLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            highscoreLabels(tem).Location = New Point(menu.Width / 2 - 170, num)
+            num += 100
+            tem += 1
+        End While
+
     End Sub    'Declaring the font of all labels and their positions
     Public Sub screenInit()
         menu.Size = New Size(900, 900)
@@ -114,54 +151,4 @@ Module initialise
         menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
         setCursor(My.Resources.shipLife)
     End Sub   'Declare the screen specifics
-    Public Sub highscoreInit()
-        Dim highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
-        Dim roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
-        Dim nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
-        Dim highscores As New List(Of String) From {}
-        Dim names As New List(Of String) From {}
-        Dim strPath As String = Path.GetDirectoryName(Environment.GetCommandLineArgs()(0))
-        Dim fileName As String = "highscores.txt"
-        Dim fullPath = Path.Combine(strPath, fileName)
-        Try
-            Dim lines() As String = File.ReadAllLines(fullPath)
-        Catch ex As Exception
-            Dim fs As FileStream = File.Create(fullPath)
-            Dim tamp As Integer = 0
-            While tamp < 5
-                Dim info As Byte() = New UTF8Encoding(True).GetBytes("AAA 000000" + vbNewLine)
-                fs.Write(info, 0, info.Length)
-                tamp += 1
-            End While
-            fs.Close()
-        End Try
-        Dim text() As String = File.ReadAllLines(fullPath)
-        Dim temp As Integer = 0
-        While temp < 5
-            names.Add(text(temp).Split(" ")(0))
-            highscores.Add(text(temp).Split(" ")(1))
-            highscoreLabels(temp).Text = highscores(temp)
-            nameLabels(temp).Text = names(temp)
-            temp += 1
-        End While
-        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
-        Dim num As Integer = 300 'Reminder : rework the highscore placing to accomadate different sizes
-        Dim tem As Integer = 0
-        While tem < 5
-            nameLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
-            nameLabels(tem).Text = names(tem)
-            nameLabels(tem).Location = New Point(menu.Width / 2 - nameLabels(tem).Width / 2 + 200, num)
-
-            roundLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
-            roundLabels(tem).Location = New Point(menu.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
-
-            highscoreLabels(tem).Size = New Size(250, 100)
-            highscoreLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
-            highscoreLabels(tem).Text = highscores(tem)
-            highscoreLabels(tem).Location = New Point(menu.Width / 2 - highscoreLabels(tem).Width / 2 - 50, num)
-            num += 100
-            tem += 1
-        End While
-    End Sub
 End Module
-

@@ -1,6 +1,7 @@
 ﻿Imports System.Math
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
+Imports Microsoft.VisualBasic.ApplicationServices
 
 '   things to do:
 '       do threads
@@ -11,9 +12,11 @@ Imports System.Drawing.Text
 '       etc.
 
 Public Class menu
+    Public Event Shutdown As ShutdownEventHandler
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         Randomize()
         DoubleBuffered = True
+        highscoreInit()
         screenInit()
         hotKeysInit()
         fontInit()
@@ -28,6 +31,11 @@ Public Class menu
     Private Sub menu_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
         If gamestate = "play" Then
             pauseLoad()
+        End If
+    End Sub
+    Private Sub MyApplication_Shutdown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shutdown
+        If onboard Then
+            highScoreRecord()
         End If
     End Sub
 
@@ -46,7 +54,7 @@ Public Class menu
     End Sub         'The sound timer
     Public Sub Timer1_Tick(sender As Object, e As System.EventArgs) Handles gameTimer.Tick
         Me.Invalidate()
-        If gamestate = "play" Or gamestate = "over" Then
+        If gamestate = "play" Or gamestate = "over" And endTimer <= endTime Then
             collisionThreads()
             player1Score.Text = Str(spriteArray(1)(0).score)
             If coop Then player2Score.Text = Str(spriteArray(1)(1).score)
@@ -63,6 +71,9 @@ Public Class menu
         If spriteArray(0).Count = 0 Then : levelLoad() : level += 1 : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
         state.Text = gamestate
+        If gamestate = "over" Then
+            If onboard Then scoreRecord()
+        End If
     End Sub   'The main game timer
     Public Sub painting(sender As Object, e As PaintEventArgs) Handles Me.Paint
         spriteDraw(e)
@@ -167,4 +178,9 @@ Public Class menu
         gameLoad()
         gameTimer.Enabled = True
     End Sub    'Pause Restart Button 
+
+    Private Sub highscoreBack_Click(sender As Object, e As EventArgs) Handles highscoreBack.Click
+        highScoreRecord()
+        menuLoad()
+    End Sub  'Highscore Back button
 End Class

@@ -119,7 +119,7 @@ Module shipActions
         For Each bul As bullet In spriteArray(3) 'Check number of bullets
             If bul.shooter = ship.player Then bulletNum += 1
         Next
-        If bulletNum < bulLimit Then
+        If bulletNum < bulLimit And ship.shootEnable Then
             spriteArray(3).Add(New bullet(ship))
             'If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
         End If
@@ -194,9 +194,13 @@ Module checks
     End Sub
     Public Sub gameOverCheck()
         If coop Then
-            If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then gamestate = "over"
+            If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then
+                gamestate = "over"
+                spriteArray(1)(0).shootEnable = False
+                spriteArray(1)(1).shootEnable = False
+            End If
         Else
-            If spriteArray(1)(0).lives < 1 Then gamestate = "over"
+            If spriteArray(1)(0).lives < 1 Then gamestate = "over" : spriteArray(1)(0).shootEnable = False
         End If
     End Sub
 
@@ -260,6 +264,8 @@ Module labelVisible
     End Sub
     Public Sub highscoreVisible(truFalse As Boolean)
         menu.highScoreTitle.Visible = truFalse
+        menu.highscoreBack.Visible = truFalse
+
         menu.highscore1.Visible = truFalse : menu.highscore2.Visible = truFalse
         menu.highscore3.Visible = truFalse : menu.highscore4.Visible = truFalse
         menu.highscore5.Visible = truFalse
@@ -294,4 +300,117 @@ Module other
         g.Dispose()
         menu.Cursor = New Cursor(bm.GetHicon)
     End Sub        'Cursor change
+
+End Module
+
+Module highscores
+    Public Sub highscoreInit()
+        Dim highscores As New List(Of String) From {}
+        Dim names As New List(Of String) From {}
+        Dim strPath As String = Path.GetDirectoryName(Environment.GetCommandLineArgs()(0))
+        Dim fileName As String = "highscores.txt"
+        Dim fullPath = Path.Combine(strPath, fileName)
+        Try
+            Dim lines() As String = File.ReadAllLines(fullPath)
+        Catch ex As Exception
+            Dim fs As FileStream = File.Create(fullPath)
+            Dim tamp As Integer = 0
+            While tamp < 5
+                Dim info As Byte() = New UTF8Encoding(True).GetBytes("AAA 0" + vbNewLine)
+                fs.Write(info, 0, info.Length)
+                tamp += 1
+            End While
+            fs.Close()
+        End Try
+        Dim text() As String = File.ReadAllLines(fullPath)
+        Dim temp As Integer = 0
+        While temp < 5
+            names.Add(text(temp).Split(" ")(0))
+            highscores.Add(text(temp).Split(" ")(1))
+            highscoreLabels(temp).Text = highscores(temp)
+            nameLabels(temp).Text = names(temp)
+            temp += 1
+        End While
+
+        temp = 0
+        onboard = False
+        endplace1 = 6
+        endplace2 = 6
+        While temp < highscores.Count
+            If CInt(highscores(temp)) <= endScore1 Then
+                If temp <> 0 Then
+                    If CInt(highscores(temp - 1)) > endScore1 Then
+                        onboard = True
+                        highscores.Insert(temp, endScore1)
+                        endPlace1 = temp
+                    End If
+                Else
+                    onboard = True
+                    highscores.Insert(temp, endScore1)
+                    endPlace1 = temp
+                End If
+            End If
+            If coop Then
+                If temp <> 0 Then
+                    If CInt(highscores(temp - 1)) > endScore2 Then
+                        onboard = True
+                        highscores.Insert(temp, endScore2)
+                        endPlace2 = temp
+                    End If
+                Else
+                    onboard = True
+                    highscores.Insert(temp, endScore2)
+                    endPlace2 = temp
+                End If
+            End If
+            temp += 1
+        End While
+        temp = 0
+        While temp < 5
+            nameLabels(temp).Text = names(temp)
+            highscoreLabels(temp).Text = highscores(temp)
+            temp += 1
+        End While
+
+        letterPlace1 = 0
+        letterPlace2 = 0
+        letters1 = New List(Of Integer) From {0, 0, 0}
+        letters2 = New List(Of Integer) From {0, 0, 0}
+        letterCool1 = False
+        letterCool2 = False
+    End Sub
+
+    Public Sub scoreRecord()
+        If endPlace1 < 6 Then
+            If GetAsyncKeyState(hotKeys("player1Shoot")) And Not letterCool1 Then
+                letterPlace1 += 1 : letterCool1 = True
+            ElseIf GetAsyncKeyState(hotKeys("player1Left")) And Not letterCool1 Then
+                If letters1(letterPlace1) <> 0 Then letters1(letterPlace1) -= 1 : letterCool1 = True
+            ElseIf GetAsyncKeyState(hotKeys("player1Right")) And Not letterCool1 Then
+                If letters1(letterPlace1) <> 25 Then letters1(letterPlace1) += 1 : letterCool1 = True
+            Else
+                letterCool1 = False
+            End If
+            nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
+            If letterPlace1 = 3 Then endPlace1 = 6
+        End If
+        If endPlace2 < 6 Then
+
+        End If
+
+    End Sub
+
+    Public Sub highScoreRecord()
+        Dim strPath As String = Path.GetDirectoryName(Environment.GetCommandLineArgs()(0))
+        Dim fileName As String = "highscores.txt"
+        Dim fullPath = Path.Combine(strPath, fileName)
+        Dim fs As FileStream = File.Create(fullPath)
+        Dim tamp As Integer = 0
+        While tamp < 5
+            Dim info As Byte() = New UTF8Encoding(True).GetBytes(nameLabels(tamp).Text + " " + highscoreLabels(tamp).Text + vbNewLine)
+            fs.Write(info, 0, info.Length)
+            tamp += 1
+        End While
+        fs.Close()
+    End Sub
 End Module
