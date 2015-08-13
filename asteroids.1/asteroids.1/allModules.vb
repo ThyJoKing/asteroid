@@ -382,21 +382,31 @@ Module highscores
 
     Public Sub scoreRecord()
         If endPlace1 < 6 Then
-            If GetAsyncKeyState(hotKeys("player1Shoot")) And Not letterCool1 Then
-                letterPlace1 += 1 : letterCool1 = True
-            ElseIf GetAsyncKeyState(hotKeys("player1Left")) And Not letterCool1 Then
-                If letters1(letterPlace1) <> 0 Then letters1(letterPlace1) -= 1 : letterCool1 = True
-            ElseIf GetAsyncKeyState(hotKeys("player1Right")) And Not letterCool1 Then
-                If letters1(letterPlace1) <> 25 Then letters1(letterPlace1) += 1 : letterCool1 = True
+            If GetAsyncKeyState(hotKeys("player1Shoot")) Then
+                If Not letterCool1 Then letterPlace1 += 1
+                letterCool1 = True
+            ElseIf GetAsyncKeyState(hotKeys("player1Left")) Then
+                If Not letterCool1 Then letters1(letterPlace1) -= 1
+                letterCool1 = True
+            ElseIf GetAsyncKeyState(hotKeys("player1Right")) Then
+                If Not letterCool1 Then letters1(letterPlace1) += 1
+                letterCool1 = True
             Else
                 letterCool1 = False
             End If
-            nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
-            If letterPlace1 = 3 Then endPlace1 = 6
+            If letterPlace1 = 3 Then : endPlace1 = 6
+            Else
+                If letters1(letterPlace1) = -1 Then
+                    letters1(letterPlace1) = 25
+                ElseIf letters1(letterPlace1) = 26 Then
+                    letters1(letterPlace1) = 0
+                End If
+                nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
+            End If
         End If
-        If endPlace2 < 6 Then
+            If endPlace2 < 6 Then
 
-        End If
+            End If
 
     End Sub
 

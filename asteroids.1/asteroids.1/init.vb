@@ -5,7 +5,7 @@ Imports System.Text
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Module debug
-    Public debugging As Boolean = True
+    Public debugging As Boolean = False
     Public hitbox As Boolean = True         'Hitbox show
     Public bulLimit As Integer = 4          'The number of bullets onscreen per player
     Public bulTime As Integer = 25          'The amount of time the bullet stays on screen
