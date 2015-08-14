@@ -402,11 +402,33 @@ Module highscores
                     letters1(letterPlace1) = 0
                 End If
                 nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
-            End If
-        End If
-            If endPlace2 < 6 Then
 
             End If
+        End If
+        If endPlace2 < 6 Then
+            If GetAsyncKeyState(hotKeys("player2Shoot")) Then
+                If Not letterCool2 Then letterPlace2 += 1
+                letterCool2 = True
+            ElseIf GetAsyncKeyState(hotKeys("player2Left")) Then
+                If Not letterCool2 Then letters2(letterPlace2) -= 1
+                letterCool2 = True
+            ElseIf GetAsyncKeyState(hotKeys("player2Right")) Then
+                If Not letterCool2 Then letters2(letterPlace2) += 1
+                letterCool2 = True
+            Else
+                letterCool2 = False
+            End If
+            If letterPlace2 = 3 Then : endPlace2 = 6
+            Else
+                If letters2(letterPlace2) = -1 Then
+                    letters2(letterPlace2) = 25
+                ElseIf letters2(letterPlace2) = 26 Then
+                    letters2(letterPlace2) = 0
+                End If
+                nameLabels(endPlace2).Text = allLetters(letters2(0)) + allLetters(letters2(1)) + allLetters(letters2(2))
+
+            End If
+        End If
 
     End Sub
 
