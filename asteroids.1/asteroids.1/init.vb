@@ -5,43 +5,43 @@ Imports System.Text
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Module debug
-    Public debugging As Boolean = False
-    Public hitbox As Boolean = True         'Hitbox show
-    Public bulLimit As Integer = 4          'The number of bullets onscreen per player
-    Public bulTime As Integer = 25          'The amount of time the bullet stays on screen
-    Public start As Boolean = False         'To change the number and size of asteroids
-    Public howMany As Integer = 100         'How many asteroids
-    Public whatSize As Integer = 3          'What size
-    Public velocityNo As Boolean = False    'Whether the asteroid is moving
-    Public invincibleLength As Integer = 250 'The length of the invincibility period
+    Public Const debugging As Boolean = False
+    Public Const hitbox As Boolean = True         'Hitbox show
+    Public Const bulLimit As Integer = 4          'The number of bullets onscreen per player
+    Public Const bulTime As Integer = 25          'The amount of time the bullet stays on screen
+    Public Const start As Boolean = False         'To change the number and size of asteroids
+    Public Const howMany As Integer = 100         'How many asteroids
+    Public Const whatSize As Integer = 3          'What size
+    Public Const velocityNo As Boolean = False    'Whether the asteroid is moving
+    Public Const invincibleLength As Integer = 250 'The length of the invincibility period
 
     'asteroid specifics
-    Public Property minRadius As Integer = 20   'The minimum size of asteroid
-    Public Property maxRadius As Integer = 35   'The maximum size
-    Public Property gran As Integer = 15        'The amount of spiky bits
-    Public Property minVary As Integer = 10     'How minimum amount of variation
-    Public Property maxVary As Integer = 30     'The maximum amount
+    Public Const minRadius As Integer = 20   'The minimum size of asteroid
+    Public Const maxRadius As Integer = 35   'The maximum size
+    Public Const gran As Integer = 15        'The amount of spiky bits
+    Public Const minVary As Integer = 10     'How minimum amount of variation
+    Public Const maxVary As Integer = 30     'The maximum amount
 
-    Public Property exploTime As Integer = 150  'The length of the explosion
-    Public Property exploMove As Integer = 6    'The speed the explosion can spread
-    Public Property exploPercent As Integer = 2 'The velocity the explosion inherits from its object
+    Public Const exploTime As Integer = 150  'The length of the explosion
+    Public Const exploMove As Integer = 6    'The speed the explosion can spread
+    Public Const exploPercent As Integer = 2 'The velocity the explosion inherits from its object
 
-    Public Property endTime As Integer = 50
+    Public Const endTime As Integer = 50
 
-    Public Property highFirst As Boolean = False 'Skips straight to highscore
+    Public Const highFirst As Boolean = False 'Skips straight to highscore
 
-    Public Property bulletSpeed As Integer = 30
+    Public Const bulletSpeed As Integer = 30
 
-    Public Property colour As Pen = Pens.White
+    Public colour As Pen = Pens.White
 
-    Public Property fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
+    Public fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
     'Ordered from white to black (oddly enough, darkgray is lighter than gray)
 End Module
 
 Module initialise
     'Sound Variables
     Public soundCounter As Integer = 0      'Counter for time between high and low sound
-    Public soundLimit As Integer = 70       'Interval between high and low
+    Public Const soundLimit As Integer = 70       'Interval between high and low
     Public highSound As Boolean = True      'Whether it is high sound's turn
     Public level As Integer = 1             'NOTE: RESET WHEN GAMELOAD
 
@@ -49,7 +49,7 @@ Module initialise
     Public coop As Boolean = False          'For player 1 and player 2
     Public hotKeys As New Dictionary(Of String, Keys) 'The keys to control the character
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
-    Public shipBorders As Integer = 300     'The safezone spawn radius around the ship
+    Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
     Public sound As Boolean = False         'Mute or not
 
     'Label reference
@@ -66,21 +66,7 @@ Module initialise
     Public explosionArray As New List(Of explosion) From {}
 
     Public gamestate As String = "menu" 'The current Gamestate
-    Public endTimer As Integer = 0
-    Public endScore1 As Integer = -1
-    Public endScore2 As Integer = -1
-    Public onboard As Boolean = False
-    Public endPlace1 As Integer
-    Public endPlace2 As Integer
-    Public letterPlace1 As Integer
-    Public letterPlace2 As Integer
-    Public letters1 As List(Of Integer)
-    Public letters2 As List(Of Integer)
-    Public letterCool1 As Boolean
-    Public letterCool2 As Boolean
-
-    Public allLetters = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
-
+    
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
     Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
@@ -109,10 +95,12 @@ Module initialise
     End Sub  'Declaring the initial hotkeys
     Public Sub labelInit()
         'Title Screen
-        menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, menu.Height / 5)
-        menu.playButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, menu.Height / 2)
-        menu.optionsButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 2 * menu.Height / 3)
-        menu.Coins.Font = New Font(hyperspaceFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, menu.Height - 50)
+        menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
+        menu.playButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
+        menu.optionsButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 650)
+        menu.Coins.Font = New Font(hyperspaceFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, 850)
+        menu.highscores.Font = New Font(hyperspaceFont.Families(0), 60) : menu.highscores.Location = New Point(menu.Width / 2 - menu.highscores.Width / 2, 550)
+
 
         'Player score and title
         menu.player1Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)

@@ -2,6 +2,10 @@
 Imports System.Math
 
 Module otherStuff
+    Public Const boundary As Integer = 300
+    Public Function dist(point1, point2)
+        Return (point1.x - point2.x) ^ 2 + (point1.y - point2.y) ^ 2 < boundary ^ 2
+    End Function
     Public Function ResizeImage(ByVal image As Image, ByVal size As Size, Optional ByVal preserveAspectRatio As Boolean = True) As Image
         Dim newWidth As Integer
         Dim newHeight As Integer

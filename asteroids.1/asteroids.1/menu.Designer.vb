@@ -54,11 +54,12 @@ Partial Class menu
         Me.highscore3 = New System.Windows.Forms.Label()
         Me.highscore2 = New System.Windows.Forms.Label()
         Me.highscoreBack = New System.Windows.Forms.Label()
+        Me.highscores = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'gameTimer
         '
-        Me.gameTimer.Interval = 20
+        Me.gameTimer.Interval = 25
         '
         'soundTimer
         '
@@ -69,7 +70,7 @@ Partial Class menu
         Me.playButton.AutoSize = True
         Me.playButton.BackColor = System.Drawing.Color.Transparent
         Me.playButton.ForeColor = System.Drawing.Color.White
-        Me.playButton.Location = New System.Drawing.Point(511, 102)
+        Me.playButton.Location = New System.Drawing.Point(514, 84)
         Me.playButton.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.playButton.Name = "playButton"
         Me.playButton.Size = New System.Drawing.Size(38, 24)
@@ -82,7 +83,7 @@ Partial Class menu
         Me.optionsButton.AutoSize = True
         Me.optionsButton.BackColor = System.Drawing.Color.Transparent
         Me.optionsButton.ForeColor = System.Drawing.Color.White
-        Me.optionsButton.Location = New System.Drawing.Point(500, 126)
+        Me.optionsButton.Location = New System.Drawing.Point(505, 167)
         Me.optionsButton.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.optionsButton.Name = "optionsButton"
         Me.optionsButton.Size = New System.Drawing.Size(63, 24)
@@ -442,11 +443,25 @@ Partial Class menu
         Me.highscoreBack.Text = "Back"
         Me.highscoreBack.UseCompatibleTextRendering = True
         '
+        'highscores
+        '
+        Me.highscores.AutoSize = True
+        Me.highscores.BackColor = System.Drawing.Color.Transparent
+        Me.highscores.ForeColor = System.Drawing.Color.White
+        Me.highscores.Location = New System.Drawing.Point(493, 126)
+        Me.highscores.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.highscores.Name = "highscores"
+        Me.highscores.Size = New System.Drawing.Size(88, 24)
+        Me.highscores.TabIndex = 49
+        Me.highscores.Text = "Highscores"
+        Me.highscores.UseCompatibleTextRendering = True
+        '
         'menu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(900, 900)
+        Me.Controls.Add(Me.highscores)
         Me.Controls.Add(Me.highscoreBack)
         Me.Controls.Add(Me.highscore2)
         Me.Controls.Add(Me.highscore3)
@@ -518,5 +533,6 @@ Partial Class menu
     Friend WithEvents highscore3 As System.Windows.Forms.Label
     Friend WithEvents highscore2 As System.Windows.Forms.Label
     Friend WithEvents highscoreBack As System.Windows.Forms.Label
+    Friend WithEvents highscores As System.Windows.Forms.Label
 
 End Class

@@ -305,7 +305,7 @@ Public Class explosion
         obj = obje
         location = New Point(obj.locationx, obj.locationy)
         If TypeOf obj Is asteroid Then
-            For Each poi As PointF In obj.points
+            For poi As Integer = 0 To 15
                 particles.Add(New PointF(obj.locationx + Rnd() * obj.radius - obj.radius, obj.locationy + Rnd() * obj.radius - obj.radius))
                 velocities.Add(Rnd() * exploMove - 2)
                 velocities.Add(Rnd() * exploMove - 2)

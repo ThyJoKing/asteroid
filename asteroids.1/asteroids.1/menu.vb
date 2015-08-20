@@ -143,13 +143,15 @@ Public Class menu
         pauseVisible(True)
     End Sub    'Pause
     Public Sub highLoad()
-        gamestate = "highscore"
         Cursor.Show()
 
-        endScore1 = 0 : endScore2 = 0
-        If coop Then endScore2 = spriteArray(1)(1).score
-        endScore1 = spriteArray(1)(0).score
+        endScore1 = -1 : endScore2 = -1
+        If gamestate <> "menu" Then
+            If coop Then endScore2 = spriteArray(1)(1).score
+            endScore1 = spriteArray(1)(0).score
+        End If
 
+        gamestate = "highscore"
         menuVisible(False)
         pauseVisible(False)
         highscoreVisible(True)
@@ -163,6 +165,9 @@ Public Class menu
     Public Sub optionsButton_Click(sender As Object, e As EventArgs) Handles optionsButton.Click
         optionsLoad()
     End Sub   'Options Button
+    Private Sub highscores_Click(sender As Object, e As EventArgs) Handles highscores.Click
+        highLoad()
+    End Sub
 
     Private Sub pauseResume_Click(sender As Object, e As EventArgs) Handles pauseResume.Click
         Cursor.Hide()

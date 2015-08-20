@@ -29,70 +29,72 @@ Module collisionTests
             Dim secondCount As Integer = 0
             While secondCount < spriteArray(secondObject).Count() And Not collide1
                 Dim current2 = spriteArray(secondObject)(secondCount)
-                If intersects(current1, current2) Then
-                    If TypeOf (current1) Is ship Then                                           'Player with Enemy ship or Bullets
-                        If TypeOf current2 Is bullet Then
-                            If current2.shooter = 3 Then
+                If dist(current1.location, current2.location) Then
+                    If intersects(current1, current2) Then
+                        If TypeOf (current1) Is ship Then                                           'Player with Enemy ship or Bullets
+                            If TypeOf current2 Is bullet Then
+                                If current2.shooter = 3 Then
+                                    If current1.lives <> 0 Then current1.lives -= 1
+                                    explosionArray.Add(New explosion(current1))
+                                    current1.spawn()
+                                    collide1 = True
+                                End If
+                            ElseIf TypeOf (current2) Is enemyShip Then
+                                current1.score += current2.level * 500
                                 If current1.lives <> 0 Then current1.lives -= 1
                                 explosionArray.Add(New explosion(current1))
+                                explosionArray.Add(New explosion(current2))
                                 current1.spawn()
                                 collide1 = True
+                                spriteArray(secondObject).RemoveAt(secondCount)
                             End If
-                        ElseIf TypeOf (current2) Is enemyShip Then
-                            current1.score += current2.level * 500
-                            If current1.lives <> 0 Then current1.lives -= 1
-                            explosionArray.Add(New explosion(current1))
-                            explosionArray.Add(New explosion(current2))
-                            current1.spawn()
-                            collide1 = True
-                            spriteArray(secondObject).RemoveAt(secondCount)
-                        End If
-                    ElseIf TypeOf (current1) Is asteroid Then                                   'Asteroid with anything
-                        Dim score As Integer
-                        If current1.level = 1 Then score = 20 Else If current1.level = 2 Then score = 50 Else score = 100
-                        If TypeOf (current2) Is ship Then
-                            If Not current2.invincible Then
-                                current2.score += score
-                                If current2.lives <> 0 Then current2.lives -= 1
+                        ElseIf TypeOf (current1) Is asteroid Then                                   'Asteroid with anything
+                            Dim score As Integer
+                            If current1.level = 1 Then score = 20 Else If current1.level = 2 Then score = 50 Else score = 100
+                            If TypeOf (current2) Is ship Then
+                                If Not current2.invincible Then
+                                    current2.score += score
+                                    If current2.lives <> 0 Then current2.lives -= 1
+                                    explosionArray.Add(New explosion(current2))
+                                    explosionArray.Add(New explosion(current1))
+                                    current2.spawn()
+                                ElseIf TypeOf (current2) Is enemyShip Then
+                                    spriteArray(secondObject).RemoveAt(secondCount)
+                                End If
+                                Dim temp As asteroid = current1
+                                spriteArray(firstObject).RemoveAt(firstCount)
+                                collide1 = True
+                                If temp.level <> 3 Then
+                                    spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
+                                    spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
+                                End If
+                            End If
+                        ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
+                            If TypeOf current2 Is asteroid Then
+                                Dim score As Integer
+                                explosionArray.Add(New explosion(current2))
+                                If current2.level = 1 Then score = 20 Else If current2.level = 2 Then score = 50 Else score = 100
+                                If current1.shooter < 3 Then
+                                    spriteArray(1)(current1.shooter - 1).score += score
+                                End If
+                                spriteArray(secondObject).RemoveAt(secondCount)
+                                secondCount += 1
+                                spriteArray(firstObject).RemoveAt(firstCount)
+                                collide1 = True
+                                If current2.level <> 3 Then
+                                    spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
+                                    spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
+                                End If
+                            ElseIf TypeOf current2 Is enemyShip Then
                                 explosionArray.Add(New explosion(current2))
                                 explosionArray.Add(New explosion(current1))
-                                current2.spawn()
-                            ElseIf TypeOf (current2) Is enemyShip Then
-                                spriteArray(secondObject).RemoveAt(secondCount)
+                                If current1.shooter <> 3 Then
+                                    spriteArray(1)(current1.shooter - 1).score += current2.level * 500
+                                    spriteArray(secondObject).RemoveAt(secondCount)
+                                End If
+                                spriteArray(firstObject).RemoveAt(firstCount)
+                                collide1 = True
                             End If
-                            Dim temp As asteroid = current1
-                            spriteArray(firstObject).RemoveAt(firstCount)
-                            collide1 = True
-                            If temp.level <> 3 Then
-                                spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
-                                spriteArray(firstObject).Add(New asteroid(temp.level + 1, current1))
-                            End If
-                        End If
-                    ElseIf TypeOf (current1) Is bullet Then                                     'Bullet with Enemy
-                        If TypeOf current2 Is asteroid Then
-                            Dim score As Integer
-                            explosionArray.Add(New explosion(current2))
-                            If current2.level = 1 Then score = 20 Else If current2.level = 2 Then score = 50 Else score = 100
-                            If current1.shooter < 3 Then
-                                spriteArray(1)(current1.shooter - 1).score += score
-                            End If
-                            spriteArray(secondObject).RemoveAt(secondCount)
-                            secondCount += 1
-                            spriteArray(firstObject).RemoveAt(firstCount)
-                            collide1 = True
-                            If current2.level <> 3 Then
-                                spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
-                                spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
-                            End If
-                        ElseIf TypeOf current2 Is enemyShip Then
-                            explosionArray.Add(New explosion(current2))
-                            explosionArray.Add(New explosion(current1))
-                            If current1.shooter <> 3 Then
-                                spriteArray(1)(current1.shooter - 1).score += current2.level * 500
-                                spriteArray(secondObject).RemoveAt(secondCount)
-                            End If
-                            spriteArray(firstObject).RemoveAt(firstCount)
-                            collide1 = True
                         End If
                     End If
                 End If
@@ -102,7 +104,7 @@ Module collisionTests
                 firstCount += 1
             End If
         End While
-    End Sub               'Collision between polygons and points/other polygons
+    End Sub  'Collision between polygons and points/other polygons
     Public Function intersects(list1, list2)
         For Each p In list1.drawPoints
             If PointInPolygon(list2.drawPoints, p.x, p.Y) Then
@@ -110,7 +112,7 @@ Module collisionTests
             End If
         Next
         Return False
-    End Function                                                               'Collision Check
+    End Function                               'Collision Check
 End Module
 
 Module shipActions
@@ -252,6 +254,7 @@ Module labelVisible
         menu.title.Visible = truFalse
         menu.optionsButton.Visible = truFalse
         menu.playButton.Visible = truFalse
+        menu.highscores.Visible = truFalse
     End Sub
     Public Sub pauseVisible(truFalse As Boolean)
         menu.pauseExit.Visible = truFalse
@@ -304,6 +307,21 @@ Module other
 End Module
 
 Module highscores
+    Public endTimer As Integer = 0
+    Public endScore1 As Integer = -1
+    Public endScore2 As Integer = -1
+    Public onboard As Boolean = False
+    Public endPlace1 As Integer
+    Public endPlace2 As Integer
+    Public letterPlace1 As Integer
+    Public letterPlace2 As Integer
+    Public letters1 As List(Of Integer)
+    Public letters2 As List(Of Integer)
+    Public letterCool1 As Boolean
+    Public letterCool2 As Boolean
+
+    Public allLetters = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+
     Public Sub highscoreInit()
         Dim highscores As New List(Of String) From {}
         Dim names As New List(Of String) From {}
