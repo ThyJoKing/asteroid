@@ -249,24 +249,25 @@ Module checks
     End Sub              'Reset each key check
 
     Private enemyTime As Integer = 0
+    Private directionInterval As Integer
+    Private shootInterval As Integer
+    Public spawnInterval As Integer = 5000
+
     Public Sub enemyCheck()
-        'If spawned Then
-        '    If enemyTime = blah Then
-        '        enemyShip change direction
-        '    End If
-        '    If enemyTime = blah Then
-        '        enemyShip shoot
-        '    End If
-        'Else
-        '    If enemyTime = Rnd() * whatever Then
-        '        spawnEnemy()
-        '    End If
-        'End If
-        'If enemyTime = 100 Then
-        '    enemyTime = 0
-        'Else
-        '    enemyTime += 1
-        'End If
+        If spriteArray(2).Count <> 0 Then
+            If enemyTime Mod directionInterval = 0 Then
+                'change direction
+            End If
+            If enemyTime Mod shootInterval = 0 Then
+                'shoot
+            End If
+        Else
+            If enemyTime Mod spawnInterval = 0 Then
+                'spawn
+                enemyTime = 0
+            End If
+        End If
+        enemyTime += 1
     End Sub
 End Module
 

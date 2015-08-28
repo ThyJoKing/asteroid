@@ -202,6 +202,7 @@ Module loading
         If highFirst Then highLoad()
     End Sub     'Loads Game
     Public Sub levelLoad()
+        spawnInterval = 5000 / level
         If Not start Then
             Dim num As Integer = 0
             Do Until num > level + 1 Or num > 11
