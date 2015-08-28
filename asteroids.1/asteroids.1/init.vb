@@ -14,6 +14,7 @@ Module debug
     Public Const whatSize As Integer = 3          'What size
     Public Const velocityNo As Boolean = False    'Whether the asteroid is moving
     Public Const invincibleLength As Integer = 250 'The length of the invincibility period
+    Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
 
     'asteroid specifics
     Public Const minRadius As Integer = 20   'The minimum size of asteroid
@@ -39,23 +40,11 @@ Module debug
 End Module
 
 Module initialise
-    'Sound Variables
-    Public soundCounter As Integer = 0      'Counter for time between high and low sound
-    Public Const soundLimit As Integer = 70       'Interval between high and low
-    Public highSound As Boolean = True      'Whether it is high sound's turn
-    Public level As Integer = 1             'NOTE: RESET WHEN GAMELOAD
-
     'Option Variables
-    Public coop As Boolean = False          'For player 1 and player 2
+    Public coop As Boolean = True          'For player 1 and player 2
     Public hotKeys As New Dictionary(Of String, Keys) 'The keys to control the character
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
-    Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
-    Public sound As Boolean = False         'Mute or not
-
-    'Label reference
-    Public highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
-    Public roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
-    Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
+    Public mute As Boolean = True         'Mute or not
 
     Public spriteArray As New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
     'sprites in order
@@ -64,18 +53,28 @@ Module initialise
     '2. enemy ship
     '3. bullets
     Public explosionArray As New List(Of explosion) From {}
-
     Public gamestate As String = "menu" 'The current Gamestate
-    
-    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
 
+    Public Sub allInit()
+        highscoreInit()
+        screenInit()
+        hotKeysInit()
+        fontInit()
+        labelInit()
+        lifeImageSet()
+    End Sub                         'Initialises everything
+
+    'Fonts
     Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
     Public Sub fontInit()
         Dim fontMemPointer As IntPtr = Marshal.AllocCoTaskMem(My.Resources.Hyperspace.Length)
         Marshal.Copy(My.Resources.Hyperspace, 0, fontMemPointer, My.Resources.Hyperspace.Length)
         hyperspaceFont.AddMemoryFont(fontMemPointer, My.Resources.Hyperspace.Length)
         Marshal.FreeCoTaskMem(fontMemPointer)
-    End Sub     'Declaring the hyperspace font
+    End Sub                        'Declaring the hyperspace font
+
+    'Hotkeys
+    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
     Public Sub hotKeysInit()
         'Player 1
         hotKeys.Add("player1Left", Keys.A)
@@ -92,7 +91,12 @@ Module initialise
         hotKeys.Add("player2Hyperspace", Keys.RShiftKey)
 
         hotKeys.Add("pause", Keys.Escape)
-    End Sub  'Declaring the initial hotkeys
+    End Sub                     'Declaring the initial hotkeys
+
+    'Labels
+    Public highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
+    Public roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
+    Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
     Public Sub labelInit()
         'Title Screen
         menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
@@ -132,11 +136,106 @@ Module initialise
             tem += 1
         End While
 
-    End Sub    'Declaring the font of all labels and their positions
+    End Sub                       'Declaring the font of all labels and their positions
+
+    'Screen
     Public Sub screenInit()
         menu.Size = New Size(900, 900)
         menu.Top = My.Computer.Screen.Bounds.Height / 2 - menu.Height / 2
         menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
-        setCursor(My.Resources.shipLife)
-    End Sub   'Declare the screen specifics
+        cursorInit(ResizeImage(My.Resources.ship, My.Resources.ship.Size))
+
+    End Sub                      'Declare the screen specifics
+    Public Sub cursorInit(image As Image)
+        Dim bm As Bitmap = New Bitmap(image, New Size(image.Width * 2, image.Height))
+        Dim g As Graphics = Graphics.FromImage(bm)
+        g.Clear(Color.Transparent)
+        g.RotateTransform(315)
+        g.DrawImage(image, 0, 22)
+        g.Dispose()
+        menu.Cursor = New Cursor(bm.GetHicon)
+    End Sub        'Cursor set
+
+    Public lifeImage As Image
+    Public Sub lifeImageSet()
+        lifeImage = ResizeImage(My.Resources.ship, New Size(2 * My.Resources.ship.Width / 3, 2 * My.Resources.ship.Height / 3))
+    End Sub
+End Module
+
+Module loading
+    Public Sub menuLoad()
+        gamestate = "menu"
+
+        menuVisible(True)
+        pauseVisible(False)
+        scoreVisible(False, False)
+        highscoreVisible(False)
+        highscoreVisible(False)
+        endTimer = 0
+        spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
+
+        For ast As Integer = 1 To 3
+            spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing))
+        Next
+    End Sub     'Loads Menu 
+    Public Sub optionsLoad()
+        End 'Temp
+    End Sub  'Loads Options
+    Public Sub gameLoad()
+        Cursor.Hide()
+        keyReset()
+        spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
+        explosionArray = New List(Of explosion)
+        gamestate = "play"
+
+        menuVisible(False)
+        pauseVisible(False)
+        highscoreVisible(False)
+
+        spriteArray(1).Add(New ship(coop, 1))
+        scoreVisible(True, False)
+        If coop Then
+            spriteArray(1).Add(New ship(coop, 2))
+            scoreVisible(True, True)
+        End If
+        level = 1
+        levelLoad()
+        If highFirst Then highLoad()
+    End Sub     'Loads Game
+    Public Sub levelLoad()
+        If Not start Then
+            Dim num As Integer = 0
+            Do Until num > level + 1 Or num > 11
+                spriteArray(0).Add(New asteroid(1, Nothing))
+                num += 1
+            Loop
+        Else 'debugging
+            Dim num As Integer
+            Do Until num > howMany
+                spriteArray(0).Add(New asteroid(whatSize, Nothing))
+                num += 1
+            Loop
+        End If
+    End Sub    'Loads Level
+    Public Sub pauseLoad()
+        Cursor.Show()
+        menu.gameTimer.Enabled = False
+        pauseVisible(True)
+    End Sub    'Loads Pause
+    Public Sub highLoad()
+        Cursor.Show()
+
+        endScore1 = -1 : endScore2 = -1
+        If gamestate <> "menu" Then
+            If coop Then endScore2 = spriteArray(1)(1).score
+            endScore1 = spriteArray(1)(0).score
+        End If
+
+        gamestate = "highscore"
+        menuVisible(False)
+        pauseVisible(False)
+        highscoreVisible(True)
+        scoreVisible(False, False)
+        highscoreInit()
+    End Sub     'Loads Highscores
 End Module

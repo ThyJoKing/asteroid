@@ -10,15 +10,15 @@ Module collisionTests
         'To do: threading here
         'Thread set 1:
         collision(0, 1) 'Asteroids with Player
-        collision(3, 2) 'Bullets with Enemy ships
+        'collision(3, 2) 'Bullets with Enemy ships
 
         'thread set 2:
-        collision(0, 2) 'Asteroids with Enemy ships
+        'collision(0, 2) 'Asteroids with Enemy ships
         collision(1, 3) 'Player with Bullets
 
         'thread set 3:
         collision(3, 0) 'Bullets with asteroids
-        collision(1, 2) 'Player with Enemy
+        'collision(1, 2) 'Player with Enemy
 
     End Sub                                          'Setting every collision : MAYBE THREADS LATER?
     Public Sub collision(firstObject As Integer, secondObject As Integer)
@@ -104,7 +104,7 @@ Module collisionTests
                 firstCount += 1
             End If
         End While
-    End Sub  'Collision between polygons and points/other polygons
+    End Sub  'Collision between everything
     Public Function intersects(list1, list2)
         For Each p In list1.drawPoints
             If PointInPolygon(list2.drawPoints, p.x, p.Y) Then
@@ -125,7 +125,7 @@ Module shipActions
             spriteArray(3).Add(New bullet(ship))
             'If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
         End If
-    End Sub     'Every ship shooting
+    End Sub             'Ship shooting
     Public Sub thrust(ship As ship)
         ship.xVelocity += Sin(2 * Math.PI * (ship.angle / 360)) * 0.9
         ship.yVelocity -= Cos(2 * Math.PI * (ship.angle / 360)) * 0.9
@@ -137,33 +137,29 @@ Module drawing
     Public Sub livesDraw(e As PaintEventArgs)
         Dim num As Integer = 1
         While num < spriteArray(1)(0).lives
-            e.Graphics.DrawImage(My.Resources.shipLife, num * 30 + 220, 15)
+            e.Graphics.DrawImage(lifeImage, num * 35 + 180, 15)
+            If coop Then
+                e.Graphics.DrawImage(lifeImage, menu.Width - (num * 35 + 240), 15)
+            End If
             num += 1
         End While
-        If coop Then
-            num = 1
-            While num < spriteArray(1)(1).lives
-                e.Graphics.DrawImage(My.Resources.shipLife, menu.Width - (num * 30 + 240), 15)
-                num += 1
-            End While
-        End If
-    End Sub  'Draw both ship's lives
+    End Sub                                 'Draw ship's lives
     Public Sub spriteDraw(e As PaintEventArgs)
         For Each arr As Object In spriteArray
             For Each obj As Object In arr : obj.draw(e) : Next
         Next
-    End Sub 'Draw every sprite (player, asteroids, bullets, enemies)
+    End Sub                                'Draw every sprite (player, asteroids, bullets, enemies)
     Public Sub explosionsDraw(e As PaintEventArgs)
         For Each obj As Object In explosionArray
             obj.draw(e)
         Next
-    End Sub
-    Public Sub drawRotateImage(image As Image, angle As Double, locationx As Double, locationy As Double, e As PaintEventArgs)
+    End Sub                            'Draw explosions
+    Public Sub drawRotateImage(image, angle, locationx, locationy, e)
         e.Graphics.TranslateTransform(locationx, locationy)
         e.Graphics.RotateTransform(angle)
         e.Graphics.DrawImage(image, CInt(-image.Width / 2), CInt(-image.Height / 2), image.Width, image.Height)
         e.Graphics.ResetTransform()
-    End Sub 'Draw rotated image
+    End Sub         'Draw rotated image
 End Module
 
 Module checks
@@ -193,7 +189,7 @@ Module checks
                 num += 1
             End If
         End While
-    End Sub
+    End Sub        'Check if explosions are expired
     Public Sub gameOverCheck()
         If coop Then
             If spriteArray(1)(0).lives < 1 And spriteArray(1)(1).lives < 1 Then
@@ -204,7 +200,7 @@ Module checks
         Else
             If spriteArray(1)(0).lives < 1 Then gamestate = "over" : spriteArray(1)(0).shootEnable = False
         End If
-    End Sub
+    End Sub         'Check if player is out of lives
 
     Public Sub keyChecks(ship As ship)
         If Not ship.inHyperspace And ship.invincibleTimer > 0 Then
@@ -255,16 +251,16 @@ Module labelVisible
         menu.optionsButton.Visible = truFalse
         menu.playButton.Visible = truFalse
         menu.highscores.Visible = truFalse
-    End Sub
+    End Sub                         'Menu labels visible
     Public Sub pauseVisible(truFalse As Boolean)
         menu.pauseExit.Visible = truFalse
         menu.pauseResume.Visible = truFalse
         menu.pauseRestart.Visible = truFalse
-    End Sub
+    End Sub                        'Pause labels visible
     Public Sub scoreVisible(player1 As Boolean, player2 As Boolean)
         menu.player1Score.Visible = player1 : menu.player1Title.Visible = player1
         menu.player2Score.Visible = player2 : menu.player2Title.Visible = player2
-    End Sub
+    End Sub     'Score labels visible
     Public Sub highscoreVisible(truFalse As Boolean)
         menu.highScoreTitle.Visible = truFalse
         menu.highscoreBack.Visible = truFalse
@@ -280,30 +276,7 @@ Module labelVisible
         menu.name1.Visible = truFalse : menu.name2.Visible = truFalse
         menu.name3.Visible = truFalse : menu.name4.Visible = truFalse
         menu.name5.Visible = truFalse
-    End Sub
-End Module
-
-Module other
-    Public Sub moveEverything()
-        For Each arr As Object In spriteArray
-            For Each obj As Object In arr
-                obj.move()
-            Next
-        Next
-        For Each obj As Object In explosionArray
-            obj.move()
-        Next
-    End Sub        'Move everything according to their velocity 
-
-    Public Sub setCursor(image As Image)
-        Dim bm As New Bitmap(image, New Size(image.Height * 1.5, image.Width * 1.5))
-        Dim g As Graphics = Graphics.FromImage(bm)
-        g.Clear(Color.Transparent)
-        g.DrawImage(image, 0, 0)
-        g.Dispose()
-        menu.Cursor = New Cursor(bm.GetHicon)
-    End Sub        'Cursor change
-
+    End Sub                    'Highscore labels visible
 End Module
 
 Module highscores
@@ -320,11 +293,11 @@ Module highscores
     Public letterCool1 As Boolean
     Public letterCool2 As Boolean
 
-    Public allLetters = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+    Public allLetters As List(Of Char) = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "?", "/", "#", "$"}
 
     Public Sub highscoreInit()
-        Dim highscores As New List(Of String) From {}
-        Dim names As New List(Of String) From {}
+        Dim highscores As List(Of String) = New List(Of String) From {}
+        Dim names As List(Of String) = New List(Of String) From {}
         Dim strPath As String = Path.GetDirectoryName(Environment.GetCommandLineArgs()(0))
         Dim fileName As String = "highscores.txt"
         Dim fullPath = Path.Combine(strPath, fileName)
@@ -368,28 +341,37 @@ Module highscores
                     endPlace1 = temp
                 End If
             End If
-            If coop Then
-                If temp <> 0 Then
-                    If CInt(highscores(temp - 1)) > endScore2 Then
+            temp += 1
+        End While
+        temp = 0
+        temp = 0
+        If coop Then
+            While temp < highscores.Count
+                If CInt(highscores(temp)) <= endScore2 Then
+                    If temp <> 0 Then
+                        If CInt(highscores(temp - 1)) > endScore2 Then
+                            onboard = True
+                            highscores.Insert(temp, endScore2)
+                            endPlace2 = temp
+                        End If
+                    Else
                         onboard = True
                         highscores.Insert(temp, endScore2)
                         endPlace2 = temp
                     End If
-                Else
-                    onboard = True
-                    highscores.Insert(temp, endScore2)
-                    endPlace2 = temp
                 End If
+                temp += 1
+            End While
+            If endPlace1 = endPlace2 Then
+                endPlace1 += 1
             End If
-            temp += 1
-        End While
+        End If
         temp = 0
         While temp < 5
             nameLabels(temp).Text = names(temp)
             highscoreLabels(temp).Text = highscores(temp)
             temp += 1
         End While
-
         letterPlace1 = 0
         letterPlace2 = 0
         letters1 = New List(Of Integer) From {0, 0, 0}
@@ -415,8 +397,8 @@ Module highscores
             If letterPlace1 = 3 Then : endPlace1 = 6
             Else
                 If letters1(letterPlace1) = -1 Then
-                    letters1(letterPlace1) = 25
-                ElseIf letters1(letterPlace1) = 26 Then
+                    letters1(letterPlace1) = allLetters.Count - 1
+                ElseIf letters1(letterPlace1) = allLetters.count Then
                     letters1(letterPlace1) = 0
                 End If
                 nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
@@ -439,8 +421,8 @@ Module highscores
             If letterPlace2 = 3 Then : endPlace2 = 6
             Else
                 If letters2(letterPlace2) = -1 Then
-                    letters2(letterPlace2) = 25
-                ElseIf letters2(letterPlace2) = 26 Then
+                    letters2(letterPlace2) = allLetters.Count - 1
+                ElseIf letters2(letterPlace2) = allLetters.Count Then
                     letters2(letterPlace2) = 0
                 End If
                 nameLabels(endPlace2).Text = allLetters(letters2(0)) + allLetters(letters2(1)) + allLetters(letters2(2))
@@ -463,4 +445,39 @@ Module highscores
         End While
         fs.Close()
     End Sub
+End Module
+
+Module sound
+    'Sound Variables
+    Public soundCounter As Integer = 0      'Counter for time between high and low sound
+    Public Const soundLimit As Integer = 70 'Interval between high and low
+    Public highSound As Boolean = True      'Whether it is high sound's turn
+    Public level As Integer = 1             'NOTE: RESET WHEN GAMELOAD
+
+    Public Sub soundAll()
+        soundCounter += 1
+        If soundCounter > soundLimit Then
+            If highSound Then
+                highSound = False
+                'My.Computer.Audio.Play(My.Resources.thumphi, AudioPlayMode.Background)
+            Else
+                'My.Computer.Audio.Play(My.Resources.thumplo, AudioPlayMode.Background)
+                highSound = True
+            End If
+            soundCounter = 0
+        End If
+    End Sub
+End Module
+
+Module other
+    Public Sub moveEverything()
+        For Each arr As Object In spriteArray
+            For Each obj As Object In arr
+                obj.move()
+            Next
+        Next
+        For Each obj As Object In explosionArray
+            obj.move()
+        Next
+    End Sub        'Move everything according to their velocity 
 End Module

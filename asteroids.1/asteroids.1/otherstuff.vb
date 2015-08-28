@@ -49,25 +49,18 @@ Module otherStuff
         ' Return the result.
         ATan2 = angle
     End Function
-    Public Function GetAngle(ByVal Ax As Single, ByVal Ay As _
-        Single, ByVal Bx As Single, ByVal By As Single, ByVal _
-        Cx As Single, ByVal Cy As Single) As Single
+    Public Function GetAngle(ByVal Ax As Single, ByVal Ay As Single, ByVal Bx As Single, ByVal By As Single, ByVal Cx As Single, ByVal Cy As Single) As Single
         Dim dot_product As Single
         Dim cross_product As Single
 
         ' Get the dot product and cross product.
         dot_product = DotProduct(Ax, Ay, Bx, By, Cx, Cy)
-        cross_product = CrossProductLength(Ax, Ay, Bx, By, Cx, _
-            Cy)
+        cross_product = CrossProductLength(Ax, Ay, Bx, By, Cx, Cy)
 
         ' Calculate the angle.
         GetAngle = ATan2(cross_product, dot_product)
     End Function
-    Public Function CrossProductLength( _
-    ByVal Ax As Single, ByVal Ay As Single, _
-    ByVal Bx As Single, ByVal By As Single, _
-    ByVal Cx As Single, ByVal Cy As Single _
-  ) As Single
+    Public Function CrossProductLength(ByVal Ax As Single, ByVal Ay As Single, ByVal Bx As Single, ByVal By As Single, ByVal Cx As Single, ByVal Cy As Single) As Single
         Dim BAx As Single
         Dim BAy As Single
         Dim BCx As Single
@@ -82,11 +75,7 @@ Module otherStuff
         ' Calculate the Z coordinate of the cross product.
         CrossProductLength = BAx * BCy - BAy * BCx
     End Function
-    Public Function DotProduct( _
-    ByVal Ax As Single, ByVal Ay As Single, _
-    ByVal Bx As Single, ByVal By As Single, _
-    ByVal Cx As Single, ByVal Cy As Single _
-  ) As Single
+    Public Function DotProduct(ByVal Ax As Single, ByVal Ay As Single, ByVal Bx As Single, ByVal By As Single, ByVal Cx As Single, ByVal Cy As Single) As Single
         Dim BAx As Single
         Dim BAy As Single
         Dim BCx As Single
@@ -101,23 +90,16 @@ Module otherStuff
         ' Calculate the dot product.
         DotProduct = BAx * BCx + BAy * BCy
     End Function
-    Public Function PointInPolygon(ByVal points() As PointF, _
-                ByVal X As Single, ByVal Y As Single) As Boolean
+    Public Function PointInPolygon(ByVal points() As PointF, ByVal X As Single, ByVal Y As Single) As Boolean
         ' Get the angle between the point and the
         ' first and last vertices.
         Dim max_point As Integer = points.Length - 1
-        Dim total_angle As Single = GetAngle( _
-            points(max_point).X, points(max_point).Y, _
-            X, Y, _
-            points(0).X, points(0).Y)
+        Dim total_angle As Single = GetAngle(points(max_point).X, points(max_point).Y, X, Y, points(0).X, points(0).Y)
 
         ' Add the angles from the point
         ' to each other pair of vertices.
         For i As Integer = 0 To max_point - 1
-            total_angle += GetAngle( _
-                points(i).X, points(i).Y, _
-                X, Y, _
-                points(i + 1).X, points(i + 1).Y)
+            total_angle += GetAngle(points(i).X, points(i).Y, X, Y, points(i + 1).X, points(i + 1).Y)
         Next i
 
         ' The total angle should be 2 * PI or -2 * PI if

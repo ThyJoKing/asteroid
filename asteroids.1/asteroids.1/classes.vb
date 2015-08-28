@@ -1,9 +1,6 @@
 ﻿Imports System.Math
 Imports System.Drawing.Drawing2D
 
-'NOTES:
-'Remove bounds after ranGen
-'Remove cirle completely
 Public Class ship
     Public Property Image As Image
     Public Property location As PointF
@@ -142,11 +139,11 @@ Public Class asteroid
             done = True
             If gamestate = "play" Then
                 Dim shi1 As ship = spriteArray(1)(0)
-                done = Not ((locationx > shi1.locationx - shipBorders And locationx < shi1.locationx + shipBorders) And _
+                done = Not ((locationx > shi1.locationx - shipBorders And locationx < shi1.locationx + shipBorders) And
                 (locationy > shi1.locationy - shipBorders And locationy < shi1.locationy + shipBorders))
                 If coop And done Then
                     Dim shi2 As ship = spriteArray(1)(1)
-                    done = Not ((locationx > shi2.locationx - shipBorders And locationx < shi2.locationx + shipBorders) And _
+                    done = Not ((locationx > shi2.locationx - shipBorders And locationx < shi2.locationx + shipBorders) And
                     (locationy > shi2.locationy - shipBorders And locationy < shi2.locationy + shipBorders))
                 End If
             End If
@@ -157,9 +154,7 @@ Public Class asteroid
             xVelocity = Round(Rnd() * 10 - 5) : yvelocity = Round(Rnd() * 10 - 5)
         End While
         xVelocity *= level : yvelocity *= level
-        If velocityNo Then
-            xVelocity = 0 : yvelocity = 0
-        End If
+        If velocityNo Then xVelocity = 0 : yvelocity = 0
     End Sub
     Public Sub split(ast As asteroid)
         locationx = ast.locationx + Rnd() * 2 * ast.radius - ast.radius : locationy = ast.locationy + Rnd() * ast.radius * 2 - ast.radius
@@ -168,9 +163,7 @@ Public Class asteroid
         While Not (xVelocity > 2 Or xVelocity < -2 And yvelocity > 2 Or yvelocity < -2)
             xVelocity = ast.xVelocity + (Rnd() * 5 - 2) : yvelocity = ast.yvelocity + (Rnd() * 5 - 2)
         End While
-        If velocityNo Then
-            xVelocity = 0 : yvelocity = 0
-        End If
+        If velocityNo Then xVelocity = 0 : yvelocity = 0
     End Sub
     Public Sub move()
         locationx += xVelocity : locationy += yvelocity
@@ -294,7 +287,7 @@ End Class
 
 Public Class explosion
     Public Property location As Point
-    Public Property points As List(Of PointF) = New List(Of PointF) From {}
+    Public Property points As New List(Of PointF) From {}
     Public Property drawPoints As PointF()
     Public Property obj As Object
     Public Property particles As New List(Of PointF) From {}
@@ -307,28 +300,24 @@ Public Class explosion
         If TypeOf obj Is asteroid Then
             For poi As Integer = 0 To 15
                 particles.Add(New PointF(obj.locationx + Rnd() * obj.radius - obj.radius, obj.locationy + Rnd() * obj.radius - obj.radius))
-                velocities.Add(Rnd() * exploMove - 2)
-                velocities.Add(Rnd() * exploMove - 2)
+                addDot()
             Next
         ElseIf TypeOf obj Is enemyShip Then
             For Each poi As PointF In obj.points
                 particles.Add(New PointF(obj.locationx, obj.locationy))
-                velocities.Add(Rnd() * exploMove - 2)
-                velocities.Add(Rnd() * exploMove - 2)
+                addDot()
             Next
-        Else
+        ElseIf TypeOf obj Is ship
             Dim num = 0
             While num < obj.points.count()
                 particles.Add(obj.points(num))
-                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
-                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
+                addLine()
                 If num <> 2 Then
                     particles.Add(obj.points(num + 1))
                 Else
                     particles.Add(obj.points(0))
                 End If
-                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
-                velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
+                addLine()
                 num += 1
             End While
         End If
@@ -353,5 +342,13 @@ Public Class explosion
             particles(num) = New PointF(particles(num).X + velocities(num * 2), particles(num).Y + velocities(num * 2 + 1))
             num += 1
         End While
+    End Sub
+    Public Sub addLine()
+        velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
+        velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
+    End Sub
+    Public Sub addDot()
+        velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.xvelocity / exploPercent)
+        velocities.Add(Rnd() * exploMove - exploMove / 2 + obj.yvelocity / exploPercent)
     End Sub
 End Class
