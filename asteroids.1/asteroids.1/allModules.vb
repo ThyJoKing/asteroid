@@ -31,7 +31,7 @@ Module collisionTests
                 Dim current2 = spriteArray(secondObject)(secondCount)
                 If dist(current1.location, current2.location) Then
                     If intersects(current1, current2) Then
-                        If TypeOf (current1) Is ship Then                                           'Player with Enemy ship or Bullets
+                        If TypeOf current1 Is ship Then                                           'Player with Enemy ship or Bullets
                             If TypeOf current2 Is bullet Then
                                 If current2.shooter = 3 Then
                                     If current1.lives <> 0 Then current1.lives -= 1
@@ -39,7 +39,7 @@ Module collisionTests
                                     current1.spawn()
                                     collide1 = True
                                 End If
-                            ElseIf TypeOf (current2) Is enemyShip Then
+                            ElseIf TypeOf current2 Is enemyShip Then
                                 current1.score += current2.level * 500
                                 If current1.lives <> 0 Then current1.lives -= 1
                                 explosionArray.Add(New explosion(current1))
@@ -138,11 +138,15 @@ Module drawing
         Dim num As Integer = 1
         While num < spriteArray(1)(0).lives
             e.Graphics.DrawImage(lifeImage, num * 35 + 180, 15)
-            If coop Then
-                e.Graphics.DrawImage(lifeImage, menu.Width - (num * 35 + 240), 15)
-            End If
             num += 1
         End While
+        If coop Then
+            num = 1
+            While num < spriteArray(1)(1).lives
+                e.Graphics.DrawImage(lifeImage, menu.Width - (num * 35 + 240), 15)
+                num += 1
+            End While
+        End If
     End Sub                                 'Draw ship's lives
     Public Sub spriteDraw(e As PaintEventArgs)
         For Each arr As Object In spriteArray
@@ -243,6 +247,27 @@ Module checks
             GetAsyncKeyState(pair.Value)
         Next
     End Sub              'Reset each key check
+
+    Private enemyTime As Integer = 0
+    Public Sub enemyCheck()
+        'If spawned Then
+        '    If enemyTime = blah Then
+        '        enemyShip change direction
+        '    End If
+        '    If enemyTime = blah Then
+        '        enemyShip shoot
+        '    End If
+        'Else
+        '    If enemyTime = Rnd() * whatever Then
+        '        spawnEnemy()
+        '    End If
+        'End If
+        'If enemyTime = 100 Then
+        '    enemyTime = 0
+        'Else
+        '    enemyTime += 1
+        'End If
+    End Sub
 End Module
 
 Module labelVisible
@@ -333,17 +358,18 @@ Module highscores
                     If CInt(highscores(temp - 1)) > endScore1 Then
                         onboard = True
                         highscores.Insert(temp, endScore1)
+                        names.Insert(temp, "AAA")
                         endPlace1 = temp
                     End If
                 Else
                     onboard = True
                     highscores.Insert(temp, endScore1)
+                    names.Insert(temp, "AAA")
                     endPlace1 = temp
                 End If
             End If
             temp += 1
         End While
-        temp = 0
         temp = 0
         If coop Then
             While temp < highscores.Count
@@ -352,11 +378,13 @@ Module highscores
                         If CInt(highscores(temp - 1)) > endScore2 Then
                             onboard = True
                             highscores.Insert(temp, endScore2)
+                            names.Insert(temp, "AAA")
                             endPlace2 = temp
                         End If
                     Else
                         onboard = True
                         highscores.Insert(temp, endScore2)
+                        names.Insert(temp, "AAA")
                         endPlace2 = temp
                     End If
                 End If

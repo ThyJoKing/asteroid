@@ -51,6 +51,7 @@ Public Class menu
         moveEverything()
         bulletCheck()
         explosionCheck()
+        enemyCheck()
         If spriteArray(0).Count = 0 Then : level += 1 : levelLoad() : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
         state.Text = gamestate

@@ -42,7 +42,6 @@ End Module
 Module initialise
     'Option Variables
     Public coop As Boolean = True          'For player 1 and player 2
-    Public hotKeys As New Dictionary(Of String, Keys) 'The keys to control the character
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
     Public mute As Boolean = True         'Mute or not
 
@@ -66,7 +65,7 @@ Module initialise
 
     'Fonts
     Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
-    Public Sub fontInit()
+    Private Sub fontInit()
         Dim fontMemPointer As IntPtr = Marshal.AllocCoTaskMem(My.Resources.Hyperspace.Length)
         Marshal.Copy(My.Resources.Hyperspace, 0, fontMemPointer, My.Resources.Hyperspace.Length)
         hyperspaceFont.AddMemoryFont(fontMemPointer, My.Resources.Hyperspace.Length)
@@ -75,7 +74,8 @@ Module initialise
 
     'Hotkeys
     Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Int32) As UShort 'The keycheck function
-    Public Sub hotKeysInit()
+    Public hotKeys As New Dictionary(Of String, Keys) 'The keys to control the character
+    Private Sub hotKeysInit()
         'Player 1
         hotKeys.Add("player1Left", Keys.A)
         hotKeys.Add("player1Right", Keys.D)
@@ -95,9 +95,9 @@ Module initialise
 
     'Labels
     Public highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
-    Public roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
+    Private roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
     Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
-    Public Sub labelInit()
+    Private Sub labelInit()
         'Title Screen
         menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
         menu.playButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
@@ -110,7 +110,7 @@ Module initialise
         menu.player1Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
         menu.player1Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
         menu.player2Title.Location = New System.Drawing.Point(menu.Width - 200, 10) : menu.player2Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
-        menu.player2Score.Location = New System.Drawing.Point(menu.Width - 390, 70) : menu.player2Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
+        menu.player2Score.Location = New System.Drawing.Point(menu.Width - 400, 70) : menu.player2Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
 
         'Pause Menu
         menu.pauseResume.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
@@ -139,14 +139,13 @@ Module initialise
     End Sub                       'Declaring the font of all labels and their positions
 
     'Screen
-    Public Sub screenInit()
+    Private Sub screenInit()
         menu.Size = New Size(900, 900)
         menu.Top = My.Computer.Screen.Bounds.Height / 2 - menu.Height / 2
         menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
         cursorInit(ResizeImage(My.Resources.ship, My.Resources.ship.Size))
-
     End Sub                      'Declare the screen specifics
-    Public Sub cursorInit(image As Image)
+    Private Sub cursorInit(image As Image)
         Dim bm As Bitmap = New Bitmap(image, New Size(image.Width * 2, image.Height))
         Dim g As Graphics = Graphics.FromImage(bm)
         g.Clear(Color.Transparent)
@@ -157,7 +156,7 @@ Module initialise
     End Sub        'Cursor set
 
     Public lifeImage As Image
-    Public Sub lifeImageSet()
+    Private Sub lifeImageSet()
         lifeImage = ResizeImage(My.Resources.ship, New Size(2 * My.Resources.ship.Width / 3, 2 * My.Resources.ship.Height / 3))
     End Sub
 End Module
