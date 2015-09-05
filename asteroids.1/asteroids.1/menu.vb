@@ -51,7 +51,7 @@ Public Class menu
         moveEverything()
         bulletCheck()
         explosionCheck()
-        enemyCheck()
+        'enemyCheck()
         If spriteArray(0).Count = 0 Then : level += 1 : levelLoad() : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
         state.Text = gamestate
@@ -65,7 +65,7 @@ Public Class menu
         If gamestate = "play" Then livesDraw(e)
     End Sub                    'The sprite draw
 
-    'Menu Buttone
+    'Menu Buttons
     Public Sub playButton_Click(sender As Object, e As EventArgs) Handles playButton.Click
         gameLoad()
     End Sub         'Play Button
@@ -78,7 +78,9 @@ Public Class menu
 
     'Pause Buttons
     Private Sub pauseResume_Click(sender As Object, e As EventArgs) Handles pauseResume.Click
-        Cursor.Hide()
+        If cursorVis = True Then
+            Cursor.Hide()
+        End If
         keyReset()
         pauseVisible(False)
         gameTimer.Enabled = True

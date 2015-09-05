@@ -259,11 +259,11 @@ Module checks
                 'change direction
             End If
             If enemyTime Mod shootInterval = 0 Then
-                'shoot
+                spriteArray(3).Add(New bullet(spriteArray(2)(0)))
             End If
         Else
             If enemyTime Mod spawnInterval = 0 Then
-                'spawn
+                spriteArray(2).Add(New enemyShip(Int(Rnd() + level / 10) * 2))
                 enemyTime = 0
             End If
         End If
@@ -320,7 +320,7 @@ Module highscores
     Public letterCool1 As Boolean
     Public letterCool2 As Boolean
 
-    Public allLetters As List(Of Char) = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "?", "/", "#", "$"}
+    Public allLetters As List(Of Char) = New List(Of Char) From {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "!", "?", "/", "|", "\", "#", "$", "."}
 
     Public Sub highscoreInit()
         Dim highscores As List(Of String) = New List(Of String) From {}
@@ -360,13 +360,13 @@ Module highscores
                     If CInt(highscores(temp - 1)) > endScore1 Then
                         onboard = True
                         highscores.Insert(temp, endScore1)
-                        names.Insert(temp, "AAA")
+                        names.Insert(temp, "...")
                         endPlace1 = temp
                     End If
                 Else
                     onboard = True
                     highscores.Insert(temp, endScore1)
-                    names.Insert(temp, "AAA")
+                    names.Insert(temp, "...")
                     endPlace1 = temp
                 End If
             End If
