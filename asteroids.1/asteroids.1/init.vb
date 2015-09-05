@@ -6,7 +6,6 @@ Imports Microsoft.VisualBasic.ApplicationServices
 
 Module debug
     Public Const debugging As Boolean = False
-    Public Const hitbox As Boolean = True         'Hitbox show
     Public Const bulLimit As Integer = 4          'The number of bullets onscreen per player
     Public Const bulTime As Integer = 25          'The amount of time the bullet stays on screen
     Public Const start As Boolean = False         'To change the number and size of asteroids
@@ -17,12 +16,7 @@ Module debug
     Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
 
     'asteroid specifics
-    Public Const minRadius As Integer = 20   'The minimum size of asteroid
-    Public Const maxRadius As Integer = 35   'The maximum size
-    Public Const gran As Integer = 15        'The amount of spiky bits
-    Public Const minVary As Integer = 10     'How minimum amount of variation
-    Public Const maxVary As Integer = 30     'The maximum amount
-
+   
     Public Const exploTime As Integer = 150  'The length of the explosion
     Public Const exploMove As Integer = 6    'The speed the explosion can spread
     Public Const exploPercent As Integer = 2 'The velocity the explosion inherits from its object
@@ -41,7 +35,7 @@ End Module
 
 Module initialise
     'Option Variables
-    Public coop As Boolean = True          'For player 1 and player 2
+    Public coop As Boolean = False          'For player 1 and player 2
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
     Public mute As Boolean = True         'Mute or not
 
@@ -139,17 +133,18 @@ Module initialise
     End Sub                       'Declaring the font of all labels and their positions
 
     'Screen
+    Public cursorVis As Boolean = True
     Private Sub screenInit()
         menu.Size = New Size(900, 900)
         menu.Top = My.Computer.Screen.Bounds.Height / 2 - menu.Height / 2
         menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
-        cursorInit(ResizeImage(My.Resources.ship, My.Resources.ship.Size))
+        cursorInit(My.Resources.shipThrust)
     End Sub                      'Declare the screen specifics
     Private Sub cursorInit(image As Image)
-        Dim bm As Bitmap = New Bitmap(image, New Size(image.Width * 2, image.Height))
+        Dim bm As Bitmap = New Bitmap(image, New Size(image.Width * 2, image.Height + 10))
         Dim g As Graphics = Graphics.FromImage(bm)
         g.Clear(Color.Transparent)
-        g.RotateTransform(315)
+        g.RotateTransform(340)
         g.DrawImage(image, 0, 22)
         g.Dispose()
         menu.Cursor = New Cursor(bm.GetHicon)
@@ -163,8 +158,12 @@ End Module
 
 Module loading
     Public Sub menuLoad()
+        If cursorVis = False Then
+            Cursor.Show()
+            cursorVis = True
+        End If
+        Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 100)
         gamestate = "menu"
-
         menuVisible(True)
         pauseVisible(False)
         scoreVisible(False, False)
@@ -181,7 +180,10 @@ Module loading
         End 'Temp
     End Sub  'Loads Options
     Public Sub gameLoad()
-        Cursor.Hide()
+        If cursorVis = True Then
+            Cursor.Hide()
+            cursorVis = False
+        End If
         keyReset()
         spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
         explosionArray = New List(Of explosion)
@@ -218,12 +220,20 @@ Module loading
         End If
     End Sub    'Loads Level
     Public Sub pauseLoad()
-        Cursor.Show()
+        Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 150)
+        If cursorVis = False Then
+            Cursor.Show()
+            cursorVis = True
+        End If
         menu.gameTimer.Enabled = False
         pauseVisible(True)
     End Sub    'Loads Pause
     Public Sub highLoad()
-        Cursor.Show()
+        If cursorVis = False Then
+            Cursor.Show()
+            cursorVis = True
+        End If
+        Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 370)
 
         endScore1 = -1 : endScore2 = -1
         If gamestate <> "menu" Then

@@ -97,4 +97,14 @@ Public Class menu
         highScoreRecord()
         menuLoad()
     End Sub  'Highscore Back button
+
+    Private Sub label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+        If coop Then
+            coop = False
+            Label1.Text = "Co-op: False"
+        Else
+            coop = True
+            Label1.Text = "Co-op: True"
+        End If
+    End Sub
 End Class

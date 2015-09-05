@@ -113,13 +113,19 @@ Public Class ship
 End Class
 
 Public Class asteroid
+    Private Const minRadius As Integer = 20   'The minimum size of asteroid
+    Private Const maxRadius As Integer = 35   'The maximum size
+    Private Const gran As Integer = 15        'The amount of spiky bits
+    Private Const minVary As Integer = 10     'How minimum amount of variation
+    Private Const maxVary As Integer = 30     'The maximum amount
+
     Public Property location As PointF
     Public Property locationx As Double : Public Property locationy As Double
     Public Property xVelocity As Double : Public Property yvelocity As Double
     Public Property level As Integer
     Public Property radius As Integer
-    Public Property tempList As New List(Of PointF) From {}
-    Public Property points As New List(Of PointF) From {}
+    Private Property tempList As New List(Of PointF) From {}
+    Private Property points As New List(Of PointF) From {}
     Public Property drawPoints As PointF()
 
     Public Sub New(size As Integer, ast As asteroid)

@@ -55,6 +55,7 @@ Partial Class menu
         Me.highscore2 = New System.Windows.Forms.Label()
         Me.highscoreBack = New System.Windows.Forms.Label()
         Me.highscores = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'gameTimer
@@ -456,11 +457,26 @@ Partial Class menu
         Me.highscores.Text = "Highscores"
         Me.highscores.UseCompatibleTextRendering = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.White
+        Me.Label1.Location = New System.Drawing.Point(-2, -3)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(200, 44)
+        Me.Label1.TabIndex = 50
+        Me.Label1.Text = "Co-op: False"
+        Me.Label1.UseCompatibleTextRendering = True
+        '
         'menu
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
         Me.ClientSize = New System.Drawing.Size(900, 900)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.highscores)
         Me.Controls.Add(Me.highscoreBack)
         Me.Controls.Add(Me.highscore2)
@@ -534,5 +550,5 @@ Partial Class menu
     Friend WithEvents highscore2 As System.Windows.Forms.Label
     Friend WithEvents highscoreBack As System.Windows.Forms.Label
     Friend WithEvents highscores As System.Windows.Forms.Label
-
+    Friend WithEvents Label1 As Label
 End Class

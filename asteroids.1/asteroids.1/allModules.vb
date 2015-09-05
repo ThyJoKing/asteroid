@@ -277,6 +277,7 @@ Module labelVisible
         menu.optionsButton.Visible = truFalse
         menu.playButton.Visible = truFalse
         menu.highscores.Visible = truFalse
+        menu.Label1.Visible = truFalse
     End Sub                         'Menu labels visible
     Public Sub pauseVisible(truFalse As Boolean)
         menu.pauseExit.Visible = truFalse
@@ -410,7 +411,7 @@ Module highscores
     End Sub
 
     Public Sub scoreRecord()
-        If endPlace1 < 6 Then
+        If endPlace1 < 5 Then
             If GetAsyncKeyState(hotKeys("player1Shoot")) Then
                 If Not letterCool1 Then letterPlace1 += 1
                 letterCool1 = True
@@ -423,18 +424,18 @@ Module highscores
             Else
                 letterCool1 = False
             End If
-            If letterPlace1 = 3 Then : endPlace1 = 6
+            If letterPlace1 = 3 Then : endPlace1 = 5
             Else
                 If letters1(letterPlace1) = -1 Then
                     letters1(letterPlace1) = allLetters.Count - 1
-                ElseIf letters1(letterPlace1) = allLetters.count Then
+                ElseIf letters1(letterPlace1) = allLetters.Count Then
                     letters1(letterPlace1) = 0
                 End If
                 nameLabels(endPlace1).Text = allLetters(letters1(0)) + allLetters(letters1(1)) + allLetters(letters1(2))
 
             End If
         End If
-        If endPlace2 < 6 Then
+        If endPlace2 < 5 Then
             If GetAsyncKeyState(hotKeys("player2Shoot")) Then
                 If Not letterCool2 Then letterPlace2 += 1
                 letterCool2 = True
@@ -447,7 +448,7 @@ Module highscores
             Else
                 letterCool2 = False
             End If
-            If letterPlace2 = 3 Then : endPlace2 = 6
+            If letterPlace2 = 3 Then : endPlace2 = 5
             Else
                 If letters2(letterPlace2) = -1 Then
                     letters2(letterPlace2) = allLetters.Count - 1
