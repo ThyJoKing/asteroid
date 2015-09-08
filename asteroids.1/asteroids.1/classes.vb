@@ -77,7 +77,8 @@ Public Class ship
                 points.Add(New PointF(Sin(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.X, -Cos(2 * Math.PI * ((angle + 140) / 360)) * 35 + location.Y))
                 drawPoints = points.ToArray
             End If
-        Else : drawPoints = {New Point(-200, -200)}
+        Else
+            drawPoints = {New Point(-200, -200)}
         End If
         If invincibleTimer Mod 80 < 60 And invincibleTimer > 0 And lives <> 0 And Not inHyperspace Then drawRotateImage(Image, angle, locationx, locationy, e)
     End Sub
