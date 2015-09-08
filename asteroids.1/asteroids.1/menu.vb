@@ -78,8 +78,9 @@ Public Class menu
 
     'Pause Buttons
     Private Sub pauseResume_Click(sender As Object, e As EventArgs) Handles pauseResume.Click
-        If cursorVis = True Then
+        If cursorVis Then
             Cursor.Hide()
+            cursorVis = False
         End If
         keyReset()
         pauseVisible(False)

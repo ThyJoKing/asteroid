@@ -158,7 +158,7 @@ End Module
 
 Module loading
     Public Sub menuLoad()
-        If cursorVis = False Then
+        If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
         End If
@@ -180,7 +180,7 @@ Module loading
         End 'Temp
     End Sub  'Loads Options
     Public Sub gameLoad()
-        If cursorVis = True Then
+        If cursorVis Then
             Cursor.Hide()
             cursorVis = False
         End If
@@ -221,7 +221,7 @@ Module loading
     End Sub    'Loads Level
     Public Sub pauseLoad()
         Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 150)
-        If cursorVis = False Then
+        If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
         End If
@@ -229,7 +229,7 @@ Module loading
         pauseVisible(True)
     End Sub    'Loads Pause
     Public Sub highLoad()
-        If cursorVis = False Then
+        If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
         End If
