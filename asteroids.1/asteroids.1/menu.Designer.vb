@@ -34,7 +34,7 @@ Partial Class menu
         Me.player2Score = New System.Windows.Forms.Label()
         Me.pauseResume = New System.Windows.Forms.Label()
         Me.pauseExit = New System.Windows.Forms.Label()
-        Me.Coins = New System.Windows.Forms.Label()
+        Me.coins = New System.Windows.Forms.Label()
         Me.pauseRestart = New System.Windows.Forms.Label()
         Me.state = New System.Windows.Forms.Label()
         Me.highScoreTitle = New System.Windows.Forms.Label()
@@ -184,18 +184,18 @@ Partial Class menu
         Me.pauseExit.Text = "Exit"
         Me.pauseExit.UseCompatibleTextRendering = True
         '
-        'Coins
+        'coins
         '
-        Me.Coins.AutoSize = True
-        Me.Coins.BackColor = System.Drawing.Color.Transparent
-        Me.Coins.ForeColor = System.Drawing.Color.White
-        Me.Coins.Location = New System.Drawing.Point(217, 354)
-        Me.Coins.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Coins.Name = "Coins"
-        Me.Coins.Size = New System.Drawing.Size(77, 24)
-        Me.Coins.TabIndex = 24
-        Me.Coins.Text = "Coin(s): 0"
-        Me.Coins.UseCompatibleTextRendering = True
+        Me.coins.AutoSize = True
+        Me.coins.BackColor = System.Drawing.Color.Transparent
+        Me.coins.ForeColor = System.Drawing.Color.White
+        Me.coins.Location = New System.Drawing.Point(217, 354)
+        Me.coins.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.coins.Name = "coins"
+        Me.coins.Size = New System.Drawing.Size(77, 24)
+        Me.coins.TabIndex = 24
+        Me.coins.Text = "Coin(s): 0"
+        Me.coins.UseCompatibleTextRendering = True
         '
         'pauseRestart
         '
@@ -497,7 +497,7 @@ Partial Class menu
         Me.Controls.Add(Me.highScoreTitle)
         Me.Controls.Add(Me.state)
         Me.Controls.Add(Me.pauseRestart)
-        Me.Controls.Add(Me.Coins)
+        Me.Controls.Add(Me.coins)
         Me.Controls.Add(Me.pauseExit)
         Me.Controls.Add(Me.pauseResume)
         Me.Controls.Add(Me.player2Score)
@@ -529,7 +529,7 @@ Partial Class menu
     Friend WithEvents player2Score As System.Windows.Forms.Label
     Friend WithEvents pauseResume As System.Windows.Forms.Label
     Friend WithEvents pauseExit As System.Windows.Forms.Label
-    Friend WithEvents Coins As System.Windows.Forms.Label
+    Friend WithEvents coins As System.Windows.Forms.Label
     Friend WithEvents pauseRestart As System.Windows.Forms.Label
     Friend WithEvents state As System.Windows.Forms.Label
     Friend WithEvents highScoreTitle As System.Windows.Forms.Label

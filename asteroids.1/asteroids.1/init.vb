@@ -37,9 +37,9 @@ Module initialise
     'Option Variables
     Public coop As Boolean = False          'For player 1 and player 2
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
-    Public mute As Boolean = True         'Mute or not
+    Public mute As Boolean = True           'Mute or not
 
-    Public spriteArray As New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
+    Public spriteArray As New List(Of List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
     'sprites in order
     '0. asteroids
     '1. player ship
@@ -58,7 +58,7 @@ Module initialise
     End Sub                         'Initialises everything
 
     'Fonts
-    Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
+    Private hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
     Private Sub fontInit()
         Dim fontMemPointer As IntPtr = Marshal.AllocCoTaskMem(My.Resources.Hyperspace.Length)
         Marshal.Copy(My.Resources.Hyperspace, 0, fontMemPointer, My.Resources.Hyperspace.Length)
@@ -92,44 +92,43 @@ Module initialise
     Private roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
     Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
     Private Sub labelInit()
+        Dim hyper = hyperspaceFont.Families(0)
         'Title Screen
-        menu.title.Font = New Font(hyperspaceFont.Families(0), 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
-        menu.playButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
-        menu.optionsButton.Font = New Font(hyperspaceFont.Families(0), 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 650)
-        menu.Coins.Font = New Font(hyperspaceFont.Families(0), 20, FontStyle.Bold) : menu.Coins.Location = New Point(menu.Width / 2 - menu.Coins.Width / 2, 850)
-        menu.highscores.Font = New Font(hyperspaceFont.Families(0), 60) : menu.highscores.Location = New Point(menu.Width / 2 - menu.highscores.Width / 2, 550)
-
+        menu.title.Font = New Font(hyper, 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
+        menu.playButton.Font = New Font(hyper, 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
+        menu.optionsButton.Font = New Font(hyper, 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 650)
+        menu.coins.Font = New Font(hyper, 20, FontStyle.Bold) : menu.coins.Location = New Point(menu.Width / 2 - menu.coins.Width / 2, 850)
+        menu.highscores.Font = New Font(hyper, 60) : menu.highscores.Location = New Point(menu.Width / 2 - menu.highscores.Width / 2, 550)
 
         'Player score and title
-        menu.player1Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
-        menu.player1Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
-        menu.player2Title.Location = New System.Drawing.Point(menu.Width - 200, 10) : menu.player2Title.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
-        menu.player2Score.Location = New System.Drawing.Point(menu.Width - 400, 70) : menu.player2Score.Font = New Font(hyperspaceFont.Families(0), 30, FontStyle.Underline)
+        menu.player1Title.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
+        menu.player1Score.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
+        menu.player2Title.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player2Title.Location = New Point(menu.Width - menu.player2Title.Width, 10)
+        menu.player2Score.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player2Score.Location = New Point(menu.Width - menu.player2Score.Width, 70)
 
         'Pause Menu
-        menu.pauseResume.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
-        menu.pauseRestart.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
-        menu.pauseExit.Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
+        menu.pauseResume.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
+        menu.pauseRestart.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
+        menu.pauseExit.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
 
         'Highscore Menu
-        menu.highScoreTitle.Font = New Font(hyperspaceFont.Families(0), 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
-        menu.highscoreBack.Font = New Font(hyperspaceFont.Families(0), 40) : menu.highscoreBack.Location = New Point(menu.Width / 2 - menu.highscoreBack.Width / 2, menu.Height - 150)
+        menu.highScoreTitle.Font = New Font(hyper, 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
+        menu.highscoreBack.Font = New Font(hyper, 40) : menu.highscoreBack.Location = New Point(menu.Width / 2 - menu.highscoreBack.Width / 2, menu.Height - 150)
         Dim num As Integer = 230
         Dim tem As Integer = 0
         While tem < 5
-            nameLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            nameLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
             nameLabels(tem).Location = New Point(menu.Width / 2 + 100, num)
 
-            roundLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            roundLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
             roundLabels(tem).Location = New Point(menu.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
 
             highscoreLabels(tem).Size = New Size(250, 100)
-            highscoreLabels(tem).Font = New Font(hyperspaceFont.Families(0), 40, FontStyle.Regular)
+            highscoreLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
             highscoreLabels(tem).Location = New Point(menu.Width / 2 - 170, num)
             num += 100
             tem += 1
         End While
-
     End Sub                       'Declaring the font of all labels and their positions
 
     'Screen
