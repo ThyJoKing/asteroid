@@ -231,7 +231,7 @@ Public Class bullet
         End If
     End Sub
     Public Sub move()
-        location = New Point(location.X + Xvelocity, location.Y + Yvelocity)
+        location = New Point(location.X + xVelocity, location.Y + yVelocity)
         If location.X < -20 Then location = New Point(menu.Width + 15, location.Y)
         If location.X > menu.Width + 15 Then location = New Point(-20, location.Y)
         If location.Y < -20 Then location = New Point(location.X, menu.Height + 15)

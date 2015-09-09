@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class menu
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class menu
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.gameTimer = New System.Windows.Forms.Timer(Me.components)
@@ -34,7 +34,7 @@ Partial Class menu
         Me.player2Score = New System.Windows.Forms.Label()
         Me.pauseResume = New System.Windows.Forms.Label()
         Me.pauseExit = New System.Windows.Forms.Label()
-        Me.coins = New System.Windows.Forms.Label()
+        Me.coinLabel = New System.Windows.Forms.Label()
         Me.pauseRestart = New System.Windows.Forms.Label()
         Me.state = New System.Windows.Forms.Label()
         Me.highScoreTitle = New System.Windows.Forms.Label()
@@ -184,18 +184,18 @@ Partial Class menu
         Me.pauseExit.Text = "Exit"
         Me.pauseExit.UseCompatibleTextRendering = True
         '
-        'coins
+        'coinLabel
         '
-        Me.coins.AutoSize = True
-        Me.coins.BackColor = System.Drawing.Color.Transparent
-        Me.coins.ForeColor = System.Drawing.Color.White
-        Me.coins.Location = New System.Drawing.Point(217, 354)
-        Me.coins.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.coins.Name = "coins"
-        Me.coins.Size = New System.Drawing.Size(77, 24)
-        Me.coins.TabIndex = 24
-        Me.coins.Text = "Coin(s): 0"
-        Me.coins.UseCompatibleTextRendering = True
+        Me.coinLabel.AutoSize = True
+        Me.coinLabel.BackColor = System.Drawing.Color.Transparent
+        Me.coinLabel.ForeColor = System.Drawing.Color.White
+        Me.coinLabel.Location = New System.Drawing.Point(217, 354)
+        Me.coinLabel.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.coinLabel.Name = "coinLabel"
+        Me.coinLabel.Size = New System.Drawing.Size(77, 24)
+        Me.coinLabel.TabIndex = 24
+        Me.coinLabel.Text = "Coin(s): 0"
+        Me.coinLabel.UseCompatibleTextRendering = True
         '
         'pauseRestart
         '
@@ -497,7 +497,7 @@ Partial Class menu
         Me.Controls.Add(Me.highScoreTitle)
         Me.Controls.Add(Me.state)
         Me.Controls.Add(Me.pauseRestart)
-        Me.Controls.Add(Me.coins)
+        Me.Controls.Add(Me.coinLabel)
         Me.Controls.Add(Me.pauseExit)
         Me.Controls.Add(Me.pauseResume)
         Me.Controls.Add(Me.player2Score)
@@ -529,7 +529,7 @@ Partial Class menu
     Friend WithEvents player2Score As System.Windows.Forms.Label
     Friend WithEvents pauseResume As System.Windows.Forms.Label
     Friend WithEvents pauseExit As System.Windows.Forms.Label
-    Friend WithEvents coins As System.Windows.Forms.Label
+    Friend WithEvents coinLabel As System.Windows.Forms.Label
     Friend WithEvents pauseRestart As System.Windows.Forms.Label
     Friend WithEvents state As System.Windows.Forms.Label
     Friend WithEvents highScoreTitle As System.Windows.Forms.Label

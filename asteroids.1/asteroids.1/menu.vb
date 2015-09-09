@@ -10,6 +10,7 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Public Class menu
     Public Event Shutdown As ShutdownEventHandler
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
+        coins.Show()
         Randomize()
         DoubleBuffered = True
         allInit()

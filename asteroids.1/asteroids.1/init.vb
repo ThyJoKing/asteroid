@@ -16,7 +16,7 @@ Module debug
     Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
 
     'asteroid specifics
-   
+
     Public Const exploTime As Integer = 150  'The length of the explosion
     Public Const exploMove As Integer = 6    'The speed the explosion can spread
     Public Const exploPercent As Integer = 2 'The velocity the explosion inherits from its object
@@ -58,7 +58,7 @@ Module initialise
     End Sub                         'Initialises everything
 
     'Fonts
-    Private hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
+    Public hyperspaceFont As PrivateFontCollection = New PrivateFontCollection 'The Hyperspace Font
     Private Sub fontInit()
         Dim fontMemPointer As IntPtr = Marshal.AllocCoTaskMem(My.Resources.Hyperspace.Length)
         Marshal.Copy(My.Resources.Hyperspace, 0, fontMemPointer, My.Resources.Hyperspace.Length)
@@ -97,7 +97,7 @@ Module initialise
         menu.title.Font = New Font(hyper, 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
         menu.playButton.Font = New Font(hyper, 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
         menu.optionsButton.Font = New Font(hyper, 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 650)
-        menu.coins.Font = New Font(hyper, 20, FontStyle.Bold) : menu.coins.Location = New Point(menu.Width / 2 - menu.coins.Width / 2, 850)
+        menu.coinLabel.Font = New Font(hyper, 20, FontStyle.Bold) : menu.coinLabel.Location = New Point(menu.Width / 2 - menu.coinLabel.Width / 2, 850)
         menu.highscores.Font = New Font(hyper, 60) : menu.highscores.Location = New Point(menu.Width / 2 - menu.highscores.Width / 2, 550)
 
         'Player score and title

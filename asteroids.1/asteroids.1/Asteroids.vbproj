@@ -6,9 +6,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C300DA60-B308-4BAA-BC17-C8B42BB69407}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>asteroids._1.My.MyApplication</StartupObject>
-    <RootNamespace>asteroids._1</RootNamespace>
-    <AssemblyName>asteroids.1</AssemblyName>
+    <StartupObject>Asteroids.My.MyApplication</StartupObject>
+    <RootNamespace>Asteroids</RootNamespace>
+    <AssemblyName>Asteroids</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -35,7 +35,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>asteroids.1.xml</DocumentationFile>
+    <DocumentationFile>Asteroids.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
@@ -46,7 +46,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>asteroids.1.xml</DocumentationFile>
+    <DocumentationFile>Asteroids.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -146,81 +146,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AsteroidsShip.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\asteroids.gif" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\explode1.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\explode2.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\explode3.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fire.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Hyperspace Bold Italic.otf" />
-    <None Include="Resources\Hyperspace Bold Italic.ttf" />
-    <None Include="Resources\Hyperspace Bold.otf" />
-    <None Include="Resources\Hyperspace Bold.ttf" />
-    <None Include="Resources\Hyperspace Italic.otf" />
-    <None Include="Resources\Hyperspace Italic.ttf" />
-    <None Include="Resources\Hyperspace.otf" />
     <None Include="Resources\Hyperspace.ttf" />
-    <None Include="Resources\life.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\lsaucer.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sfire.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ssaucer.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\thrust.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\thumphi.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\thumplo.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\asteroid_1.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\asteroid_2.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\asteroid_4.PNG" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ship.PNG" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shipLife.PNG" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\shipThrust.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\options.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\titlePlay.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\copyright.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\title.PNG" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -240,28 +172,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bullet.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\asteroid_3.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\cursortest.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\textcursor.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ship.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ship.cur" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\test.cur" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\enemyShip1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coinslot.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coin piles.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\coin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
