@@ -46,7 +46,7 @@ Module initialise
     '2. enemy ship
     '3. bullets
     Public explosionArray As New List(Of explosion) From {}
-    Public gamestate As String = "menu" 'The current Gamestate
+    Public gamestate As String = "mainWindow" 'The current Gamestate
 
     Public Sub allInit()
         highscoreInit()
@@ -88,44 +88,44 @@ Module initialise
     End Sub                     'Declaring the initial hotkeys
 
     'Labels
-    Public highscoreLabels As New List(Of Label) From {menu.highscore1, menu.highscore2, menu.highscore3, menu.highscore4, menu.highscore5}
-    Private roundLabels As New List(Of Label) From {menu.round1, menu.round2, menu.round3, menu.round4, menu.round5}
-    Public nameLabels As New List(Of Label) From {menu.name1, menu.name2, menu.name3, menu.name4, menu.name5}
+    Public highscoreLabels As New List(Of Label) From {mainWindow.highscore1, mainWindow.highscore2, mainWindow.highscore3, mainWindow.highscore4, mainWindow.highscore5}
+    Private roundLabels As New List(Of Label) From {mainWindow.round1, mainWindow.round2, mainWindow.round3, mainWindow.round4, mainWindow.round5}
+    Public nameLabels As New List(Of Label) From {mainWindow.name1, mainWindow.name2, mainWindow.name3, mainWindow.name4, mainWindow.name5}
     Private Sub labelInit()
         Dim hyper = hyperspaceFont.Families(0)
         'Title Screen
-        menu.title.Font = New Font(hyper, 100, FontStyle.Italic) : menu.title.Location = New Point(menu.Width / 2 - menu.title.Width / 2, 180)
-        menu.playButton.Font = New Font(hyper, 60) : menu.playButton.Location = New Point(menu.Width / 2 - menu.playButton.Width / 2, 450)
-        menu.optionsButton.Font = New Font(hyper, 60) : menu.optionsButton.Location = New Point(menu.Width / 2 - menu.optionsButton.Width / 2, 650)
-        menu.coinLabel.Font = New Font(hyper, 20, FontStyle.Bold) : menu.coinLabel.Location = New Point(menu.Width / 2 - menu.coinLabel.Width / 2, 850)
-        menu.highscores.Font = New Font(hyper, 60) : menu.highscores.Location = New Point(menu.Width / 2 - menu.highscores.Width / 2, 550)
+        mainWindow.title.Font = New Font(hyper, 100, FontStyle.Italic) : mainWindow.title.Location = New Point(mainWindow.Width / 2 - mainWindow.title.Width / 2, 180)
+        mainWindow.playButton.Font = New Font(hyper, 60) : mainWindow.playButton.Location = New Point(mainWindow.Width / 2 - mainWindow.playButton.Width / 2, 450)
+        mainWindow.optionsButton.Font = New Font(hyper, 60) : mainWindow.optionsButton.Location = New Point(mainWindow.Width / 2 - mainWindow.optionsButton.Width / 2, 650)
+        mainWindow.coinLabel.Font = New Font(hyper, 20, FontStyle.Bold) : mainWindow.coinLabel.Location = New Point(mainWindow.Width / 2 - mainWindow.coinLabel.Width / 2, 850)
+        mainWindow.highscores.Font = New Font(hyper, 60) : mainWindow.highscores.Location = New Point(mainWindow.Width / 2 - mainWindow.highscores.Width / 2, 550)
 
         'Player score and title
-        menu.player1Title.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player1Title.Location = New System.Drawing.Point(8, 10)
-        menu.player1Score.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player1Score.Location = New System.Drawing.Point(-20, 70)
-        menu.player2Title.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player2Title.Location = New Point(menu.Width - menu.player2Title.Width, 10)
-        menu.player2Score.Font = New Font(hyper, 30, FontStyle.Underline) : menu.player2Score.Location = New Point(menu.Width - menu.player2Score.Width, 70)
+        mainWindow.player1Title.Font = New Font(hyper, 30, FontStyle.Underline) : mainWindow.player1Title.Location = New System.Drawing.Point(8, 10)
+        mainWindow.player1Score.Font = New Font(hyper, 30, FontStyle.Underline) : mainWindow.player1Score.Location = New System.Drawing.Point(-20, 70)
+        mainWindow.player2Title.Font = New Font(hyper, 30, FontStyle.Underline) : mainWindow.player2Title.Location = New Point(mainWindow.Width - mainWindow.player2Title.Width, 10)
+        mainWindow.player2Score.Font = New Font(hyper, 30, FontStyle.Underline) : mainWindow.player2Score.Location = New Point(mainWindow.Width - mainWindow.player2Score.Width, 70)
 
-        'Pause Menu
-        menu.pauseResume.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseResume.Location = New Point(menu.Width / 2 - menu.pauseResume.Width / 2, menu.Height / 2 + 75)
-        menu.pauseRestart.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseRestart.Location = New Point(menu.Width / 2 - menu.pauseRestart.Width / 2, menu.Height / 2)
-        menu.pauseExit.Font = New Font(hyper, 40, FontStyle.Italic) : menu.pauseExit.Location = New Point(menu.Width / 2 - menu.pauseExit.Width / 2, menu.Height / 2 - 75)
+        'Pause mainWindow
+        mainWindow.pauseResume.Font = New Font(hyper, 40, FontStyle.Italic) : mainWindow.pauseResume.Location = New Point(mainWindow.Width / 2 - mainWindow.pauseResume.Width / 2, mainWindow.Height / 2 + 75)
+        mainWindow.pauseRestart.Font = New Font(hyper, 40, FontStyle.Italic) : mainWindow.pauseRestart.Location = New Point(mainWindow.Width / 2 - mainWindow.pauseRestart.Width / 2, mainWindow.Height / 2)
+        mainWindow.pauseExit.Font = New Font(hyper, 40, FontStyle.Italic) : mainWindow.pauseExit.Location = New Point(mainWindow.Width / 2 - mainWindow.pauseExit.Width / 2, mainWindow.Height / 2 - 75)
 
-        'Highscore Menu
-        menu.highScoreTitle.Font = New Font(hyper, 50, FontStyle.Italic) : menu.highScoreTitle.Location = New Point(menu.Width / 2 - menu.highScoreTitle.Width / 2, 100)
-        menu.highscoreBack.Font = New Font(hyper, 40) : menu.highscoreBack.Location = New Point(menu.Width / 2 - menu.highscoreBack.Width / 2, menu.Height - 150)
+        'Highscore mainWindow
+        mainWindow.highScoreTitle.Font = New Font(hyper, 50, FontStyle.Italic) : mainWindow.highScoreTitle.Location = New Point(mainWindow.Width / 2 - mainWindow.highScoreTitle.Width / 2, 100)
+        mainWindow.highscoreBack.Font = New Font(hyper, 40) : mainWindow.highscoreBack.Location = New Point(mainWindow.Width / 2 - mainWindow.highscoreBack.Width / 2, mainWindow.Height - 150)
         Dim num As Integer = 230
         Dim tem As Integer = 0
         While tem < 5
             nameLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
-            nameLabels(tem).Location = New Point(menu.Width / 2 + 100, num)
+            nameLabels(tem).Location = New Point(mainWindow.Width / 2 + 100, num)
 
             roundLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
-            roundLabels(tem).Location = New Point(menu.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
+            roundLabels(tem).Location = New Point(mainWindow.Width / 2 - roundLabels(tem).Width / 2 - 200, num)
 
             highscoreLabels(tem).Size = New Size(250, 100)
             highscoreLabels(tem).Font = New Font(hyper, 40, FontStyle.Regular)
-            highscoreLabels(tem).Location = New Point(menu.Width / 2 - 170, num)
+            highscoreLabels(tem).Location = New Point(mainWindow.Width / 2 - 170, num)
             num += 100
             tem += 1
         End While
@@ -134,9 +134,9 @@ Module initialise
     'Screen
     Public cursorVis As Boolean = True
     Private Sub screenInit()
-        menu.Size = New Size(900, 900)
-        menu.Top = My.Computer.Screen.Bounds.Height / 2 - menu.Height / 2
-        menu.Left = My.Computer.Screen.Bounds.Width / 2 - menu.Width / 2
+        mainWindow.Size = New Size(900, 900)
+        mainWindow.Top = My.Computer.Screen.Bounds.Height / 2 - mainWindow.Height / 2
+        mainWindow.Left = My.Computer.Screen.Bounds.Width / 2 - mainWindow.Width / 2
         cursorInit(My.Resources.shipThrust)
     End Sub                      'Declare the screen specifics
     Private Sub cursorInit(image As Image)
@@ -146,7 +146,7 @@ Module initialise
         g.RotateTransform(340)
         g.DrawImage(image, 0, 22)
         g.Dispose()
-        menu.Cursor = New Cursor(bm.GetHicon)
+        mainWindow.Cursor = New Cursor(bm.GetHicon)
     End Sub        'Cursor set
 
     Public lifeImage As Image
@@ -156,14 +156,14 @@ Module initialise
 End Module
 
 Module loading
-    Public Sub menuLoad()
+    Public Sub mainWindowLoad()
         If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
         End If
         Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 100)
-        gamestate = "menu"
-        menuVisible(True)
+        gamestate = "mainWindow"
+        mainWindowVisible(True)
         pauseVisible(False)
         scoreVisible(False, False)
         highscoreVisible(False)
@@ -174,7 +174,7 @@ Module loading
         For ast As Integer = 1 To 3
             spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing))
         Next
-    End Sub     'Loads Menu 
+    End Sub     'Loads mainWindow 
     Public Sub optionsLoad()
         End 'Temp
     End Sub  'Loads Options
@@ -188,7 +188,7 @@ Module loading
         explosionArray = New List(Of explosion)
         gamestate = "play"
 
-        menuVisible(False)
+        mainWindowVisible(False)
         pauseVisible(False)
         highscoreVisible(False)
 
@@ -224,7 +224,7 @@ Module loading
             Cursor.Show()
             cursorVis = True
         End If
-        menu.gameTimer.Enabled = False
+        mainWindow.gameTimer.Enabled = False
         pauseVisible(True)
     End Sub    'Loads Pause
     Public Sub highLoad()
@@ -235,13 +235,13 @@ Module loading
         Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 370)
 
         endScore1 = -1 : endScore2 = -1
-        If gamestate <> "menu" Then
+        If gamestate <> "mainWindow" Then
             If coop Then endScore2 = spriteArray(1)(1).score
             endScore1 = spriteArray(1)(0).score
         End If
 
         gamestate = "highscore"
-        menuVisible(False)
+        mainWindowVisible(False)
         pauseVisible(False)
         highscoreVisible(True)
         scoreVisible(False, False)

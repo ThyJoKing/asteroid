@@ -36,10 +36,10 @@ Public Class ship
     Public Sub spawn()
         If lives <> 0 Then
             If coop = True Then
-                If player = 1 Then locationx = menu.Width / 2 - 50 Else locationx = menu.Width / 2 + 50
-            Else : locationx = menu.Width / 2
+                If player = 1 Then locationx = mainWindow.Width / 2 - 50 Else locationx = mainWindow.Width / 2 + 50
+            Else : locationx = mainWindow.Width / 2
             End If
-            locationy = menu.Height / 2
+            locationy = mainWindow.Height / 2
             location = New Point(locationx, locationy)
             xVelocity = 0 : yVelocity = 0
             angle = 0
@@ -55,10 +55,10 @@ Public Class ship
         If Not inHyperspace And lives <> 0 Then
             yVelocity *= 0.97 : xVelocity *= 0.97
             locationx += xVelocity : locationy += yVelocity
-            If locationx < -Image.Width / 2 Then locationx = menu.Width + Image.Width / 2 - 1
-            If locationx > menu.Width + Image.Width / 2 Then locationx = -Image.Width / 2
-            If locationy < -Image.Width / 2 Then locationy = menu.Height + Image.Width / 2
-            If locationy > menu.Height + Image.Width / 2 + 1 Then locationy = -Image.Width / 2
+            If locationx < -Image.Width / 2 Then locationx = mainWindow.Width + Image.Width / 2 - 1
+            If locationx > mainWindow.Width + Image.Width / 2 Then locationx = -Image.Width / 2
+            If locationy < -Image.Width / 2 Then locationy = mainWindow.Height + Image.Width / 2
+            If locationy > mainWindow.Height + Image.Width / 2 + 1 Then locationy = -Image.Width / 2
             location = New Point(locationx, locationy)
         End If
         scoreCheck()
@@ -91,7 +91,7 @@ Public Class ship
     End Sub
     Public Sub hyperspace()
         If hyperspaceEnable Then
-            locationx = Rnd() * menu.Width : locationy = Rnd() * menu.Height
+            locationx = Rnd() * mainWindow.Width : locationy = Rnd() * mainWindow.Height
             location = New Point(locationx, locationy)
             inHyperspace = False
             hyperspaceCounter = 0
@@ -141,7 +141,7 @@ Public Class asteroid
     Public Sub spawn()
         Dim done As Boolean = False
         Do Until done
-            locationx = Rnd() * menu.Width : locationy = Rnd() * menu.Height
+            locationx = Rnd() * mainWindow.Width : locationy = Rnd() * mainWindow.Height
             done = True
             If gamestate = "play" Then
                 Dim shi1 As ship = spriteArray(1)(0)
@@ -173,10 +173,10 @@ Public Class asteroid
     End Sub
     Public Sub move()
         locationx += xVelocity : locationy += yvelocity
-        If locationx < -radius Then locationx = menu.Width + radius - 1
-        If locationx > menu.Width + radius Then locationx = -radius
-        If locationy < -radius Then locationy = menu.Height + radius - 1
-        If locationy > menu.Height + radius Then locationy = -radius
+        If locationx < -radius Then locationx = mainWindow.Width + radius - 1
+        If locationx > mainWindow.Width + radius Then locationx = -radius
+        If locationy < -radius Then locationy = mainWindow.Height + radius - 1
+        If locationy > mainWindow.Height + radius Then locationy = -radius
         location = New Point(locationx, locationy)
     End Sub
     Public Sub Draw(e As PaintEventArgs)
@@ -232,10 +232,10 @@ Public Class bullet
     End Sub
     Public Sub move()
         location = New Point(location.X + xVelocity, location.Y + yVelocity)
-        If location.X < -20 Then location = New Point(menu.Width + 15, location.Y)
-        If location.X > menu.Width + 15 Then location = New Point(-20, location.Y)
-        If location.Y < -20 Then location = New Point(location.X, menu.Height + 15)
-        If location.Y > menu.Height + 15 Then location = New Point(location.X, -20)
+        If location.X < -20 Then location = New Point(mainWindow.Width + 15, location.Y)
+        If location.X > mainWindow.Width + 15 Then location = New Point(-20, location.Y)
+        If location.Y < -20 Then location = New Point(location.X, mainWindow.Height + 15)
+        If location.Y > mainWindow.Height + 15 Then location = New Point(location.X, -20)
         bulletTime += 1
         drawPoints = {New Point(location.X, location.Y)}
     End Sub
@@ -264,7 +264,7 @@ Public Class enemyShip
         level = size
         image = My.Resources.enemyShip1
         image = ResizeImage(image, New Size((1 / level) * image.Width, (1 / level) * image.Height))
-        locationx = (Rnd() * 2 - 1) * menu.Width : locationy = Rnd() * menu.Height
+        locationx = (Rnd() * 2 - 1) * mainWindow.Width : locationy = Rnd() * mainWindow.Height
         angle = Rnd() * 178 + 1
         If locationx = 0 Then
             angle += 180
@@ -273,10 +273,10 @@ Public Class enemyShip
     End Sub
     Public Sub move()
         locationx += xVelocity : locationy += yvelocity
-        If locationx < -image.Width / 2 Then locationx = menu.Width + image.Width / 2 - 1
-        If locationx > menu.Width + image.Width / 2 Then locationx = -image.Width / 2
-        If locationy < -image.Width / 2 Then locationy = menu.Height + image.Width / 2
-        If locationy > menu.Height + image.Width / 2 + 1 Then locationy = -image.Width / 2
+        If locationx < -image.Width / 2 Then locationx = mainWindow.Width + image.Width / 2 - 1
+        If locationx > mainWindow.Width + image.Width / 2 Then locationx = -image.Width / 2
+        If locationy < -image.Width / 2 Then locationy = mainWindow.Height + image.Width / 2
+        If locationy > mainWindow.Height + image.Width / 2 + 1 Then locationy = -image.Width / 2
         location = New Point(locationx, locationy)
     End Sub
     Public Sub Draw(e As PaintEventArgs)

@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.Asteroids.menu
+            Me.MainForm = Global.Asteroids.mainWindow
         End Sub
     End Class
 End Namespace

@@ -143,7 +143,7 @@ Module drawing
         If coop Then
             num = 1
             While num < spriteArray(1)(1).lives
-                e.Graphics.DrawImage(lifeImage, menu.Width - (num * 35 + 240), 15)
+                e.Graphics.DrawImage(lifeImage, mainWindow.Width - (num * 35 + 240), 15)
                 num += 1
             End While
         End If
@@ -272,37 +272,37 @@ Module checks
 End Module
 
 Module labelVisible
-    Public Sub menuVisible(truFalse As Boolean)
-        menu.title.Visible = truFalse
-        menu.optionsButton.Visible = truFalse
-        menu.playButton.Visible = truFalse
-        menu.highscores.Visible = truFalse
-        menu.Label1.Visible = truFalse
-    End Sub                         'Menu labels visible
+    Public Sub mainWindowVisible(truFalse As Boolean)
+        mainWindow.title.Visible = truFalse
+        mainWindow.optionsButton.Visible = truFalse
+        mainWindow.playButton.Visible = truFalse
+        mainWindow.highscores.Visible = truFalse
+        mainWindow.Label1.Visible = truFalse
+    End Sub                         'mainWindow labels visible
     Public Sub pauseVisible(truFalse As Boolean)
-        menu.pauseExit.Visible = truFalse
-        menu.pauseResume.Visible = truFalse
-        menu.pauseRestart.Visible = truFalse
+        mainWindow.pauseExit.Visible = truFalse
+        mainWindow.pauseResume.Visible = truFalse
+        mainWindow.pauseRestart.Visible = truFalse
     End Sub                        'Pause labels visible
     Public Sub scoreVisible(player1 As Boolean, player2 As Boolean)
-        menu.player1Score.Visible = player1 : menu.player1Title.Visible = player1
-        menu.player2Score.Visible = player2 : menu.player2Title.Visible = player2
+        mainWindow.player1Score.Visible = player1 : mainWindow.player1Title.Visible = player1
+        mainWindow.player2Score.Visible = player2 : mainWindow.player2Title.Visible = player2
     End Sub     'Score labels visible
     Public Sub highscoreVisible(truFalse As Boolean)
-        menu.highScoreTitle.Visible = truFalse
-        menu.highscoreBack.Visible = truFalse
+        mainWindow.highScoreTitle.Visible = truFalse
+        mainWindow.highscoreBack.Visible = truFalse
 
-        menu.highscore1.Visible = truFalse : menu.highscore2.Visible = truFalse
-        menu.highscore3.Visible = truFalse : menu.highscore4.Visible = truFalse
-        menu.highscore5.Visible = truFalse
+        mainWindow.highscore1.Visible = truFalse : mainWindow.highscore2.Visible = truFalse
+        mainWindow.highscore3.Visible = truFalse : mainWindow.highscore4.Visible = truFalse
+        mainWindow.highscore5.Visible = truFalse
 
-        menu.round1.Visible = truFalse : menu.round2.Visible = truFalse
-        menu.round3.Visible = truFalse : menu.round4.Visible = truFalse
-        menu.round5.Visible = truFalse
+        mainWindow.round1.Visible = truFalse : mainWindow.round2.Visible = truFalse
+        mainWindow.round3.Visible = truFalse : mainWindow.round4.Visible = truFalse
+        mainWindow.round5.Visible = truFalse
 
-        menu.name1.Visible = truFalse : menu.name2.Visible = truFalse
-        menu.name3.Visible = truFalse : menu.name4.Visible = truFalse
-        menu.name5.Visible = truFalse
+        mainWindow.name1.Visible = truFalse : mainWindow.name2.Visible = truFalse
+        mainWindow.name3.Visible = truFalse : mainWindow.name4.Visible = truFalse
+        mainWindow.name5.Visible = truFalse
     End Sub                    'Highscore labels visible
 End Module
 

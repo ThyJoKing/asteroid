@@ -7,21 +7,21 @@ Imports Microsoft.VisualBasic.ApplicationServices
 '       threads
 '       enemy ships - for wesley
 
-Public Class menu
+Public Class mainWindow
     Public Event Shutdown As ShutdownEventHandler
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
         coins.Show()
         Randomize()
         DoubleBuffered = True
         allInit()
-        menuLoad()
+        mainWindowLoad()
         gameTimer.Enabled = True
         soundTimer.Enabled = Not mute
         If Not debugging Then
             state.Visible = False
         End If
     End Sub                      'Initial Load
-    Private Sub menu_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
+    Private Sub mainWindow_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
         If gamestate = "play" Then
             pauseLoad()
         End If
@@ -66,7 +66,7 @@ Public Class menu
         If gamestate = "play" Then livesDraw(e)
     End Sub                    'The sprite draw
 
-    'Menu Buttons
+    'mainWindow Buttons
     Public Sub playButton_Click(sender As Object, e As EventArgs) Handles playButton.Click
         gameLoad()
     End Sub         'Play Button
@@ -88,7 +88,7 @@ Public Class menu
         gameTimer.Enabled = True
     End Sub      'Pause Resume Button
     Private Sub pauseExit_Click(sender As Object, e As EventArgs) Handles pauseExit.Click
-        menuLoad()
+        mainWindowLoad()
         gameTimer.Enabled = True
     End Sub          'Pause Exit Button
     Private Sub pauseRestart_Click(sender As Object, e As EventArgs) Handles pauseRestart.Click
@@ -99,7 +99,7 @@ Public Class menu
     'Highscore Buttons
     Private Sub highscoreBack_Click(sender As Object, e As EventArgs) Handles highscoreBack.Click
         highScoreRecord()
-        menuLoad()
+        mainWindowLoad()
     End Sub  'Highscore Back button
 
     Private Sub label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
