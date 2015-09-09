@@ -47,6 +47,7 @@ Partial Class coins
         '
         'coinslot
         '
+        Me.coinslot.Cursor = System.Windows.Forms.Cursors.Hand
         Me.coinslot.Image = Global.Asteroids.My.Resources.Resources.coinslot
         Me.coinslot.Location = New System.Drawing.Point(50, 114)
         Me.coinslot.Name = "coinslot"

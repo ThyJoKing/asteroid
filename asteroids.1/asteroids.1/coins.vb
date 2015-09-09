@@ -33,7 +33,7 @@
 
     Private Sub coins_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
         If coinDrag Then
-            drawRotateImage(smallCoin, 90, MousePosition.X, MousePosition.Y, e)
+            drawRotateImage(smallCoin, 90, MousePosition.X - Me.Left, MousePosition.Y - Me.Top + smallCoin.Height / 2, e)
         End If
     End Sub
 End Class
