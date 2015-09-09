@@ -16,7 +16,7 @@ Module debug
     Public Const shipBorders As Integer = 300     'The safezone spawn radius around the ship
 
     'asteroid specifics
-   
+
     Public Const exploTime As Integer = 150  'The length of the explosion
     Public Const exploMove As Integer = 6    'The speed the explosion can spread
     Public Const exploPercent As Integer = 2 'The velocity the explosion inherits from its object
@@ -27,6 +27,8 @@ Module debug
 
     Public Const bulletSpeed As Integer = 30
 
+    Public colour As Pen = Pens.White
+
     Public fadeArray As New List(Of Pen) From {Pens.White, Pens.LightGray, Pens.DarkGray, Pens.Gray, Pens.DimGray, Pens.Black}
     'Ordered from white to black (oddly enough, darkgray is lighter than gray)
 End Module
@@ -36,7 +38,6 @@ Module initialise
     Public coop As Boolean = False          'For player 1 and player 2
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
     Public mute As Boolean = True           'Mute or not
-    Public colour As Pen = Pens.White       'Colour of bullets, asteroids
 
     Public spriteArray As New List(Of List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
     'sprites in order

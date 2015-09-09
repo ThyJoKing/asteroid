@@ -352,8 +352,8 @@ Module highscores
 
         temp = 0
         onboard = False
-        endplace1 = 6
-        endplace2 = 6
+        endPlace1 = 6
+        endPlace2 = 6
         While temp < highscores.Count
             If CInt(highscores(temp)) <= endScore1 Then
                 If temp <> 0 Then
