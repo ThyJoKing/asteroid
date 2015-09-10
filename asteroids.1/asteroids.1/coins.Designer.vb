@@ -33,7 +33,7 @@ Partial Class coins
         'coinTimer
         '
         Me.coinTimer.Enabled = True
-        Me.coinTimer.Interval = 20
+        Me.coinTimer.Interval = 30
         '
         'coinPile
         '
