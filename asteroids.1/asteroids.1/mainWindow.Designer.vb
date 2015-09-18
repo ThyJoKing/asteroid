@@ -60,6 +60,7 @@ Partial Class mainWindow
         '
         'gameTimer
         '
+        Me.gameTimer.Enabled = True
         Me.gameTimer.Interval = 25
         '
         'soundTimer
@@ -471,7 +472,7 @@ Partial Class mainWindow
         Me.Label1.Text = "Co-op: False"
         Me.Label1.UseCompatibleTextRendering = True
         '
-        'menu
+        'mainWindow
         '
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
         Me.BackColor = System.Drawing.Color.Black
@@ -511,7 +512,7 @@ Partial Class mainWindow
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.Name = "menu"
+        Me.Name = "mainWindow"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
         Me.ResumeLayout(False)

@@ -10,13 +10,10 @@ Imports Microsoft.VisualBasic.ApplicationServices
 Public Class mainWindow
     Public Event Shutdown As ShutdownEventHandler
     Public Sub baseLoad(sender As Object, e As EventArgs) Handles MyBase.Load
-        coins.Show()
         Randomize()
-        DoubleBuffered = True
         allInit()
         mainWindowLoad()
-        gameTimer.Enabled = True
-        soundTimer.Enabled = Not mute
+        DoubleBuffered = True
         If Not debugging Then
             state.Visible = False
         End If
@@ -68,7 +65,11 @@ Public Class mainWindow
 
     'mainWindow Buttons
     Public Sub playButton_Click(sender As Object, e As EventArgs) Handles playButton.Click
-        gameLoad()
+        If coop And coins.coinsNum > 1 Or Not coop And coins.coinsNum > 0 Then
+            gameLoad()
+            If coop Then coins.coinsNum -= 2 Else coins.coinsNum -= 1
+            coinLabel.Text = "Coin(s):" + Str(coins.coinsNum)
+        End If
     End Sub         'Play Button
     Public Sub optionsButton_Click(sender As Object, e As EventArgs) Handles optionsButton.Click
         optionsLoad()

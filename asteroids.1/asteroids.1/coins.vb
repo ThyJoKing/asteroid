@@ -1,7 +1,8 @@
 ﻿Public Class coins
     Private coinDrag As Boolean = False
-    Private coinsNum As Integer = 0
+    Public coinsNum As Integer = 0
     Private smallCoin As Image
+    Private coinAngle As Integer = 0
 
     Private Sub coins_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DoubleBuffered = True
@@ -21,6 +22,7 @@
             Me.Invalidate()
             coinslot.Invalidate()
             coinPile.Invalidate()
+            coinAngle += 10
         End If
     End Sub
 
@@ -34,6 +36,7 @@
             mainWindow.coinLabel.Text = "Coin(s):" + Str(coinsNum)
         End If
         coinDrag = False
+        coinAngle = 0
         Me.Refresh()
         coinslot.Refresh()
         coinPile.Refresh()
@@ -41,19 +44,19 @@
 
     Private Sub coins_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
         If coinDrag Then
-            drawRotateImage(smallCoin, 90, MousePosition.X - Me.Left, MousePosition.Y - Me.Top, e)
+            drawRotateImage(smallCoin, coinAngle, MousePosition.X - Me.Left, MousePosition.Y - Me.Top, e)
         End If
     End Sub
 
     Private Sub coinslot_Paint(sender As Object, e As PaintEventArgs) Handles coinslot.Paint
         If coinDrag Then
-            drawRotateImage(smallCoin, 90, MousePosition.X - coinslot.Left - Me.Left, MousePosition.Y - coinslot.Top - Me.Top, e)
+            drawRotateImage(smallCoin, coinAngle, MousePosition.X - coinslot.Left - Me.Left, MousePosition.Y - coinslot.Top - Me.Top, e)
         End If
     End Sub
 
     Private Sub coinpile_Paint(sender As Object, e As PaintEventArgs) Handles coinPile.Paint
         If coinDrag Then
-            drawRotateImage(smallCoin, 90, MousePosition.X - coinPile.Left - Me.Left, MousePosition.Y - coinPile.Top - Me.Top, e)
+            drawRotateImage(smallCoin, coinAngle, MousePosition.X - coinPile.Left - Me.Left, MousePosition.Y - coinPile.Top - Me.Top, e)
         End If
     End Sub
 End Class

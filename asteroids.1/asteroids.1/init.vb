@@ -157,12 +157,14 @@ End Module
 
 Module loading
     Public Sub mainWindowLoad()
+        coins.Show()
         If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
         End If
         Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 100)
         gamestate = "mainWindow"
+
         mainWindowVisible(True)
         pauseVisible(False)
         scoreVisible(False, False)
@@ -174,19 +176,23 @@ Module loading
         For ast As Integer = 1 To 3
             spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing)) : spriteArray(0).Add(New asteroid(ast, Nothing))
         Next
-    End Sub     'Loads mainWindow 
+    End Sub  'Loads mainWindow 
     Public Sub optionsLoad()
-        End 'Temp
-    End Sub  'Loads Options
+        'options.show()
+        'coins.hide()
+        'mainWindow.hide()
+    End Sub     'Loads Options
     Public Sub gameLoad()
         If cursorVis Then
             Cursor.Hide()
             cursorVis = False
         End If
+        coins.Hide()
         keyReset()
         spriteArray = New List(Of Generic.List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
         explosionArray = New List(Of explosion)
         gamestate = "play"
+        mainWindow.soundTimer.Enabled = Not mute
 
         mainWindowVisible(False)
         pauseVisible(False)
@@ -201,7 +207,7 @@ Module loading
         level = 1
         levelLoad()
         If highFirst Then highLoad()
-    End Sub     'Loads Game
+    End Sub        'Loads Game
     Public Sub levelLoad()
         spawnInterval = 5000 / level
         If Not start Then
@@ -217,7 +223,7 @@ Module loading
                 num += 1
             Loop
         End If
-    End Sub    'Loads Level
+    End Sub       'Loads Level
     Public Sub pauseLoad()
         Cursor.Position = New Point(My.Computer.Screen.WorkingArea.Width / 2, My.Computer.Screen.WorkingArea.Height / 2 + 150)
         If Not cursorVis Then
@@ -226,8 +232,9 @@ Module loading
         End If
         mainWindow.gameTimer.Enabled = False
         pauseVisible(True)
-    End Sub    'Loads Pause
+    End Sub       'Loads Pause
     Public Sub highLoad()
+        coins.Hide()
         If Not cursorVis Then
             Cursor.Show()
             cursorVis = True
@@ -246,5 +253,5 @@ Module loading
         highscoreVisible(True)
         scoreVisible(False, False)
         highscoreInit()
-    End Sub     'Loads Highscores
+    End Sub        'Loads Highscores
 End Module
