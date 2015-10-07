@@ -31,7 +31,7 @@ Namespace My.Resources
         Private resourceMan As Global.System.Resources.ResourceManager
         
         Private resourceCulture As Global.System.Globalization.CultureInfo
-        
+
         '''<summary>
         '''  Returns the cached ResourceManager instance used by this class.
         '''</summary>

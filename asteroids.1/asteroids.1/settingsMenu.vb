@@ -67,12 +67,12 @@ Public Class settingsMenu
         mpx = MousePosition
         If sliderMove = True Then
             'txtMousePos.Text = mpx.ToString
-            If mpx.X < 216 Then
+            If mpx.X < 216 + Me.Left + pbSlider.Width / 2 Then
                 pbSlider.Left = 216
-            ElseIf mpx.X > 1131 Then
+            ElseIf mpx.X > 1131 + Me.Left + pbSlider.Width / 2 Then
                 pbSlider.Left = 1131
             Else
-                pbSlider.Left = mpx.X
+                pbSlider.Left = mpx.X - Me.Left - pbSlider.Width / 2
             End If
             oldSoundPercentage = soundPercentage
             soundPercentage = (pbSlider.Left - 216)
@@ -93,12 +93,12 @@ Public Class settingsMenu
 
 
         ElseIf sliderMove2 = True Then
-            If mpx.X < 216 Then
+            If mpx.X < 216 + Me.Left + pbSlider.Width / 2 Then
                 pbSlider2.Left = 216
-            ElseIf mpx.X > 1131 Then
+            ElseIf mpx.X > 1131 + Me.Left + pbSlider.Width / 2 Then
                 pbSlider2.Left = 1131
             Else
-                pbSlider2.Left = mpx.X
+                pbSlider2.Left = mpx.X - Me.Left - pbSlider.Width / 2
             End If
             sensePercentage = (pbSlider2.Left - 216) / 915
             sensePercentage = CInt(sensePercentage * 100)

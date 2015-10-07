@@ -277,7 +277,7 @@ Partial Class settingsMenu
         Me.lblOffCoop.BackColor = System.Drawing.Color.Transparent
         Me.lblOffCoop.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOffCoop.ForeColor = System.Drawing.Color.White
-        Me.lblOffCoop.Location = New System.Drawing.Point(252, 612)
+        Me.lblOffCoop.Location = New System.Drawing.Point(241, 612)
         Me.lblOffCoop.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblOffCoop.Name = "lblOffCoop"
         Me.lblOffCoop.Size = New System.Drawing.Size(70, 54)
@@ -291,7 +291,7 @@ Partial Class settingsMenu
         Me.lblOnCoop.BackColor = System.Drawing.Color.Transparent
         Me.lblOnCoop.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOnCoop.ForeColor = System.Drawing.Color.White
-        Me.lblOnCoop.Location = New System.Drawing.Point(405, 612)
+        Me.lblOnCoop.Location = New System.Drawing.Point(394, 612)
         Me.lblOnCoop.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblOnCoop.Name = "lblOnCoop"
         Me.lblOnCoop.Size = New System.Drawing.Size(70, 54)
@@ -301,10 +301,10 @@ Partial Class settingsMenu
         '
         'pbCoopToggle
         '
-        Me.pbCoopToggle.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbCoopToggle.Location = New System.Drawing.Point(204, 489)
+        Me.pbCoopToggle.BackColor = System.Drawing.Color.DarkRed
+        Me.pbCoopToggle.Location = New System.Drawing.Point(201, 489)
         Me.pbCoopToggle.Name = "pbCoopToggle"
-        Me.pbCoopToggle.Size = New System.Drawing.Size(145, 120)
+        Me.pbCoopToggle.Size = New System.Drawing.Size(151, 120)
         Me.pbCoopToggle.TabIndex = 38
         Me.pbCoopToggle.TabStop = False
         '

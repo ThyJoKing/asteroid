@@ -253,10 +253,12 @@ Public Class enemyShip
     Public Property image As Image
     Public Property location As PointF
     Public Property locationx As Double : Public Property locationy As Double
+    Public Property xVelocity As Double : Public Property yVelocity As Double
     Public Property angle As Integer
-    Public Property drawPoints As PointF()
+    Public Property drawPoints As Array
     Public Property level As Integer
     Public Property player As Integer = 3
+    Public Property shipFocus As Integer
     Public Property points As New List(Of PointF) From {}
 
     Public Sub New(size As Integer)
@@ -268,9 +270,37 @@ Public Class enemyShip
         If locationx = 0 Then
             angle += 180
         End If
+        If coop Then
+            shipFocus = Floor(Rnd() * 2)
+        Else
+            shipFocus = 0
+        End If
     End Sub
     Public Sub move()
+        Dim movex As Double
+        Dim movey As Double
+        If Abs(spriteArray(1)(shipFocus).locationx - locationx) > 450 Then
+            If spriteArray(1)(shipFocus).locationx > locationx Then
+                movex = spriteArray(1)(shipFocus).locationx - 900
+            Else
+                movex = spriteArray(1)(shipFocus).locationx + 900
+            End If
+        Else
+            movex = spriteArray(1)(shipFocus).locationx
+        End If
+        If Abs(spriteArray(1)(shipFocus).locationy - locationy) > 450 Then
+            If spriteArray(1)(shipFocus).locationy > locationy Then
+                movey = spriteArray(1)(shipFocus).locationy - 900
+            Else
+                movey = spriteArray(1)(shipFocus).locationy + 900
+            End If
+        Else
+            movey = spriteArray(1)(shipFocus).locationx
+        End If
+        angle = Tanh(movey / movex)
 
+        xVelocity += Sin(2 * Math.PI * (angle / 360))
+        yVelocity -= Cos(2 * Math.PI * (angle / 360))
 
         If locationx < -image.Width / 2 Then locationx = mainWindow.Width + image.Width / 2 - 1
         If locationx > mainWindow.Width + image.Width / 2 Then locationx = -image.Width / 2

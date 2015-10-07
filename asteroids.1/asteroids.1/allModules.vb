@@ -269,15 +269,10 @@ Module checks
     Public enemyTime As Integer = 0
     Public shootInterval As Integer
     Public spawnInterval As Integer
-
     Public Sub enemyCheck()
-        If spriteArray(2).Count <> 0 Then
-            If enemyTime Mod shootInterval = 0 Then
-                spriteArray(3).Add(New bullet(spriteArray(2)(0)))
-            End If
-        Else
+        If spriteArray(2).Count = 0 Then
             If enemyTime Mod spawnInterval = 0 Then
-                spriteArray(2).Add(New enemyShip(level))
+                spriteArray(2).Add(New enemyShip(1))
                 enemyTime = 0
             End If
         End If
