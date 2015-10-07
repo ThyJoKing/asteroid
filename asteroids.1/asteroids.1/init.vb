@@ -37,6 +37,7 @@ Module initialise
     'Option Variables
     Public coop As Boolean = False          'For player 1 and player 2
     Public sensitivity As Integer = 8       'The speed at which the ship rotates
+    Public soundVolume As Integer = 50
     Public mute As Boolean = True           'Mute or not
 
     Public spriteArray As New List(Of List(Of Object)) From {New List(Of Object), New List(Of Object), New List(Of Object), New List(Of Object)}
@@ -55,6 +56,7 @@ Module initialise
         fontInit()
         labelInit()
         lifeImageSet()
+        soundInit()
     End Sub                         'Initialises everything
 
     'Fonts
@@ -91,8 +93,9 @@ Module initialise
     Public highscoreLabels As New List(Of Label) From {mainWindow.highscore1, mainWindow.highscore2, mainWindow.highscore3, mainWindow.highscore4, mainWindow.highscore5}
     Private roundLabels As New List(Of Label) From {mainWindow.round1, mainWindow.round2, mainWindow.round3, mainWindow.round4, mainWindow.round5}
     Public nameLabels As New List(Of Label) From {mainWindow.name1, mainWindow.name2, mainWindow.name3, mainWindow.name4, mainWindow.name5}
+    Public hyper As FontFamily
     Private Sub labelInit()
-        Dim hyper = hyperspaceFont.Families(0)
+        hyper = hyperspaceFont.Families(0)
         'Title Screen
         mainWindow.title.Font = New Font(hyper, 100, FontStyle.Italic) : mainWindow.title.Location = New Point(mainWindow.Width / 2 - mainWindow.title.Width / 2, 180)
         mainWindow.playButton.Font = New Font(hyper, 60) : mainWindow.playButton.Location = New Point(mainWindow.Width / 2 - mainWindow.playButton.Width / 2, 450)
@@ -153,6 +156,15 @@ Module initialise
     Private Sub lifeImageSet()
         lifeImage = ResizeImage(My.Resources.ship, New Size(2 * My.Resources.ship.Width / 3, 2 * My.Resources.ship.Height / 3))
     End Sub
+
+    Public initialPath As String = IO.Path.GetFullPath(My.Resources.ResourceManager.BaseName)
+    Private Sub soundInit()
+        If Debugger.IsAttached Then
+            initialPath = initialPath.Substring(0, initialPath.Length - 31) & "Resources\"
+        Else
+            initialPath = initialPath.Substring(0, initialPath.Length - 35) & "Resources\"
+        End If
+    End Sub
 End Module
 
 Module loading
@@ -178,9 +190,9 @@ Module loading
         Next
     End Sub  'Loads mainWindow 
     Public Sub optionsLoad()
-        'options.show()
-        'coins.hide()
-        'mainWindow.hide()
+        settingsMenu.Show()
+        coins.Hide()
+        mainWindow.Hide()
     End Sub     'Loads Options
     Public Sub gameLoad()
         If cursorVis Then
@@ -209,7 +221,8 @@ Module loading
         If highFirst Then highLoad()
     End Sub        'Loads Game
     Public Sub levelLoad()
-        spawnInterval = 5000 / level
+        spawnInterval = 250 / level
+        shootInterval = 2100 / level
         If Not start Then
             Dim num As Integer = 0
             Do Until num > level + 1 Or num > 11

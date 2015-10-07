@@ -10,15 +10,15 @@ Module collisionTests
         'To do: threading here
         'Thread set 1:
         collision(0, 1) 'Asteroids with Player
-        'collision(3, 2) 'Bullets with Enemy ships
+        collision(3, 2) 'Bullets with Enemy ships
 
         'thread set 2:
-        'collision(0, 2) 'Asteroids with Enemy ships
+        collision(0, 2) 'Asteroids with Enemy ships
         collision(1, 3) 'Player with Bullets
 
         'thread set 3:
         collision(3, 0) 'Bullets with asteroids
-        'collision(1, 2) 'Player with Enemy
+        collision(1, 2) 'Player with Enemy
 
     End Sub                                          'Setting every collision : MAYBE THREADS LATER?
     Public Sub collision(firstObject As Integer, secondObject As Integer)
@@ -59,7 +59,10 @@ Module collisionTests
                                     explosionArray.Add(New explosion(current1))
                                     current2.spawn()
                                 ElseIf TypeOf (current2) Is enemyShip Then
+                                    explosionArray.Add(New explosion(current2))
+                                    explosionArray.Add(New explosion(current1))
                                     spriteArray(secondObject).RemoveAt(secondCount)
+                                    enemyTime = 0
                                 End If
                                 Dim temp As asteroid = current1
                                 spriteArray(firstObject).RemoveAt(firstCount)
@@ -85,14 +88,12 @@ Module collisionTests
                                     spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
                                     spriteArray(secondObject).Add(New asteroid(current2.level + 1, current2))
                                 End If
-                            ElseIf TypeOf current2 Is enemyShip Then
+                            ElseIf TypeOf current2 Is enemyShip And current1.shooter <> 3 Then
                                 explosionArray.Add(New explosion(current2))
-                                explosionArray.Add(New explosion(current1))
-                                If current1.shooter <> 3 Then
-                                    spriteArray(1)(current1.shooter - 1).score += current2.level * 500
-                                    spriteArray(secondObject).RemoveAt(secondCount)
-                                End If
+                                spriteArray(1)(current1.shooter - 1).score += current2.level * 500
+                                spriteArray(secondObject).RemoveAt(secondCount)
                                 spriteArray(firstObject).RemoveAt(firstCount)
+                                enemyTime = 0
                                 collide1 = True
                             End If
                         End If
@@ -123,7 +124,6 @@ Module shipActions
         Next
         If bulletNum < bulLimit And ship.shootEnable Then
             spriteArray(3).Add(New bullet(ship))
-            'If sound Then My.Computer.Audio.Play(My.Resources.fire, AudioPlayMode.Background) 'Shoot sound
         End If
     End Sub             'Ship shooting
     Public Sub thrust(ship As ship)
@@ -222,7 +222,7 @@ Module checks
                     ship.bulletCool = False
                 End If
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player1Hyperspace"))) Then ship.hyperspaceStart()
-            Else
+            ElseIf ship.player = 2 Then
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Left"))) Then ship.angle -= sensitivity
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Right"))) Then ship.angle += sensitivity
                 If GetAsyncKeyState(Convert.ToInt32(hotKeys("player2Forward"))) Then thrust(ship) Else ship.Image = My.Resources.ship
@@ -248,22 +248,36 @@ Module checks
         Next
     End Sub              'Reset each key check
 
-    Private enemyTime As Integer = 0
-    Private directionInterval As Integer
-    Private shootInterval As Integer
-    Public spawnInterval As Integer = 5000
+    Public coinFlash As Boolean = False
+    Public flashIntervals As Integer = 0
+    Public Sub coinCheck()
+        If coinFlash Then
+            If flashIntervals Mod 8 < 6 Then
+                mainWindow.coinLabel.Visible = False
+            Else
+                mainWindow.coinLabel.Visible = True
+            End If
+            flashIntervals += 1
+            If flashIntervals > 48 Then
+                mainWindow.coinLabel.Visible = True
+                coinFlash = False
+                flashIntervals = 0
+            End If
+        End If
+    End Sub
+
+    Public enemyTime As Integer = 0
+    Public shootInterval As Integer
+    Public spawnInterval As Integer
 
     Public Sub enemyCheck()
         If spriteArray(2).Count <> 0 Then
-            If enemyTime Mod directionInterval = 0 Then
-                'change direction
-            End If
             If enemyTime Mod shootInterval = 0 Then
                 spriteArray(3).Add(New bullet(spriteArray(2)(0)))
             End If
         Else
             If enemyTime Mod spawnInterval = 0 Then
-                spriteArray(2).Add(New enemyShip(Int(Rnd() + level / 10) * 2))
+                spriteArray(2).Add(New enemyShip(level))
                 enemyTime = 0
             End If
         End If
@@ -277,7 +291,6 @@ Module labelVisible
         mainWindow.optionsButton.Visible = truFalse
         mainWindow.playButton.Visible = truFalse
         mainWindow.highscores.Visible = truFalse
-        mainWindow.Label1.Visible = truFalse
     End Sub                         'mainWindow labels visible
     Public Sub pauseVisible(truFalse As Boolean)
         mainWindow.pauseExit.Visible = truFalse
@@ -483,20 +496,6 @@ Module sound
     Public Const soundLimit As Integer = 70 'Interval between high and low
     Public highSound As Boolean = True      'Whether it is high sound's turn
     Public level As Integer = 1             'NOTE: RESET WHEN GAMELOAD
-
-    Public Sub soundAll()
-        soundCounter += 1
-        If soundCounter > soundLimit Then
-            If highSound Then
-                highSound = False
-                'My.Computer.Audio.Play(My.Resources.thumphi, AudioPlayMode.Background)
-            Else
-                'My.Computer.Audio.Play(My.Resources.thumplo, AudioPlayMode.Background)
-                highSound = True
-            End If
-            soundCounter = 0
-        End If
-    End Sub
 End Module
 
 Module other

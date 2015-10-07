@@ -30,12 +30,10 @@ Public Class mainWindow
     End Sub       'Saves the highscore in the event of unexpected quit
 
     'Timers
-    Public Sub soundTime(sender As Object, e As EventArgs) Handles soundTimer.Tick
-        soundAll()
-    End Sub                 'The sound timer
     Public Sub gameTime(sender As Object, e As EventArgs) Handles gameTimer.Tick
         Invalidate()
         If gamestate = "play" Or gamestate = "over" And endTimer <= endTime Then
+            'enemyCheck()
             collisionThreads()
             If coop Then player2Score.Text = Str(spriteArray(1)(1).score)
             player1Score.Text = Str(spriteArray(1)(0).score)
@@ -49,7 +47,7 @@ Public Class mainWindow
         moveEverything()
         bulletCheck()
         explosionCheck()
-        'enemyCheck()
+        coinCheck()
         If spriteArray(0).Count = 0 Then : level += 1 : levelLoad() : End If
         If GetAsyncKeyState(Convert.ToInt32(hotKeys("pause"))) And gamestate = "play" Then pauseLoad()
         state.Text = gamestate
@@ -69,6 +67,8 @@ Public Class mainWindow
             gameLoad()
             If coop Then coins.coinsNum -= 2 Else coins.coinsNum -= 1
             coinLabel.Text = "Coin(s):" + Str(coins.coinsNum)
+        Else
+            coinFlash = True
         End If
     End Sub         'Play Button
     Public Sub optionsButton_Click(sender As Object, e As EventArgs) Handles optionsButton.Click
@@ -102,14 +102,4 @@ Public Class mainWindow
         highScoreRecord()
         mainWindowLoad()
     End Sub  'Highscore Back button
-
-    Private Sub label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-        If coop Then
-            coop = False
-            Label1.Text = "Co-op: False"
-        Else
-            coop = True
-            Label1.Text = "Co-op: True"
-        End If
-    End Sub
 End Class

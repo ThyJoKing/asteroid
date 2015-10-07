@@ -253,7 +253,6 @@ Public Class enemyShip
     Public Property image As Image
     Public Property location As PointF
     Public Property locationx As Double : Public Property locationy As Double
-    Public Property xVelocity As Double : Public Property yvelocity As Double
     Public Property angle As Integer
     Public Property drawPoints As PointF()
     Public Property level As Integer
@@ -261,7 +260,7 @@ Public Class enemyShip
     Public Property points As New List(Of PointF) From {}
 
     Public Sub New(size As Integer)
-        level = size
+        level = Math.Ceiling(Int(size / 10 + Rnd()))
         image = My.Resources.enemyShip1
         image = ResizeImage(image, New Size((1 / level) * image.Width, (1 / level) * image.Height))
         locationx = (Rnd() * 2 - 1) * mainWindow.Width : locationy = Rnd() * mainWindow.Height
@@ -269,10 +268,10 @@ Public Class enemyShip
         If locationx = 0 Then
             angle += 180
         End If
-        xVelocity = Sin(2 * Math.PI * (angle / 360)) * 5 : yvelocity = -Cos(2 * Math.PI * (angle / 360)) * 5
     End Sub
     Public Sub move()
-        locationx += xVelocity : locationy += yvelocity
+
+
         If locationx < -image.Width / 2 Then locationx = mainWindow.Width + image.Width / 2 - 1
         If locationx > mainWindow.Width + image.Width / 2 Then locationx = -image.Width / 2
         If locationy < -image.Width / 2 Then locationy = mainWindow.Height + image.Width / 2

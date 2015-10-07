@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="allModules.vb" />
+    <Compile Include="AudioFile.vb" />
     <Compile Include="classes.vb" />
     <Compile Include="coins.Designer.vb">
       <DependentUpon>coins.vb</DependentUpon>
@@ -118,6 +119,19 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="otherstuff.vb" />
+    <Compile Include="settingsMenu.Designer.vb">
+      <DependentUpon>settingsMenu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="settingsMenu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="soundProperties.vb" />
+    <Compile Include="soundSettings.Designer.vb">
+      <DependentUpon>soundSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="soundSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="coins.resx">
@@ -131,6 +145,12 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="settingsMenu.resx">
+      <DependentUpon>settingsMenu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="soundSettings.resx">
+      <DependentUpon>soundSettings.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -184,13 +204,25 @@
     <None Include="Resources\coin.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\coin-min.png" />
+    <None Include="Resources\asteroidSettingBackGround.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\coin piles-min.png" />
+    <None Include="Resources\Abba.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\coinslot-min.jpg" />
+    <None Include="Resources\Ruins.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Brahmas.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Hyde.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fire.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thrust.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
