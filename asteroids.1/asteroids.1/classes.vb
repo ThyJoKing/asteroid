@@ -259,7 +259,7 @@ Public Class enemyShip
     Public Property level As Integer
     Public Property player As Integer = 3
     Public Property shipFocus As Integer
-    Public Property points As New List(Of PointF) From {}
+    Public Property points As New List(Of PointF)
 
     Public Sub New(size As Integer)
         level = Math.Ceiling(Int(size / 10 + Rnd()))
@@ -299,8 +299,8 @@ Public Class enemyShip
         End If
         angle = Tanh(movey / movex)
 
-        xVelocity += Sin(2 * Math.PI * (angle / 360))
-        yVelocity -= Cos(2 * Math.PI * (angle / 360))
+        xVelocity += Sin(2 * Math.PI * (angle / 360)) * 0.1
+        yVelocity -= Cos(2 * Math.PI * (angle / 360)) * 0.1
 
         If locationx < -image.Width / 2 Then locationx = mainWindow.Width + image.Width / 2 - 1
         If locationx > mainWindow.Width + image.Width / 2 Then locationx = -image.Width / 2

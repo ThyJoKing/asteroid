@@ -272,7 +272,7 @@ Module checks
     Public Sub enemyCheck()
         If spriteArray(2).Count = 0 Then
             If enemyTime Mod spawnInterval = 0 Then
-                spriteArray(2).Add(New enemyShip(1))
+                'spriteArray(2).Add(New enemyShip(1))
                 enemyTime = 0
             End If
         End If

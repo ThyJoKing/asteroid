@@ -78,7 +78,7 @@ Public Class settingsMenu
             soundPercentage = (pbSlider.Left - 216)
             soundPercentage = soundPercentage / 915
             soundPercentage = Math.Round(soundPercentage * 100)
-            ' lblVolume.Text = Str("Volume " + Str(CInt(soundPercentage * 100)))
+            'lblVolume.Text = Str("Volume " + Str(CInt(soundPercentage * 100)))
             If soundPercentage Mod 2 <> 0 Then
                 soundPercentage += 1
             End If

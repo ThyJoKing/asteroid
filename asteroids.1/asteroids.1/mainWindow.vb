@@ -33,7 +33,7 @@ Public Class mainWindow
     Public Sub gameTime(sender As Object, e As EventArgs) Handles gameTimer.Tick
         Invalidate()
         If gamestate = "play" Or gamestate = "over" And endTimer <= endTime Then
-            'enemyCheck()
+            enemyCheck()
             collisionThreads()
             If coop Then player2Score.Text = Str(spriteArray(1)(1).score)
             player1Score.Text = Str(spriteArray(1)(0).score)
